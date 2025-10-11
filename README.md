@@ -9,8 +9,8 @@ mediante pruebas psicométricas y su comparación con modelos de lenguaje (LLM).
 - `Catalina Estrada` – **Lider / Frontend /Planificación**
 - `Juan Sebastian Obando` – **Encargado Control de versiones / Ejecución / Full Stack** 
 - `Erika Muñoz` – **Planeadora / Frontend**
-- `Arley David` – **Monitoreo / Tester**
-- `Cristian Cifuentes` – **Cierre / Backend**
+- `Arley David` – **Cierre / Tester**
+- `Cristian Cifuentes` – **Monitoreo / Backend**
 - `Felipe Valdez` – **Inicio / Backend**
 
 3. 🛠️ Tecnologías y Herramientas
@@ -25,8 +25,8 @@ mediante pruebas psicométricas y su comparación con modelos de lenguaje (LLM).
 📂 proyecto-psicometria-llm
 ├── 📂 docs/                     # Documentación del proyecto
 ├── 📂 src/                      # Código fuente (HTML, CSS, JS)
-│    ├── 📂 assets/              # Imágenes, estilos, etc.
-│    └── 📂 pages/               # Páginas principales
+│    ├── 📂 assets/              # Imágenes, estilos, js, css.
+│    ├── 📂 pages/               # Páginas principales
 ├── 📂 test/                     # Pruebas y resultados de los LLM 
 │    ├── 📂 unit/                # Pruebas unitarias (frontend/backend)
 │    ├── 📂 integration/         # Pruebas de integración
