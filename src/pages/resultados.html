@@ -4,10 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Psicométrico</title>
-  <link rel="stylesheet" href="styles2.css">
+  <link rel="stylesheet" href="../assets/css/styles2.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <!--librerias de graficos y --exportacion-->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
+
   <div class="dashboard">
 
     <header>
@@ -18,7 +25,7 @@
         <h2>Selecciona los LLMs a comparar</h2>
         <div class="llm-cards">
             <div class="llm-card">
-                <img src="./assets/images/images.png" alt="LLM 1 logo">
+                <img src="../assets/images/images.png" alt="LLM 1 logo">
                 <div class="llm-info">
                     <span>ChatGPT</span>
                     <label class="checkbox-container">
@@ -29,7 +36,7 @@
             </div>
 
            <div class="llm-card">
-                <img src="./assets/images/Logo_mistral.png" alt="LLM 1 logo">
+                <img src="../assets/images/Logo_mistral.png" alt="LLM 1 logo">
                 <div class="llm-info">
                     <span>Mistral</span>
                     <label class="checkbox-container">
@@ -40,7 +47,7 @@
             </div>
 
             <div class="llm-card">
-                <img src="./assets/images/Logo_llama.png" alt="LLM 1 logo">
+                <img src="../assets/images/Logo_llama.png" alt="LLM 1 logo">
                 <div class="llm-info">
                     <span>LLama</span>
                     <label class="checkbox-container">
@@ -51,7 +58,7 @@
             </div>
 
             <div class="llm-card">
-                <img src="./assets/images/Logo_deepseek.png" alt="LLM 1 logo">
+                <img src="../assets/images/Logo_deepseek.png" alt="LLM 1 logo">
                 <div class="llm-info">
                     <span>Deepseek</span>
                     <label class="checkbox-container">
@@ -60,16 +67,27 @@
                     </label>
                 </div>
             </div>
+            <div class="llm-card">
+                <img src="../assets/images/Logo_gemini.png" alt="LLM 1 logo">
+                <div class="llm-info">
+                    <span>Gemini</span>
+                    <label class="checkbox-container">
+                    <input type="checkbox" value="Gemini" checked>
+                    <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+
         </div>
     </section>
     <!-- Resumen de Rasgos -->
     <section class="summary-cards">
-      <div class="card">
+      <div class="card" data-rasgo="Apertura">
         <h3>Apertura</h3>
         <p>Usuario: 75</p>
         <p>LLM: 65</p>
       </div>
-      <div class="card">
+      <div class="card" data-rasgo="Responsabilidad">
         <h3>Responsabilidad</h3>
         <p>Usuario: 60</p>
         <p>LLM: 70</p>
@@ -142,8 +160,33 @@
         </tbody>
       </table>
     </section>
+    <!-- Botones de exportación -->
+    <section class="export-buttons">
+      <button id="downloadUserPDF">
+        <img src="./assets/images/DescargaUser_icon.png" alt="Icono Usuario" class="button-icon">
+        Reporte Individual
+    </button>
+    <button id="downloadFullPDF">
+        <img src="./assets/images/Descarga_icon.png" alt="Icono Vista Completa" class="button-icon">
+        Reporte Vista Completa
+    </button>
   </div>
 
-  <script src="script2.js"></script>
+  <div id="rasgoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalRasgoTitulo"></h2>
+            <div class="modal-scores">
+                <p>Usuario: <span id="modalUsuarioScore"></span></p>
+                <p>LLM: <span id="modalLLMScore"></span></p>
+            </div>
+            <hr>
+            <p id="modalDescripcion"></p>
+        </div>
+  </div>
+
+  
+
+  <script src="../assets/js/script2.js"></script>
 </body>
 </html>
