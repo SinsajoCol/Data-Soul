@@ -1,13 +1,4 @@
-const rasgos = [
-  "Apertura",
-  "Responsabilidad",
-  "Extraversión",
-  "Amabilidad",
-  "Neuroticismo",
-  "Machiavellismo",
-  "Narcisismo",
-  "Psicopatía"
-];
+const rasgos = ["Apertura","Responsabilidad","Extraversión","Amabilidad","Neuroticismo","Machiavellismo","Narcisismo","Psicopatía"];
 
 const rasgosData = {
     "Apertura": {
@@ -53,7 +44,6 @@ const LLM_PALETTE = ['#6586E7', '#884FFD', '#B18BFD', '#FFA64D', '#FF8000'];
 
 // Definir colores consistentes usando la paleta Hex
 const llmColors = {
-    // LLMs asignados a la paleta en orden:
     "ChatGPT": { 
         hex: LLM_PALETTE[0], 
         fill: hexToRgba(LLM_PALETTE[0], 0.2), 
@@ -78,7 +68,6 @@ const llmColors = {
         border: hexToRgba(LLM_PALETTE[3], 1), 
         bar: hexToRgba(LLM_PALETTE[3], 0.8) 
     },
-    // NUEVO LLM AÑADIDO: Gemini con el último color de la paleta
     "Gemini": { 
         hex: LLM_PALETTE[4], 
         fill: hexToRgba(LLM_PALETTE[4], 0.2), 
