@@ -9,9 +9,9 @@ sys.stdout.reconfigure(encoding='utf-8')
 # ==============================
 # CONFIGURACIÓN
 # ==============================
-MODEL_NAME = "llama3.2"
+MODEL_NAME = "llama3.1"
 DATASET_PATH = "TRAIT.json"
-OUTPUT_PATH = "results_traitLLama3.2.json"
+OUTPUT_PATH = "results_llama3.1.json"
 
 BATCH_SIZE = 10
 SAVE_EVERY_N_BATCHES = 1
