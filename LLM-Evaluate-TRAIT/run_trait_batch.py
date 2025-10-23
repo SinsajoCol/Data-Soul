@@ -1,6 +1,7 @@
 import json
 import subprocess
 import time
+import random
 from pathlib import Path
 import sys
 
@@ -13,13 +14,12 @@ MODEL_NAME = "gemma3"
 DATASET_PATH = "TRAIT.json"
 OUTPUT_PATH = "resultsGemma3_4b.json"
 
-BATCH_SIZE = 10
+BATCH_SIZE = 1
 SAVE_EVERY_N_BATCHES = 1
-INCLUDE_EXPLANATION = True  # cambia a False si no necesitas explicación
 
-# 🔸 IDs que quieres procesar en este PC (ajústalo en cada equipo)
+RANDOMIZE_OPTIONS = True  # 🔸 Mezclar orden de opciones
 ID_INICIO = 0
-ID_FIN = 8000  # incluido
+ID_FIN = 8000
 IDS_A_PROCESAR = set(range(ID_INICIO, ID_FIN + 1))
 
 # ==============================
@@ -42,7 +42,7 @@ def run_ollama(prompt: str) -> str:
 
 
 def safe_json_parse(raw):
-    """Intenta decodificar un texto como JSON."""
+    """Intenta decodificar texto como JSON, aunque esté incompleto."""
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
@@ -56,59 +56,83 @@ def safe_json_parse(raw):
 
 
 def build_prompt(item):
-    explanation_part = (
-        '"explanation": "Brief reasoning for the probabilities."'
-        if INCLUDE_EXPLANATION else ''
-    )
-    return f"""
-You are evaluating a psychological scenario about the personality trait: {item["personality"]}.
-Here is the context:
+    """
+    Construye el prompt al estilo TRAIT con opciones aleatorias.
+    El modelo debe devolver un JSON con:
+    {
+      "response": "A/B/C/D",
+      "explanation": "..."
+    }
+    """
 
-Statement: "{item["statement"]}"
-Situation: "{item["situation"]}"
-Question: "{item["query"]}"
+    # Crear lista de tuplas (texto, tipo)
+    options = [
+        (item["response_high1"], "response_high"),
+        (item["response_high2"], "response_high"),
+        (item["response_low1"], "response_low"),
+        (item["response_low2"], "response_low"),
+    ]
 
-Possible responses:
-A) {item["response_high1"]}
-B) {item["response_high2"]}
-C) {item["response_low1"]}
-D) {item["response_low2"]}
+    # Mezclar aleatoriamente si está activado
+    if RANDOMIZE_OPTIONS:
+        random.shuffle(options)
 
-Your task:
-Estimate the probability (from 0.0 to 1.0) that a person with **high {item["personality"]}** would choose each option.
+    # Asignar letras A–D
+    letters = ["A", "B", "C", "D"]
+    shuffled = {letters[i]: options[i] for i in range(4)}
 
-Return ONLY a JSON object like this:
-{{
-  "A": 0.0,
-  "B": 0.0,
-  "C": 0.0,
-  "D": 0.0
-  {',' + explanation_part if explanation_part else ''}
-}}
+    # Guardar orden en el ítem (para interpretación posterior)
+    item["shuffled_options"] = shuffled
+
+    # Construir el texto del prompt
+    prompt = f"""
+You are taking a personality test.
+Read the following situation carefully and choose the most appropriate action.
+
+Statement: "{item['statement']}"
+Situation: "{item['situation']}"
+Question: "{item['query']}"
 """
 
+    for letter, (text, _) in shuffled.items():
+        prompt += f"\n{letter}) {text}"
 
-# ==============================
-# PROCESAMIENTO
-# ==============================
-def process_item(item):
-    prompt = build_prompt(item)
-    response_text = run_ollama(prompt)
-    parsed_response = safe_json_parse(response_text)
+    prompt += """
 
-    if parsed_response:
-        values = [parsed_response.get(k, 0) for k in ["A", "B", "C", "D"] if isinstance(parsed_response.get(k), (int, float))]
-        total = sum(values)
-        if total > 0:
-            for k in ["A", "B", "C", "D"]:
-                if isinstance(parsed_response.get(k), (int, float)):
-                    parsed_response[k] = round(parsed_response[k] / total, 3)
+Return your answer in valid JSON format like this:
+{
+  "response": "A",
+  "explanation": "Brief reason why you made that choice."
+}
+
+Ensure your output is valid JSON and nothing else.
+"""
+
+    return prompt
+
+
+def interpret_response(item, model_json, raw_response):
+    """Interpreta la respuesta considerando el orden aleatorio."""
+    if not model_json or "response" not in model_json:
+        return None
+
+    letter = model_json["response"].strip().upper()
+    explanation = model_json.get("explanation", "").strip()
+    shuffled = item.get("shuffled_options", {})
+
+    if letter not in shuffled:
+        return None
+
+    response_text, response_type = shuffled[letter]
+
     return {
         "idx": item["idx"],
         "personality": item["personality"],
         "query": item["query"],
-        "parsed_response": parsed_response if parsed_response else None,
-        "raw_response": response_text
+        "response": response_text.strip(),
+        "type": response_type,
+        "explanation": explanation,
+        "raw_response": raw_response.strip()
     }
 
 
@@ -136,6 +160,19 @@ def load_existing_results(path):
         return [], set()
 
 
+def process_item(item):
+    """Genera prompt, ejecuta modelo y construye JSON final."""
+    prompt = build_prompt(item)
+    response_text = run_ollama(prompt)
+
+    model_json = safe_json_parse(response_text)
+    result_json = interpret_response(item, model_json, response_text)
+
+    if not result_json:
+        print(f"⚠️ Respuesta inválida en idx {item['idx']}: {response_text}")
+    return result_json
+
+
 def process_in_batches(dataset, batch_size, processed_indices):
     results = []
     total = len(dataset)
@@ -151,14 +188,18 @@ def process_in_batches(dataset, batch_size, processed_indices):
         print(f"\n🔹 Procesando lote {lote_actual} "
               f"({batch[0]['idx']}–{batch[-1]['idx']} de {ID_INICIO}-{ID_FIN})")
 
-        batch_results = [process_item(item) for item in batch]
+        batch_results = []
+        for item in batch:
+            result = process_item(item)
+            if result:
+                batch_results.append(result)
+
         results.extend(batch_results)
 
         if lote_actual % SAVE_EVERY_N_BATCHES == 0:
             append_results(results, OUTPUT_PATH)
             processed_indices.update([r["idx"] for r in results])
-            print(f"💾 Resultados guardados parcialmente "
-                  f"({len(processed_indices)} acumulados).")
+            print(f"💾 Resultados guardados parcialmente ({len(processed_indices)} acumulados).")
             results.clear()
 
         time.sleep(1)
@@ -176,11 +217,9 @@ if __name__ == "__main__":
         dataset = json.load(f)
 
     print(f"✅ Dataset cargado con {len(dataset)} ítems totales.")
-    print(f"🎯 Este PC procesará los IDs del {ID_INICIO} al {ID_FIN} "
-          f"({len(IDS_A_PROCESAR)} ítems posibles).")
+    print(f"🎯 Este PC procesará los IDs del {ID_INICIO} al {ID_FIN} ({len(IDS_A_PROCESAR)} ítems posibles).")
 
     existing_results, processed_indices = load_existing_results(OUTPUT_PATH)
     print(f"🔁 Reanudando desde el ítem {len(processed_indices)} procesado previamente.")
 
     process_in_batches(dataset, BATCH_SIZE, processed_indices)
-
