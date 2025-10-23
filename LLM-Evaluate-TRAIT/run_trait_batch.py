@@ -95,6 +95,14 @@ def process_item(item):
     prompt = build_prompt(item)
     response_text = run_ollama(prompt)
     parsed_response = safe_json_parse(response_text)
+
+    if parsed_response:
+        values = [parsed_response.get(k, 0) for k in ["A", "B", "C", "D"] if isinstance(parsed_response.get(k), (int, float))]
+        total = sum(values)
+        if total > 0:
+            for k in ["A", "B", "C", "D"]:
+                if isinstance(parsed_response.get(k), (int, float)):
+                    parsed_response[k] = round(parsed_response[k] / total, 3)
     return {
         "idx": item["idx"],
         "personality": item["personality"],
