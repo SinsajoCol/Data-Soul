@@ -14,7 +14,7 @@ MODEL_NAME = "Mistral"
 DATASET_PATH = "TRAIT.json"
 OUTPUT_PATH = "results_Mistral7b.json"
 
-BATCH_SIZE = 1
+BATCH_SIZE = 10
 SAVE_EVERY_N_BATCHES = 1
 
 RANDOMIZE_OPTIONS = True  # 🔸 Mezclar orden de opciones
