@@ -10,7 +10,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 # ==============================
 # CONFIGURACIÓN
 # ==============================
-MODEL_NAME = "Mistral"
+MODEL_NAME = "mistral"
 DATASET_PATH = "TRAIT.json"
 OUTPUT_PATH = "results_Mistral7b.json"
 
@@ -22,9 +22,6 @@ ID_INICIO = 0
 ID_FIN = 8000
 IDS_A_PROCESAR = set(range(ID_INICIO, ID_FIN + 1))
 
-# ==============================
-# FUNCIONES BASE
-# ==============================
 
 def run_ollama(prompt: str) -> str:
     """Ejecuta el modelo local de Ollama y devuelve la salida limpia."""
@@ -39,7 +36,6 @@ def run_ollama(prompt: str) -> str:
         return result.stdout.decode("utf-8", errors="ignore").strip()
     except Exception as e:
         return f"ERROR: {e}"
-
 
 def safe_json_parse(raw):
     """Intenta decodificar texto como JSON, aunque esté incompleto."""
@@ -146,7 +142,6 @@ def append_results(new_results, path):
 
     combined = existing + new_results
     Path(path).write_text(json.dumps(combined, indent=2, ensure_ascii=False), encoding="utf-8")
-
 
 def load_existing_results(path):
     """Carga resultados previos si existen."""
