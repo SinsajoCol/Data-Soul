@@ -24,16 +24,17 @@ mediante pruebas psicométricas y su comparación con modelos de lenguaje (LLM).
 <pre>
 📂 proyecto-psicometria-llm
 ├── 📂 docs/                     # Documentación del proyecto
+├── 📂 LLM-Evaluate-TRAIT/       # Pruebas Realizadas a los modelos
 ├── 📂 src/                      # Código fuente (HTML, CSS, JS)
 │    ├── 📂 assets/              # Imágenes, estilos, etc.
+│    ├── 📂 data/                # Preguntas del cuestionario y resultados llm.
+│    ├── 📂 controllers/         # Controladores js.
+│    ├── 📂 models/              # Modelos js.
+│    ├── 📂 views/               # Vistas js.
 │    └── 📂 pages/               # Páginas principales
 ├── 📂 test/                     # Pruebas y resultados de los LLM 
 │    ├── 📂 unit/                # Pruebas unitarias (frontend/backend)
-│    ├── 📂 integration/         # Pruebas de integración
-│    └── 📂 llm/                 # Pruebas específicas de modelos LLM
-│         ├── 📂prompts/         # Conjuntos de prompts usados en pruebas
-│         ├── 📂results/         # Resultados obtenidos
-│         └── 📂reports/         # Reportes y métricas de evaluación
+│    └── 📂 integration/         # Pruebas de integración
 ├── 📂 templates/                # Plantillas (Excel de entrada)
 ├── .gitignore                   # Archivos ignorados en Git
 ├── README.md                    # Documentación principal
