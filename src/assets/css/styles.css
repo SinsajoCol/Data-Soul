@@ -33,9 +33,19 @@ nav a {
   font-weight: 600;
 }
 
-nav a:hover, nav a.active {
-  text-decoration: underline;
-  color: #CBB2FE;
+.menu a {
+  position: relative;
+}
+
+.menu a:hover::after, 
+.menu a.active::after {
+  content: "•";
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  color: #F7F7F7;
 }
 
 .marca {
@@ -106,7 +116,7 @@ main {
     display: none;
   }
  
-  #menuLat:checked ~ nav .menu{
+  #menuLat:checked ~ nav .menu {
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -120,6 +130,25 @@ main {
     align-items: flex-start;
     gap: 40px;
     transition: transform 0.3s ease;
+  }
+
+  .menu a::after {
+    display: none;
+  }
+
+  .menu a{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .menu a:hover, 
+  .menu a.active {
+    background-color: #D3BEFE;
+    color: #11296E;
+    border-radius: 8px;
+    padding: 5px 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
