@@ -1,7 +1,7 @@
 // pages/PaginaTemplate.js
 export class PaginaTemplate {
   async mostrarPagina() {
-    const navbar = this.mostrarNavbar();
+    const navbar = this.mostrarHeader();
     const contenido = await this.mostrarContenido();
     const footer = this.mostrarFooter();
 
@@ -12,11 +12,27 @@ export class PaginaTemplate {
     `;
   }
 
-  mostrarNavbar() {
+  mostrarHeader() {
     return `
+      <input type="checkbox" id="menuLat" hidden>
+      <label for="menuLat" class="burger">☰</label>
       <nav class="navbar">
-        <a href="#" data-page="inicio">Inicio</a>
-        <a href="#" data-page="cuestionario">Cuestionario</a>
+        <div class="marca">
+          <div class="logo">
+            <img src="/src/assets/img/LogoBrand.png">
+          </div>
+
+          <div class="nameBrand">
+            <h1>Data Soul</h1>
+          </div>
+        </div>
+        
+        <div class="menu">
+          <a href="#" data-page="inicio">Inicio</a>
+          <a href="#" data-page="cuestionario">Prueba Individual</a>
+          <a href="#" data-page="cuestionario">Prueba Grupal</a>
+          <a href="#" data-page="cuestionario">Rasgos LLM</a>
+        </div>
       </nav>
     `;
   }
