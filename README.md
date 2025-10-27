@@ -51,10 +51,10 @@ Para mantener el desarrollo ordenado, seguimos la siguiente estrategia de ramas:
 ### Representación Gráfica del Flujo de Ramas
 A continuación, se presentan diagramas que ilustran el flujo de ramas y su estructura:
 
-<image-card alt="Flujo de Ramas - Git Flow" src="Imagenes\Diagrama de arbol.png" ></image-card>
+<image-card alt="Flujo de Ramas - Git Flow" src="docs\Imagenes\Diagrama de arbol.png" ></image-card>
 _Diagrama de líneas mostrando las fases de desarrollo y entrega de las ramas._
 
-<image-card alt="Árbol de Ramas del Repositorio" src="Imagenes\Gitflow.png" ></image-card>
+<image-card alt="Árbol de Ramas del Repositorio" src="docs\Imagenes\Gitflow" ></image-card>
 _Diagrama de árbol que representa la jerarquía y fusión de ramas._
 
 6. ✅ Convenciones de Commits
