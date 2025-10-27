@@ -6,10 +6,11 @@ export class PaginaTemplate {
     const footer = this.mostrarFooter();
 
     document.body.innerHTML = `
-      ${navbar}
-      <main class="contenido">${contenido}</main>
-      ${footer}
-    `;
+    ${navbar}
+    <main class="contenido">${contenido}</main>
+    ${footer}
+  `;
+
 
     // Ahora que el HTML está en el DOM, se pueden agregar los eventos
     this.agregarActive();
@@ -33,8 +34,8 @@ export class PaginaTemplate {
         <div class="menu">
           <a href="#" data-page="inicio">Inicio</a>
           <a href="#" data-page="cuestionario">Prueba Individual</a>
-          <a href="#" data-page="cuestionario">Prueba Grupal</a>
-          <a href="#" data-page="cuestionario">Rasgos LLM</a>
+          <a href="#" data-page="">Prueba Grupal</a>
+          <a href="#" data-page="">Rasgos LLM</a>
         </div>
       </nav>
     `;
@@ -61,12 +62,12 @@ export class PaginaTemplate {
               <p>© 2025 Data Soul. Todos los derechos reservados</p>
             </div>
             <div class="footer-links">
-              <a href="#">Inicio</a> •
-              <a href="#">Prueba Individual</a> •
-              <a href="#">Prueba Grupal</a> •
-              <a href="#">Rasgos LLM</a> •
-              <a href="#">Términos del servicio</a> •
-              <a href="#">Políticas de privacidad</a>
+              <a href="#" data-page="inicio">Inicio</a> •
+              <a href="#" data-page="cuestionario">Prueba Individual</a>•
+              <a href="#" data-page="">Prueba Grupal</a> •
+              <a href="#" data-page="">Rasgos LLM</a> •
+              <a href="#" data-page="">Términos del servicio</a> •
+              <a href="#" data-page="">Políticas de privacidad</a>
             </div>
             <div class="footer-info">
               <p>
