@@ -57,7 +57,7 @@ A continuación, se presentan diagramas que ilustran el flujo de ramas y su estr
 <p align="center"><em>Diagrama de líneas mostrando las fases de desarrollo y entrega de las ramas.</em></p>
 
 <p align="center">
-  <img src="docs/Imagenes/Gitflow.png" alt="Árbol de Ramas del Repositorio" width="600">
+  <img src="docs/Imagenes/Gitflow.jpg" alt="Árbol de Ramas del Repositorio" width="600">
 </p>
 <p align="center"><em>Diagrama de árbol que representa la jerarquía y fusión de ramas.</em></p>
 
