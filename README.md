@@ -46,6 +46,7 @@ Para mantener el desarrollo ordenado, seguimos la siguiente estrategia de ramas:
 
 - **`main`** → Rama estable (solo versiones probadas y listas para entrega).  
 - **`develop`** → Rama de integración de funcionalidades antes de pasar a `main`.  
+- **`evaluate-models`** → Rama para hacer la evaluación de los modelos con trait. 
 - **`feature/*`** → Cada funcionalidad o historia de usuario tendrá su propia rama.   
 
 6. ✅ Convenciones de Commits
