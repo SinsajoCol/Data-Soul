@@ -1,4 +1,5 @@
 import json
+import re
 import subprocess
 import time
 import random
@@ -7,14 +8,41 @@ import sys
 
 sys.stdout.reconfigure(encoding='utf-8')
 
+def safe_json_parse(raw: str):
+    """
+    Intenta decodificar texto como JSON, incluso si viene con backticks, texto adicional
+    o formato incorrecto (por ejemplo, respuestas tipo Markdown de los modelos).
+    """
+    if not raw:
+        return None
+
+    cleaned = re.sub(r"^```(?:json)?|```$", "", raw.strip(), flags=re.IGNORECASE).strip()
+
+    if "{" in cleaned and "}" in cleaned:
+        start = cleaned.find("{")
+        end = cleaned.rfind("}") + 1
+        cleaned = cleaned[start:end]
+
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError:
+        lines = cleaned.splitlines()
+        possible_json = "\n".join(
+            [ln for ln in lines if "{" in ln or ":" in ln or "}" in ln]
+        )
+        try:
+            return json.loads(possible_json)
+        except Exception:
+            return None
+
 # ==============================
 # CONFIGURACIÓN
 # ==============================
-MODEL_NAME = "llama3.1"
+MODEL_NAME = "gemma3"
 DATASET_PATH = "TRAIT.json"
-OUTPUT_PATH = "results_llama3.1.json"
+OUTPUT_PATH = "resultsGemma3_4b.json"
 
-BATCH_SIZE = 1
+BATCH_SIZE = 10
 SAVE_EVERY_N_BATCHES = 1
 
 RANDOMIZE_OPTIONS = True  # 🔸 Mezclar orden de opciones
@@ -39,20 +67,6 @@ def run_ollama(prompt: str) -> str:
         return result.stdout.decode("utf-8", errors="ignore").strip()
     except Exception as e:
         return f"ERROR: {e}"
-
-
-def safe_json_parse(raw):
-    """Intenta decodificar texto como JSON, aunque esté incompleto."""
-    try:
-        return json.loads(raw)
-    except json.JSONDecodeError:
-        # Intentar cerrar JSON incompleto
-        if not raw.strip().endswith("}"):
-            raw = raw.strip() + "}"
-        try:
-            return json.loads(raw)
-        except Exception:
-            return None
 
 
 def build_prompt(item):
