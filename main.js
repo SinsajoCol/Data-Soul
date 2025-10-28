@@ -1,7 +1,7 @@
 // main.js
-import { PaginaInicio } from "/src/assets/js/PaginaInicio.js";
-import { PaginaTemplate } from "/src/assets/js/PaginaTemplate.js";
-import { PaginaCuestionario } from "/src/assets/js/PaginaCuestionario.js";
+import { PaginaInicio } from "./src/views/PaginaInicio.js";
+import { PaginaTemplate } from "./src/views/PaginaTemplate.js";
+import { PaginaCuestionario } from "./src/views/PaginaCuestionario.js";
 
 const app = document.getElementById("app");
 
@@ -12,9 +12,11 @@ async function cargarPagina(nombre) {
   switch (nombre) {
     case "inicio":
       pagina = new PaginaInicio();
+      console.log("Página de inicio cargada");
       break;
-      case "cuestionario":
+    case "cuestionario":
       pagina = new PaginaCuestionario();
+      console.log("Página de cuestionario cargada");
       break;
     default:
       pagina = new PaginaTemplate(); // fallback
@@ -27,7 +29,7 @@ async function cargarPagina(nombre) {
     if (pagina.despuesDeCargar) pagina.despuesDeCargar();
 
   // Reasignar eventos a los enlaces del navbar
-  document.querySelectorAll(".navbar a, .footer a").forEach(link => {
+  document.querySelectorAll(".navbar a, .footer a").forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
       const destino = link.getAttribute("data-page");

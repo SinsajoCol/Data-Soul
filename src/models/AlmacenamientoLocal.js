@@ -1,4 +1,4 @@
-class AlmacenamientoLocal {
+export default class AlmacenamientoLocal {
     static guardar(clave, valor) {
         try {
             localStorage.setItem(clave, JSON.stringify(valor));
