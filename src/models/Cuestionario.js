@@ -26,22 +26,6 @@ export default class Cuestionario {
     }
   }
 
-  // Implementación del patrón Iterator
-  [Symbol.iterator]() {
-    let index = 0;
-    const preguntas = this.preguntas;
-
-    return {
-      next() {
-        if (index < preguntas.length) {
-          return { value: preguntas[index++], done: false };
-        } else {
-          return { done: true };
-        }
-      }
-    };
-  }
-
   cargarRespuestas() {
         this.respuestas = AlmacenamientoLocal.cargar(this.storageKey) || {};
   }
@@ -51,23 +35,17 @@ export default class Cuestionario {
       AlmacenamientoLocal.guardar(this.storageKey, this.respuestas);
   }
 
-  getRespuestas() {
-      return this.respuestas;
-  }
-
   getProgreso() {
       // ... (código idéntico de antes) ...
       if (this.preguntas.length === 0) return 0;
       return (Object.keys(this.respuestas).length / this.preguntas.length) * 100;
   }
 
-  getTotalPreguntas() {
-      return this.preguntas.length;
-  }
+  // --- Métodos del Iterador/Paginación ---
+  getRespuestas() {
+        return this.respuestas;
+    }
 
-  // --- 5. MÉTODOS DEL "ITERADOR" (PAGINACIÓN) ---
-  // Estos métodos reemplazan la lógica que antes estaba en el Controlador
-  
   currentGroup() {
       const inicio = this.paginaActual * this.preguntasPorPagina;
       const fin = inicio + this.preguntasPorPagina;

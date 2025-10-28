@@ -1,5 +1,5 @@
-import { Header } from "./components/Header.js";
-import { Footer } from "./components/Footer.js";
+import { Header } from "../../components/Header.js";
+import { Footer } from "../../components/Footer.js";
 
 export class PaginaTemplate {
   async mostrarPagina() {
@@ -39,7 +39,6 @@ export class PaginaTemplate {
 
         const page = e.dataset.page;
         document.body.setAttribute('data-page', page);
-        this.cargarPagina(page); // método que renderiza la página
       });
     });
   }
