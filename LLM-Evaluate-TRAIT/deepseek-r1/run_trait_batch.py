@@ -4,6 +4,7 @@ import time
 import random
 from pathlib import Path
 import sys
+import re
 
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -19,7 +20,7 @@ SAVE_EVERY_N_BATCHES = 1
 
 RANDOMIZE_OPTIONS = True  # 🔸 Mezclar orden de opciones
 ID_INICIO = 0
-ID_FIN = 8000
+ID_FIN = 1300
 IDS_A_PROCESAR = set(range(ID_INICIO, ID_FIN + 1))
 
 # ==============================
@@ -41,16 +42,31 @@ def run_ollama(prompt: str) -> str:
         return f"ERROR: {e}"
 
 
-def safe_json_parse(raw):
-    """Intenta decodificar texto como JSON, aunque esté incompleto."""
+def safe_json_parse(raw: str):
+    """
+    Extrae el bloque JSON válido del texto, incluso si hay texto antes o después.
+    Usa una búsqueda simple del primer '{' y el último '}'.
+    """
+    if not raw:
+        return None
+
+    # Busca el primer '{' y el último '}'
+    start = raw.find('{')
+    end = raw.rfind('}')
+
+    if start == -1 or end == -1 or start >= end:
+        return None
+
+    candidate = raw[start:end+1].strip()
+
+    # Intentar decodificar el bloque
     try:
-        return json.loads(raw)
+        return json.loads(candidate)
     except json.JSONDecodeError:
-        # Intentar cerrar JSON incompleto
-        if not raw.strip().endswith("}"):
-            raw = raw.strip() + "}"
+        # Limpieza de errores comunes (por ejemplo, comas o saltos de línea)
+        candidate_fixed = re.sub(r',\s*([\]}])', r'\1', candidate)
         try:
-            return json.loads(raw)
+            return json.loads(candidate_fixed)
         except Exception:
             return None
 
