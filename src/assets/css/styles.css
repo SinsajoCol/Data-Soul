@@ -6,13 +6,34 @@
   --H4-font-family: var(--font-family-base);
 }
 
-body {
+:root,
+[data-peppercorn-typography-scale-mode="mode-1"] {
+  /* mode-1 */
+  --accent-color: #ffa64d;
+  --black: #010101;
+  --white: #f7f7f7;
+  --brand-primary: #11296e;
+  --brand-secondary: #cbb2fe;
+}
+
+html, body {
+  height: 100%;
   margin: 0;
+  padding: 0;
+  overflow-x: hidden;
   background-color: #f6f6f6;
 }
 
 .burger {
   display: none;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 nav {
@@ -68,12 +89,7 @@ nav a {
   padding: 10px;
 }
 
-main {
-  padding: 2rem;
-}
-
 @media (max-width: 780px) {
-  
   .navbar {
     position: fixed;
     top: 0;
@@ -83,40 +99,38 @@ main {
     background-color: #11296E;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 15px;
+    justify-content: space-between;
     padding: 0 15px;
     z-index: 1000;
   }
 
   .burger {
-    color: #F7F7F7;
     display: block;
-    position: absolute;
-    left: 10px;
-    z-index: 2000;
+    color: #F7F7F7;
     font-size: 30px;
-    padding: 10px 20px;
     cursor: pointer;
+    z-index: 1500;
   }
-  
+
   .logo {
     display: none;
   }
 
-  .nameBrand h1{
+  .nameBrand h1 {
     font-size: 22px;
-    z-index: 1500;
-    position:absolute;
-    top: 1px;
+    color: #F7F7F7;
+    margin: 0;
+    position: fixed;
+    top: 10px;
     left: 80px;
+    z-index: 2000;
   }
-  
+
   .menu {
     display: none;
   }
- 
-  #menuLat:checked ~ nav .menu {
+
+  #menuLat:checked ~ .navbar .menu {
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -124,12 +138,11 @@ main {
     left: 0;
     background-color: #11296E;
     height: 100vh;
-    width: 170px;
+    width: 195px;
     padding: 100px 20px 20px 20px;
-    z-index: 1000;
+    z-index: 1200;
     align-items: flex-start;
     gap: 40px;
-    transition: transform 0.3s ease;
   }
 
   .menu a::after {
@@ -152,10 +165,20 @@ main {
   }
 }
 
+main.contenido {
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .footer {
+  width: 100vw;
   background-color: #11296E; /* Brand Primary */
   color: #ffffff;
-  padding: 20px 10px;
+  padding: 20px 0;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
 }
@@ -165,7 +188,10 @@ main {
   justify-content: space-between; /* separa izquierda y derecha */
   align-items: center;
   flex-wrap: wrap; /* se adapta en pantallas pequeñas */
+  padding: 0 20px;
+  margin: 0 auto;
 }
+
 .footer-left {
   flex: 1; /* ocupa el espacio restante */
   display: flex;

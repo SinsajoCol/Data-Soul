@@ -18,7 +18,10 @@ async function cargarPagina(nombre) {
   }
 
   const views = await pagina.mostrarPagina();
-  app.innerHTML = views;
+  app.innerHTML = `<main class="pagina">
+    ${views}
+    </main>
+    `;
 
   // Reasignar eventos a los enlaces del navbar
   document.querySelectorAll(".navbar a").forEach(link => {

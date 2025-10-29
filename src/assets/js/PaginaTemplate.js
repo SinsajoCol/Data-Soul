@@ -5,37 +5,45 @@ export class PaginaTemplate {
     const contenido = await this.mostrarContenido();
     const footer = this.mostrarFooter();
 
-    document.body.innerHTML = `
-      ${navbar}
-      <main class="contenido">${contenido}</main>
-      ${footer}
+    const html = `
+      <div class="pagina">
+        ${navbar}
+        <main class="contenido">${contenido}</main>
+        ${footer}
+      </div>
     `;
+    setTimeout(() => this.agregarActive(), 0);
+    return html;
+  }
 
-    // Ahora que el HTML está en el DOM, se pueden agregar los eventos
-    this.agregarActive();
+  cargarCSS(ruta) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = ruta;
+    document.head.appendChild(link);
   }
 
   mostrarHeader() {
     return `
       <input type="checkbox" id="menuLat" hidden>
-      <label for="menuLat" class="burger">☰</label>
       <nav class="navbar">
-        <div class="marca">
-          <div class="logo">
-            <img src="/src/assets/img/LogoBrand.png">
-          </div>
+        <label for="menuLat" class="burger">☰</label>
+          <div class="marca">
+            <div class="logo">
+              <img src="/src/assets/img/LogoBrand.png">
+            </div>
 
-          <div class="nameBrand">
-            <h1>Data Soul</h1>
+            <div class="nameBrand">
+              <h1>Data Soul</h1>
+            </div>
           </div>
-        </div>
-        
-        <div class="menu">
-          <a href="#" data-page="inicio">Inicio</a>
-          <a href="#" data-page="cuestionario">Prueba Individual</a>
-          <a href="#" data-page="cuestionario">Prueba Grupal</a>
-          <a href="#" data-page="cuestionario">Rasgos LLM</a>
-        </div>
+          
+          <div class="menu">
+            <a href="#" data-page="inicio">Inicio</a>
+            <a href="#" data-page="cuestionario">Prueba Individual</a>
+            <a href="#" data-page="cuestionario">Prueba Grupal</a>
+            <a href="#" data-page="cuestionario">Rasgos LLM</a>
+          </div>
       </nav>
     `;
   }
@@ -78,7 +86,7 @@ export class PaginaTemplate {
 
           </div>
         </div>
-      </footer>
+      </footer>
   `;
   }
 

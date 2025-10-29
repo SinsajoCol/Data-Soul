@@ -1,0 +1,333 @@
+:root,
+[data-peppercorn-typography-scale-mode="mode-1"] {
+  /* mode-1 */
+  --accent-color: #ffa64d;
+  --black: #010101;
+  --white: #f7f7f7;
+  --brand-primary: #11296e;
+  --brand-secondary: #cbb2fe;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f7fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.frame-47,
+.frame-47 * {
+  box-sizing: border-box;
+}
+
+.frame-47 {
+  border-radius: 50px;
+  padding: 67px 231px 67px 231px;
+  height: 619px;
+  position: relative;
+}
+
+.frame-46 {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 1122px;
+  height: 308px;
+  position: absolute;
+  left: 231px;
+  top: 67px;
+}
+.title {
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: 225px;
+  border-width: 2px;
+  border-style: solid;
+  border-image: linear-gradient(
+    135.77deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-image-slice: 1;
+  padding: 67px 94px 67px 94px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 155px;
+  position: relative;
+  box-shadow: inset 0px 0px 38.8px 0px rgba(255, 255, 255, 0.1),
+    0px 80px 100px -19px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.lenses {
+  flex-shrink: 0;
+  position: absolute;
+  right: -0.5px;
+  left: -1px;
+  bottom: 0px;
+  top: 0px;
+  filter: blur(4px);
+}
+._0 {
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 1000px;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  top: -5.6843418860808015e-14px;
+  backdrop-filter: blur(50px);
+}
+._1 {
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 1000px;
+  position: absolute;
+  right: 2.07px;
+  left: 2.0662307739257812px;
+  bottom: 3px;
+  top: 3px;
+  backdrop-filter: blur(25px);
+}
+._2 {
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 1000px;
+  position: absolute;
+  right: 6.2px;
+  left: 6.198529243469238px;
+  bottom: 9px;
+  top: 9px;
+  backdrop-filter: blur(12.5px);
+}
+._3 {
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 1000px;
+  position: absolute;
+  right: 13.09px;
+  left: 13.085856437683105px;
+  bottom: 19px;
+  top: 19px;
+  backdrop-filter: blur(5px);
+}
+._4 {
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 1000px;
+  position: absolute;
+  right: 26.86px;
+  left: 26.860429763793945px;
+  bottom: 39px;
+  top: 39px;
+  backdrop-filter: blur(1px);
+}
+.title {
+  color: var(--brand-primary, #11296e);
+  text-align: center;
+  font-family: var(--peppercorn-typography-scale-h1-font-family,"Poppins-Bold",sans-serif);
+  font-size: var(--peppercorn-typography-scale-h1-font-size, 61px);
+  line-height: var(--peppercorn-typography-scale-h1-line-height, 92px);
+  font-weight: var(--peppercorn-typography-scale-h1-font-weight, 700);
+  position: relative;
+  flex: 1;
+  height: 78px;
+}
+
+.text {
+  color: #000000;
+  text-align: center;
+  font-family: var(
+    --peppercorn-typography-scale-h5-font-family,
+    "OpenSans-SemiBold",
+    sans-serif
+  );
+  font-size: var(--peppercorn-typography-scale-h5-font-size, 20px);
+  line-height: var(--peppercorn-typography-scale-h5-line-height, 30px);
+  font-weight: var(--peppercorn-typography-scale-h5-font-weight, 600);
+  position: absolute;
+  left: 231px;
+  top: 416px;
+  width: 1122px;
+  height: 136px;
+}
+
+.carrusel {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.carrusel-componente {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 50px auto;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+/* === CARRUSEL === */
+.carousel-main {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+}
+
+/* === TARJETAS === */
+.tarjeta {
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 420px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.tarjeta-inner {
+  position: relative;
+  width: 80%;
+  height: 90%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.tarjeta.flipped .tarjeta-inner {
+  transform: rotateY(180deg);
+}
+
+/* === CARA FRONTAL === */
+.tarjeta-front,
+.tarjeta-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  backface-visibility: hidden;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.tarjeta-front img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+
+.tarjeta-front h2 {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.tarjeta-front p {
+  font-size: 16px;
+  color: #e6e6e6;
+}
+
+.tarjeta-front p img {
+  width: 20px;
+  height: auto;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+/* === CARA TRASERA === */
+.tarjeta-back {
+  transform: rotateY(180deg);
+  font-size: 17px;
+  padding: 30px;
+}
+
+/* === DEGRADADOS DE CADA TARJETA === */
+.flip .tarjeta-front{
+  background: linear-gradient(250deg, #11296E 0%, #6586E7 100%);
+}
+.flip .tarjeta-back {
+  background: var(--brand-secondary, #cbb2fe);;
+}
+
+/* === DOTS === */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #11296e;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dot.active {
+  background-color: #ffa64d;
+}
+
+/* === FLECHAS === */
+.prev,
+.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.2s;
+}
+
+.prev:hover,
+.next:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.prev {
+  left: 15px;
+}
+
+.next {
+  right: 15px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .tarjeta-inner {
+    width: 90%;
+  }
+
+  .tarjeta-front img {
+    width: 160px;
+    height: 160px;
+  }
+
+  .prev, .next {
+    width: 40px;
+    height: 40px;
+  }
+}
