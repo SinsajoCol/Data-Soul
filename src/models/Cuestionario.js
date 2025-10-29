@@ -69,7 +69,7 @@ export default class Cuestionario {
   }
 
   esPaginaFinal() {
-      const totalPaginas = Math.ceil(this.getTotalPreguntas() / this.preguntasPorPagina);
+      const totalPaginas = Math.ceil(this.preguntas.length / this.preguntasPorPagina);
       return this.paginaActual >= totalPaginas - 1;
   }
 }
