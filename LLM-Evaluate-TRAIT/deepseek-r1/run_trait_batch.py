@@ -10,9 +10,9 @@ sys.stdout.reconfigure(encoding='utf-8')
 # ==============================
 # CONFIGURACIÓN
 # ==============================
-MODEL_NAME = "deepseek-r1:latest"
+MODEL_NAME = "deepseek-r1"
 DATASET_PATH = "TRAIT.json"
-OUTPUT_PATH = "resultsdeepseek-r1-8b.json"
+OUTPUT_PATH = "results_deepseek-r1.json"
 
 BATCH_SIZE = 1
 SAVE_EVERY_N_BATCHES = 1
