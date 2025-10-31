@@ -1,43 +1,75 @@
-export class Cuestionario {
-  constructor(nombre) {
-    this.nombre = nombre;       // Nombre del cuestionario
+import AlmacenamientoLocal from "../models/AlmacenamientoLocal.js";
+import { Pregunta } from "../models/Preguntas.js";
+
+export default class Cuestionario {
+  constructor() { 
     this.preguntas = [];        // Lista de objetos Pregunta
+    this.respuestas = {};       // Objeto para almacenar respuestas 
+    this.preguntasPorPagina = 5
+    this.storageKey = "respuestas"
+    this.paginaActual = 0;
   }
 
   // Cargar preguntas desde un archivo JSON
-  async cargarPreguntas(rutaArchivo) {
-    const resp = await fetch(rutaArchivo);
-    const datos = await resp.json();
+  async cargarPreguntas(url) {
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+        const rawPreguntas = await res.json(); // Carga el JSON crudo
+        // 4. Convierte los datos crudos en instancias de Pregunta
+        this.preguntas = rawPreguntas.map(p => 
+            new Pregunta(p.id, p.texto, p.rasgo, p.invertida)
+        );
 
-    // Se asume que el JSON tiene [{id, texto, rasgo, invertida}]
-    this.preguntas = datos.map(
-      p => new Pregunta(p.id, p.texto, p.rasgo, p.invertida)
-    );
+    } catch (error) {
+        console.error("No se pudieron cargar las preguntas:", error);
+    }
   }
 
-  // Implementación del patrón Iterator
-  [Symbol.iterator]() {
-    let index = 0;
-    const preguntas = this.preguntas;
+  cargarRespuestas() {
+        this.respuestas = AlmacenamientoLocal.cargar(this.storageKey) || {};
+  }
 
-    return {
-      next() {
-        if (index < preguntas.length) {
-          return { value: preguntas[index++], done: false };
-        } else {
-          return { done: true };
-        }
+  guardarRespuesta(id, valor) {
+      this.respuestas[id] = valor;
+      AlmacenamientoLocal.guardar(this.storageKey, this.respuestas);
+  }
+
+  getProgreso() {
+      // ... (código idéntico de antes) ...
+      if (this.preguntas.length === 0) return 0;
+      return (Object.keys(this.respuestas).length / this.preguntas.length) * 100;
+  }
+
+  // --- Métodos del Iterador/Paginación ---
+  getRespuestas() {
+        return this.respuestas;
+    }
+
+  currentGroup() {
+      const inicio = this.paginaActual * this.preguntasPorPagina;
+      const fin = inicio + this.preguntasPorPagina;
+      return this.preguntas.slice(inicio, fin); // Devuelve 5 objetos Pregunta
+  }
+  
+  nextGroup() {
+      if (!this.esPaginaFinal()) {
+          this.paginaActual++;
       }
-    };
+  }
+  
+  prevGroup() {
+      if (!this.esPaginaInicial()) {
+          this.paginaActual--;
+      }
   }
 
-  // Obtener una pregunta específica
-  obtenerPreguntaPorId(id) {
-    return this.preguntas.find(p => p.id === id);
+  esPaginaInicial() {
+      return this.paginaActual === 0;
   }
 
-  // Total de preguntas
-  cantidadPreguntas() {
-    return this.preguntas.length;
+  esPaginaFinal() {
+      const totalPaginas = Math.ceil(this.preguntas.length / this.preguntasPorPagina);
+      return this.paginaActual >= totalPaginas - 1;
   }
 }
