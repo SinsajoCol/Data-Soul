@@ -1,11 +1,14 @@
-:root,
-[data-peppercorn-typography-scale-mode="mode-1"] {
-  /* mode-1 */
+:root, [data-peppercorn-typography-scale-mode="mode-1"] {
   --accent-color: #ffa64d;
   --black: #010101;
   --white: #f7f7f7;
   --brand-primary: #11296e;
   --brand-secondary: #cbb2fe;
+  --peppercorn-typography-scale-body-font-family: OpenSans-Regular, sans-serif;
+  --peppercorn-typography-scale-body-font-size: 20px;
+  --peppercorn-typography-scale-body-line-height: 30px;
+  --peppercorn-typography-scale-body-font-weight: 400;
+  --peppercorn-typography-scale-body-font-style: normal;
 }
 
 * {
@@ -23,15 +26,23 @@ body {
   min-height: 100vh;
 }
 
-.frame-47,
-.frame-47 * {
+.frame-47, .frame-47 * {
   box-sizing: border-box;
 }
 
 .frame-47 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: url("/src/assets/img/degradado.png") no-repeat center center / cover;
   border-radius: 50px;
-  padding: 67px 231px 67px 231px;
-  height: 619px;
+  padding: 40px;
+  height: auto;
+  margin: 2000 auto;
+  margin-top: 100vh;
+  width: 80%;
   position: relative;
 }
 
@@ -40,27 +51,18 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  width: 1122px;
-  height: 308px;
-  position: absolute;
-  left: 231px;
-  top: 67px;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  position: relative; /* Ya no absolute */
 }
-.title {
-  background: radial-gradient(
-    closest-side,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
+
+.containerTitle {
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
   border-radius: 225px;
   border-width: 2px;
   border-style: solid;
-  border-image: linear-gradient(
-    135.77deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  border-image: linear-gradient(135.77deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
   border-image-slice: 1;
   padding: 67px 94px 67px 94px;
   display: flex;
@@ -72,10 +74,22 @@ body {
   flex-shrink: 0;
   height: 155px;
   position: relative;
-  box-shadow: inset 0px 0px 38.8px 0px rgba(255, 255, 255, 0.1),
-    0px 80px 100px -19px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0px 0px 38.8px 0px rgba(255, 255, 255, 0.1), 0px 80px 100px -19px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 }
+
+
+.title {
+  color: var(--brand-primary, #11296e);
+  text-align: center;
+  font-family: var(--peppercorn-typography-scale-h1-font-family,"Poppins-Bold",sans-serif);
+  font-size: var(--peppercorn-typography-scale-h1-font-size, 61px);
+  font-weight: var(--peppercorn-typography-scale-h1-font-weight, 700);
+  position: relative;
+  flex: 1;
+  height: 78px;
+}
+
 .lenses {
   flex-shrink: 0;
   position: absolute;
@@ -85,6 +99,7 @@ body {
   top: 0px;
   filter: blur(4px);
 }
+
 ._0 {
   background: rgba(255, 255, 255, 0.01);
   border-radius: 1000px;
@@ -95,6 +110,7 @@ body {
   top: -5.6843418860808015e-14px;
   backdrop-filter: blur(50px);
 }
+
 ._1 {
   background: rgba(255, 255, 255, 0.01);
   border-radius: 1000px;
@@ -105,6 +121,7 @@ body {
   top: 3px;
   backdrop-filter: blur(25px);
 }
+
 ._2 {
   background: rgba(255, 255, 255, 0.01);
   border-radius: 1000px;
@@ -115,6 +132,7 @@ body {
   top: 9px;
   backdrop-filter: blur(12.5px);
 }
+
 ._3 {
   background: rgba(255, 255, 255, 0.01);
   border-radius: 1000px;
@@ -125,8 +143,9 @@ body {
   top: 19px;
   backdrop-filter: blur(5px);
 }
+
 ._4 {
-  background: rgba(255, 255, 255, 0.01);
+  background: rgba(255, 255, 255, 0.001);
   border-radius: 1000px;
   position: absolute;
   right: 26.86px;
@@ -135,34 +154,16 @@ body {
   top: 39px;
   backdrop-filter: blur(1px);
 }
-.title {
-  color: var(--brand-primary, #11296e);
-  text-align: center;
-  font-family: var(--peppercorn-typography-scale-h1-font-family,"Poppins-Bold",sans-serif);
-  font-size: var(--peppercorn-typography-scale-h1-font-size, 61px);
-  line-height: var(--peppercorn-typography-scale-h1-line-height, 92px);
-  font-weight: var(--peppercorn-typography-scale-h1-font-weight, 700);
-  position: relative;
-  flex: 1;
-  height: 78px;
-}
 
 .text {
-  color: #000000;
+  color: #000;
   text-align: center;
-  font-family: var(
-    --peppercorn-typography-scale-h5-font-family,
-    "OpenSans-SemiBold",
-    sans-serif
-  );
-  font-size: var(--peppercorn-typography-scale-h5-font-size, 20px);
-  line-height: var(--peppercorn-typography-scale-h5-line-height, 30px);
-  font-weight: var(--peppercorn-typography-scale-h5-font-weight, 600);
-  position: absolute;
-  left: 231px;
-  top: 416px;
-  width: 1122px;
-  height: 136px;
+  font-family: var(--peppercorn-typography-scale-body-font-family, --peppercorn-typography-scale-body-font-weight);
+  font-size: 20px;
+  line-height: 30px;
+  width: 80%;
+  margin-top: 30px;
+  position: relative;
 }
 
 .carrusel {
@@ -180,13 +181,11 @@ body {
   border-radius: 20px;
 }
 
-/* === CARRUSEL === */
 .carousel-main {
   display: flex;
   transition: transform 0.6s ease-in-out;
 }
 
-/* === TARJETAS === */
 .tarjeta {
   flex: 0 0 100%;
   display: flex;
@@ -210,9 +209,7 @@ body {
   transform: rotateY(180deg);
 }
 
-/* === CARA FRONTAL === */
-.tarjeta-front,
-.tarjeta-back {
+.tarjeta-front, .tarjeta-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -252,22 +249,20 @@ body {
   margin-left: 6px;
 }
 
-/* === CARA TRASERA === */
 .tarjeta-back {
   transform: rotateY(180deg);
   font-size: 17px;
   padding: 30px;
 }
 
-/* === DEGRADADOS DE CADA TARJETA === */
 .flip .tarjeta-front{
   background: linear-gradient(250deg, #11296E 0%, #6586E7 100%);
 }
+
 .flip .tarjeta-back {
   background: var(--brand-secondary, #cbb2fe);;
 }
 
-/* === DOTS === */
 .dots {
   display: flex;
   justify-content: center;
@@ -288,9 +283,7 @@ body {
   background-color: #ffa64d;
 }
 
-/* === FLECHAS === */
-.prev,
-.next {
+.prev, .next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -301,8 +294,7 @@ body {
   transition: opacity 0.3s, transform 0.2s;
 }
 
-.prev:hover,
-.next:hover {
+.prev:hover, .next:hover {
   opacity: 1;
   transform: translateY(-50%) scale(1.1);
 }
@@ -315,7 +307,6 @@ body {
   right: 15px;
 }
 
-/* === RESPONSIVE === */
 @media (max-width: 768px) {
   .tarjeta-inner {
     width: 90%;

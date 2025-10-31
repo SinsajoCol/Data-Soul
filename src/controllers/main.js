@@ -1,4 +1,3 @@
-// main.js
 import { PaginaInicio } from "/src/assets/js/PaginaInicio.js";
 import { PaginaTemplate } from "/src/assets/js/PaginaTemplate.js";
 import { PaginaCuestionario } from "/src/assets/js/PaginaCuestionario.js";
