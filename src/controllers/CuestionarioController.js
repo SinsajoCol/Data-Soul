@@ -5,6 +5,7 @@ export default class CuestionarioController {
     constructor() {
         this.model = null;
         this.view = null;
+        this.onFinalizar = null;
     }
 
     async iniciar(jsonUrl) {
@@ -46,12 +47,14 @@ export default class CuestionarioController {
         this.view.actualizarBotones(esPrimera, esUltima);
     }
 
-    // --- Handlers (Lógica de tus antiguos listeners) ---
-
     handleNext() {
         if (this.model.esPaginaFinal()) {
-            alert("¡Test completado! Los resultados se han guardado.");
-            // window.location.href = "resultados.html"; // O usa tu router
+            // EN LUGAR DEL 'alert', llamamos al callback
+            if (this.onFinalizar) {
+                this.onFinalizar(this.model); // ¡Anuncia que terminó y pasa los datos!
+                console.log("Cuestionario completado");
+            }
+
         } else {
             this.model.nextGroup();
             this.mostrarPaginaActual();

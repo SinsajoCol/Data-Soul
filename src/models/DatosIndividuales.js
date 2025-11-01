@@ -1,4 +1,6 @@
-class DatosIndividuales {
+import { Rasgos } from './Rasgos.js';
+
+export class DatosIndividuales {
     constructor(usuarioId, rasgos = new Rasgos()) {
         this.usuarioId = usuarioId; // String
         this.rasgos = rasgos;       // Rasgos
@@ -11,7 +13,7 @@ class DatosIndividuales {
     toJSON() {
         return {
             usuarioId: this.usuarioId,
-            rasgos: this.rasgos
+            rasgos: this.rasgos.toJSON()
         };
     }
 

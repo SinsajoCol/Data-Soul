@@ -1,4 +1,6 @@
-class DatosPoblacion {
+import { DatosIndividuales } from './DatosIndividuales.js';
+
+export class DatosPoblacion {
   constructor(nombreGrupo) {
     this.nombreGrupo = nombreGrupo;      // String
     this.lista = [];                     // List<DatosIndividuales>
