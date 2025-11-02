@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
-import Cuestionario from '../models/Cuestionario.js';
-import { Pregunta } from '../models/Preguntas.js';
+import Cuestionario from '../../src/models/Cuestionario.js';
+import { Pregunta } from '../../src/models/Preguntas.js';
 
 describe('Integración Cuestionario-Pregunta', () => {
   test('Debe convertir correctamente los datos JSON a instancias de Pregunta', async () => {

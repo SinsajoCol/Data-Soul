@@ -4,18 +4,18 @@ import { jest } from "@jest/globals";
 const mockGuardar = jest.fn();
 const mockCargar = jest.fn(() => ({ "1": 4 }));
 
-// Usamos import dinámico para que el mock se registre antes de importar la clase
-await jest.unstable_mockModule("../models/AlmacenamientoLocal.js", () => ({
+// Registramos el mock antes de importar las clases reales
+await jest.unstable_mockModule("../../src/models/AlmacenamientoLocal.js", () => ({
   default: {
     guardar: mockGuardar,
     cargar: mockCargar
   }
 }));
 
-// Ahora sí importamos los módulos reales
-const { default: Cuestionario } = await import("../models/Cuestionario.js");
-const { Pregunta } = await import("../models/Preguntas.js");
-const { default: AlmacenamientoLocal } = await import("../models/AlmacenamientoLocal.js");
+// Importamos los módulos reales después del mock
+const { default: Cuestionario } = await import("../../src/models/Cuestionario.js");
+const { Pregunta } = await import("../../src/models/Preguntas.js");
+const { default: AlmacenamientoLocal } = await import("../../src/models/AlmacenamientoLocal.js");
 
 describe("Clase Cuestionario", () => {
   let cuestionario;
@@ -41,7 +41,7 @@ describe("Clase Cuestionario", () => {
   test("Debe calcular correctamente el progreso", () => {
     cuestionario.respuestas = { 1: 5, 2: 4, 3: 3, 4: 2, 5: 1 };
     const progreso = cuestionario.getProgreso();
-    expect(progreso).toBe(100);
+    expect(progreso).toBe(100); // todas respondidas
   });
 
   test("Debe retornar correctamente el grupo actual de 5 preguntas", () => {

@@ -1,4 +1,4 @@
-import { Pregunta } from '../models/Preguntas.js';
+import { Pregunta } from '../../src/models/Preguntas.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { jest } from '@jest/globals';
