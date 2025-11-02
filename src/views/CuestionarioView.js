@@ -68,7 +68,7 @@ export default class CuestionarioView {
             const div = document.createElement("div");
             div.classList.add("preguntas");
             div.dataset.id = p.id; // Guardamos el ID aquí
-            div.innerHTML = `<h4>${p.id}. ${p.texto}</h4>`;
+            div.innerHTML = `<h4> ${p.texto}</h4>`;
 
             const opciones = document.createElement("div");
             opciones.classList.add("opciones");
@@ -77,7 +77,7 @@ export default class CuestionarioView {
                 const opcion = document.createElement("div");
                 opcion.classList.add("opcion");
                 const button = document.createElement("button");
-                button.textContent = i; // Texto del botón (1, 2, 3, 4, 5)
+               
 
                 if (respuestas[p.id] === i) {
                     button.classList.add("selected");
