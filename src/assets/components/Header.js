@@ -82,7 +82,7 @@ export class Header {
 
             <div class="accept">
               <br><h4>Carácter voluntario de la participación:</h4>
-              <br><p>La participación en esta aplicación es completamente voluntaria.
+              <p>La participación en esta aplicación es completamente voluntaria.
               Puede abandonar la prueba en cualquier momento antes de finalizarla,
               sin que esto tenga consecuencias de ningún tipo</p>
             </div>

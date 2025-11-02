@@ -243,7 +243,6 @@ main.contenido {
   height: 100%;
   background-color: rgba(0,0,0,0.6);
   backdrop-filter: blur(4px);
-  display: flex;
   justify-content: center;
   align-items: center;
 }
