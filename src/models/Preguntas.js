@@ -3,11 +3,11 @@ export class Pregunta {
     this.id = id;                    // Identificador único
     this.texto = texto;              // Texto de la pregunta
     this.rasgoAsociado = rasgoAsociado; // Rasgo al que pertenece
-    this.invertida = invertida;      // Si la escala debe invertirse
+    this.invertida = invertida;
   }
 
   // Método para obtener el valor ajustado si es invertida
-  obtenerValorAjustado(valor) {
-    return this.invertida ? 6 - valor : valor;  // Ej: 5→1, 4→2, etc.
+  obtenerValorAjustado(respuesta) {
+    return this.invertida ? 6 - respuesta : respuesta;  // Ej: 5→1, 4→2, etc.
   }
 }

@@ -1,9 +1,14 @@
-class Resultados {
+import AlmacenamientoLocal from '../models/AlmacenamientoLocal.js';
+import { DatosIndividuales } from "./DatosIndividuales.js";
+import { DatosPoblacion } from "./DatosPoblacion.js";
+
+export default class Resultados {
     static instance = null;
 
     constructor() {
         this.individuales = {}; // { usuarioId: DatosIndividuales }
         this.poblaciones = {};  // { grupoId: DatosPoblacion }
+        this.cargarDeLocalStorage();
     }
 
     static getInstance() {
@@ -14,7 +19,9 @@ class Resultados {
     }
 
     agregarResultadoIndividual(individuo) {
+        console.log("Agregando resultado individual para usuarioId:", individuo.usuarioId);
         this.individuales[individuo.usuarioId] = individuo;
+        this.guardarEnLocalStorage();
     }
 
     agregarResultadosPoblacion(grupo) {
