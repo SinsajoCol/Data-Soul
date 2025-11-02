@@ -6,7 +6,7 @@ export class Header {
         <label for="menuLat" class="burger">☰</label>
           <div class="marca">
             <div class="logo">
-              <img src="/src/assets/img/LogoBrand.png">
+              <img src="/src/assets/img/LogoBrand.png" alt="Logo Data Soul">
             </div>
 
             <div class="nameBrand">

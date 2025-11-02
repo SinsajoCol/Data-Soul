@@ -5,7 +5,7 @@ export class Footer {
         <div class="footer-container">
           <div class="footer-left">
             <div class="footer-logo">
-              <img src="./assets/img/LogoBrand.png" alt="Logo Data Soul">
+              <img src="/src/assets/img/LogoBrand.png" alt="Logo Data Soul">
               <h2>Data Soul</h2>
             </div>
           </div>
