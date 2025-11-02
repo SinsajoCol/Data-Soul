@@ -17,11 +17,9 @@ export class PaginaCuestionario extends PaginaTemplate {
     }
 
     async despuesDeCargar() {
-        // 3. "CONECTA" EL EVENTO
         // Le dice al controlador qué función ejecutar cuando termine
         this.controlador.onFinalizar = this.calcularResultados.bind(this);
-        
-        // 4. Inicia el cuestionario (como antes)
+        // Inicia el cuestionario (como antes)
         this.controlador.iniciar('./src/data/cuestionario.json');
     }
 
@@ -30,7 +28,8 @@ export class PaginaCuestionario extends PaginaTemplate {
         try {
             const rasgos = this.procesadorCtrl.calcularResultados(modelo);
             console.log("Rasgos calculados:", rasgos);
-
+            alert("Los resultados se han calculado correctamente. ¡Gracias por completar el cuestionario!");
+            window.location.hash = 'resultados';
         } catch (error) {
 
             console.error("Error al procesar los resultados:", error);
