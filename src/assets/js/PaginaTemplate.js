@@ -59,41 +59,61 @@ export class PaginaTemplate {
   }
 
   agregarEventosModal() {
-    const modal = document.getElementById('modalSelect');
+    const modalSelect = document.getElementById('modalSelect');
     const btnAbrir = document.getElementById('btnRealizar');
     const btnCerrar = document.querySelector('.close');
     const btnIndividual = document.getElementById('btnIndividual');
     const btnGrupal = document.getElementById('btnGrupal');
 
+    const modalConsent = document.querySelector('.modalConsentimiento');
+    const btnRechazar = modalConsent?.querySelector('.frame-72');
+    const btnAceptar = modalConsent?.querySelector('.frame-75');
+
     if (btnAbrir) {
       btnAbrir.addEventListener('click', (e) => {
         e.preventDefault();
-        modal.style.display = 'flex';
+        modalSelect.style.display = 'flex';
       });
     }
 
     if (btnCerrar) {
       btnCerrar.addEventListener('click', () => {
-        modal.style.display = 'none';
+        modalSelect.style.display = 'none';
       });
     }
 
     window.addEventListener('click', (e) => {
-      if (e.target === modal) modal.style.display = 'none';
+      if (e.target === modalSelect) modalSelect.style.display = 'none';
+      if (e.target === modalConsent) modalConsent.style.display = 'none';
     });
 
     if (btnIndividual) {
       btnIndividual.addEventListener('click', () => {
-        modal.style.display = 'none';
+        modalSelect.style.display = 'none';
+        modalConsent.style.display = 'flex';
+      });
+    }
+
+    if (btnRechazar) {
+      btnRechazar.addEventListener('click', () => {
+        modalConsent.style.display = 'none';
+        modalSelect.style.display = 'flex';
+      });
+    }
+
+    if (btnAceptar) {
+      btnAceptar.addEventListener('click', () => {
+        modalConsent.style.display = 'none';
         this.cargarPagina('cuestionario');
       });
     }
 
     if (btnGrupal) {
       btnGrupal.addEventListener('click', () => {
-        modal.style.display = 'none';
+        modalSelect.style.display = 'none';
         this.cargarPagina('grupal');
       });
     }
   }
+
 }

@@ -1,4 +1,3 @@
-// pages/PaginaInicio.js
 import { PaginaTemplate } from "./PaginaTemplate.js";
 
 export class PaginaInicio extends PaginaTemplate {

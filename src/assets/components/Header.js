@@ -42,6 +42,69 @@ export class Header {
           </div>
         </div>
       </div>
+
+      <div class="modalConsentimiento">
+        <div class="consentimiento-informado">
+          <div class="titleConsentimientoI">
+            <div class="frame-100">
+              <img class="lucideImg" src="/src/assets/img/shield-check.svg" />
+              <h2>Consentimiento Informado</h2>
+            </div>
+            <h3>Antes de comenzar tu evaluación, por favor lee y acepta los siguientes
+            términos.</h3>
+          </div>
+          
+          <div class="frame-110">
+            <div class="proposito">
+              <h4>Propósito:</h4>
+              <p>Esta es una herramienta digital diseñada con el fin de permitir
+                explorar ocho (8) de tus rasgos de personalidad mediante pruebas
+                psicométricas estandarizadas (Big Five Inventory – BFI-44 y Short
+                Dark Triad – SD3) y compararlos con los rasgos no cognitivos que
+                reflejan los patrones de respuesta de cinco (5) modelos de lenguaje
+                (LLM). No constituye un diagnóstico clínico ni reemplaza la
+                orientación profesional.</p>
+            </div>
+            
+            <div class="secret">
+              <br><h4>Confidencialidad y tratamiento de la información:</h4>
+              <p>• Data Soul no solicita ni almacena datos personales (nombre, correo,
+              edad, género u otros identificadores).
+
+              <br>• Las respuestas se procesan de forma local y temporal, únicamente
+              para calcular los resultados de la prueba en la sesión actual.
+
+              <br>• No se guardan ni transmiten los resultados a servidores externos.
+
+              <br>• Los datos presentados son anónimos y no permiten identificar a los
+              participantes.</p>
+            </div>
+
+            <div class="accept">
+              <br><h4>Carácter voluntario de la participación:</h4>
+              <br><p>La participación en esta aplicación es completamente voluntaria.
+              Puede abandonar la prueba en cualquier momento antes de finalizarla,
+              sin que esto tenga consecuencias de ningún tipo</p>
+            </div>
+            <div class="infoAccept">
+              <br><br><br><h4>Consentimiento:</h4>
+              <p>Al aceptar, confirmas que has leído la información anterior y deseas
+              continuar con la evaluación.</p><br>
+            </div>
+          </div>
+
+          <div class="btnsCons">
+            <button class="frame-72">
+              <h5>Rechazar y regresar</h5>
+              <img class="lucideIX" src="/src/assets/img/btnX.svg"/>
+            </button>
+            <button class="frame-75">
+              <h5>Aceptar y continuar</h5>
+              <img class="lucidICheck" src="/src/assets/img/btnCheck.svg"/>
+            </button>
+          </div>
+        </div>
+      </div>
     `;
   }
 }
