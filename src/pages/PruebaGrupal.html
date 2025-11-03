@@ -1,11 +1,11 @@
 <div class="prueba-grupal-container">
-  <h1> Evaluacion grupal de los rasgos </h1>
+  <h1> Evaluación grupal de los rasgos</h1>
   <p>
     Descarga la plantilla para aplicar la prueba a tu grupo y luego importa los
     resultados para comparar con los modelos LLM.
   </p>
 
-  <section class= "instrucciones-prueba-grupal">
+  <section class="instrucciones-prueba-grupal">
     <h2>¿Cómo lo hago?</h2>
     <div class="pasos">
       <div class="paso">
@@ -25,9 +25,11 @@
         <p>4. Visualiza los resultados de tu grupo frente a los LLMs</p>
       </div>
     </div>
+
     <div class="botones">
       <a href="templates/plantilla.xlsx" download class="boton-descarga">Descargar plantilla</a>
-      <button class="boton-importar">Importar resultados </button>
+      <button class="boton-importar">Importar resultados</button>
+      <input type="file" id="inputArchivo" accept=".csv, .xlsx" style="display:none;" />
     </div>
   </section>
 
@@ -40,8 +42,8 @@
   <section class="Recomendaciones">
     <article class="descargar-plantilla">
       <h3>Descargar Plantilla</h3>
-      <p class="texto_descarga_plantilla">
-        Haz clic en el botón “Descargar plantilla” y se obtendra la plantilla en un archivo <strong>.XLSX</strong>.<br />
+      <p>
+        Haz clic en el botón “Descargar plantilla” y se obtendrá la plantilla en un archivo <strong>.XLSX</strong>.<br />
         Esta plantilla contiene las columnas necesarias para registrar las
         respuestas de los participantes en la prueba psicométrica.
       </p>
@@ -49,34 +51,26 @@
 
     <article class="aplicar-prueba">
       <h3>Aplicar Prueba</h3>
-      <p class="texto_aplicar_prueba">
+      <p>
         Aplica la prueba psicométrica a las personas que deseas evaluar.<br />
         Registra sus resultados en la plantilla descargada, completando
-        cuidadosamente cada columna con la información correspondiente a cada
-        participante.
+        cuidadosamente cada columna con la información correspondiente.
       </p>
     </article>
 
     <article class="importar-resultados">
       <h3>Importar Resultados</h3>
-      <p class="texto_importar_resultados">
-        Una vez diligenciada la plantilla, regresa a esta página y selecciona el
-        botón “Importar resultados”. Luego, elige el archivo <strong>.CSV</strong> o
-        <strong>.XLSX</strong> que contiene los resultados de tu grupo.<br />
-        El sistema procesará los datos de forma automática y generará la
-        visualización comparativa con los modelos LLM.<br />
-        <strong>Importante:</strong> asegúrate de que el archivo tenga el formato
-        correcto y no contenga celdas vacías o valores no válidos.
+      <p>
+        Una vez diligenciada la plantilla, selecciona el botón “Importar resultados” y elige el archivo <strong>.CSV</strong> o
+        <strong>.XLSX</strong> que contiene los resultados.<br />
+        El sistema procesará los datos automáticamente.
       </p>
     </article>
 
     <article class="visualizar-resultados">
-      <h3>Visualiza y analiza los resultados</h3>
-      <p class="texto_visualizar_resultados">
-        Después de cargar el archivo, podrás ver los resultados de tu grupo
-        comparados con los LLM evaluados.<br />
-        Los datos se mostrarán en forma de gráficos interactivos y dashboards.<br />
-        También podrás descargar los resultados en formato PDF si deseas guardarlos.
+      <h3>Visualizar resultados</h3>
+      <p>
+        Después de cargar el archivo, podrás ver los resultados de tu grupo comparados con los LLM evaluados.
       </p>
     </article>
   </section>

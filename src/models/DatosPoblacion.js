@@ -1,13 +1,13 @@
-import { DatosIndividuales } from './DatosIndividuales.js';
+import DatosIndividuales from './DatosIndividuales.js';
 
-export class DatosPoblacion {
+export default class DatosPoblacion {
   constructor(nombreGrupo) {
-    this.nombreGrupo = nombreGrupo;      // String
-    this.lista = [];                     // List<DatosIndividuales>
+    this.nombreGrupo = nombreGrupo;
+    this.lista = [];
   }
 
   agregar(individuo) {
-    this.lista.push(individuo); // individuo: DatosIndividuales
+    this.lista.push(individuo);
   }
 
   obtenerPromedio(rasgoNombre) {
@@ -27,12 +27,8 @@ export class DatosPoblacion {
   }
 
   static fromJSON(data) {
-        
-        const grupo = new DatosPoblacion(data.nombreGrupo);
-        const listaRehidratada = data.lista.map(
-            individualData => DatosIndividuales.fromJSON(individualData)
-        );
-        grupo.lista = listaRehidratada;
-        return grupo;
-    }
+    const grupo = new DatosPoblacion(data.nombreGrupo);
+    grupo.lista = data.lista.map(indData => DatosIndividuales.fromJSON(indData));
+    return grupo;
+  }
 }

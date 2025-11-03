@@ -1,24 +1,29 @@
-import { Rasgos } from './Rasgos.js';
+export default class DatosIndividuales {
+  constructor(usuarioId, respuestas) {
+    this.usuarioId = usuarioId;
+    this.respuestas = respuestas;
+  }
 
-export class DatosIndividuales {
-    constructor(usuarioId, rasgos = new Rasgos()) {
-        this.usuarioId = usuarioId; // String
-        this.rasgos = rasgos;       // Rasgos
+  static fromPlantilla(registro) {
+    const usuarioId = registro["Correo institucional recomendado"] || registro["ID"] || Math.random().toString(36).slice(2);
+    const respuestas = {};
+    for (const clave in registro) {
+      if (clave !== "Correo institucional recomendado" && clave !== "Marca temporal") {
+        respuestas[clave] = parseFloat(registro[clave]) || 0;
+      }
     }
+    return new DatosIndividuales(usuarioId, respuestas);
+  }
 
-    obtenerPuntaje(nombrerasgo) {
-        return this.rasgos.obtenerValor(nombrerasgo);
-    }
+  obtenerPuntaje(rasgoNombre) {
+    return this.respuestas[rasgoNombre] || 0;
+  }
 
-    toJSON() {
-        return {
-            usuarioId: this.usuarioId,
-            rasgos: this.rasgos.toJSON()
-        };
-    }
+  toJSON() {
+    return { usuarioId: this.usuarioId, respuestas: this.respuestas };
+  }
 
-    static fromJSON(data) {
-        const rasgosInstancia = Rasgos.fromJSON(data.rasgos);
-        return new DatosIndividuales(data.usuarioId, rasgosInstancia);
-    }
+  static fromJSON(data) {
+    return new DatosIndividuales(data.usuarioId, data.respuestas);
+  }
 }

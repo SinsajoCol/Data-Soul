@@ -1,5 +1,5 @@
 import ProcesadorPsicometrico from "../models/ProcesadorPsicometrico.js";
-import { DatosIndividuales } from "../models/DatosIndividuales.js";
+import DatosIndividuales from '../models/DatosIndividuales.js';
 import Resultados from "../models/Resultados.js"; // El Singleton
 
 export default class ProcesamientoController {
