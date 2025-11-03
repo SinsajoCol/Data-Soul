@@ -107,7 +107,7 @@ export class PaginaTemplate {
 
           // --- ¡CORRECCIÓN! ---
           // En lugar de: this.cargarPagina('grupal');
-          window.location.hash = 'grupal'; // (o la página que corresponda)
+          window.location.hash = 'PruebaGrupal'; // (o la página que corresponda)
       });
     }
   }

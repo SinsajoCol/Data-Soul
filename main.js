@@ -22,6 +22,7 @@ async function cargarPagina(nombre) {
     case "PruebaGrupal":
       pagina = new PaginaPruebaGrupal();
       console.log("Página de prueba grupal cargada");
+      break;
     case "resultados":
       pagina = new PaginaResultados();
       console.log("Página de resultados cargada");
