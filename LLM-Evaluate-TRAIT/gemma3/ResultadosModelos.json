@@ -1,0 +1,12 @@
+{
+  "Gemma 3.4B": {
+    "Openness": 51.9,
+    "Conscientiousness": 86.0,
+    "Extraversion": 24.8,
+    "Agreeableness": 78.4,
+    "Neuroticism": 38.1,
+    "Machiavellianism": 22.7,
+    "Narcissism": 10.3,
+    "Psychopathy": 2.1
+  }
+}

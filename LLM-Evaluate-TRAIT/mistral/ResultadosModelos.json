@@ -1,0 +1,12 @@
+{
+  "Mistral7B": {
+    "Openness": 55.4,
+    "Conscientiousness": 77.1,
+    "Extraversion": 36.0,
+    "Agreeableness": 73.2,
+    "Neuroticism": 42.0,
+    "Machiavellianism": 18.0,
+    "Narcissism": 11.1,
+    "Psychopathy": 3.2
+  }
+}

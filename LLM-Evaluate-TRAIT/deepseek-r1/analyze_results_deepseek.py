@@ -2,9 +2,9 @@ import json
 from collections import defaultdict
 
 # === CONFIGURACIÓN ===
-input_filename = "resultsGemma3_4b.json"
+input_filename = "results_deepseek.json"
 output_filename = "ResultadosModelos.json"
-model_name = "Gemma 3.4B"          # <<<<< Cambia aquí el nombre del modelo
+model_name = "Deepseek r1"          # <<<<< Cambia aquí el nombre del modelo
 
 # === LECTURA DEL ARCHIVO ===
 with open(input_filename, "r", encoding="utf-8") as f:
