@@ -8,16 +8,13 @@ export class PaginaInicio extends PaginaTemplate {
 
   async mostrarContenido() {
     const response = await fetch("/src/pages/Inicio.html");
-    if (!response.ok) {
-      console.error("Error al cargar /src/pages/Inicio.html:", response.status);
-      return "<p>Error al cargar contenido.</p>";
-    }
+    // ... (control de errores)
+    return await response.text();
+    // ¡No llames al carrusel aquí!
+  }
 
-    const html = await response.text();
-
-    setTimeout(() => this.inicializarCarrusel(), 100);
-
-    return html;
+  despuesDeCargar() {
+    this.inicializarCarrusel();
   }
 
   cargarCSS(ruta) {

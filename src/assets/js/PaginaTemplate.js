@@ -8,9 +8,9 @@ export class PaginaTemplate {
   }
 
   async mostrarPagina() {
-    const navbar = new Header().render();
+    const navbar = new Header().mostrarHeader();
     const contenido = await this.mostrarContenido();
-    const footer = new Footer().render();
+    const footer = new Footer().mostrarFooter();
 
     const html = `
       <div class="pagina">
@@ -36,23 +36,13 @@ export class PaginaTemplate {
 
   agregarActive() {
     const enlaces = document.querySelectorAll('.menu a');
-    const currentPage = document.body.getAttribute('data-page');
+    const currentPage = window.location.hash.substring(1) || 'inicio';
 
     enlaces.forEach(e => {
-      e.classList.remove('active');
-      if (e.dataset.page === currentPage) {
-        e.classList.add('active');
-      }
-
-      e.addEventListener('click', (ev) => {
-        ev.preventDefault();
-        enlaces.forEach(x => x.classList.remove('active'));
-        e.classList.add('active');
-
-        const page = e.dataset.page;
-        document.body.setAttribute('data-page', page);
-        this.cargarPagina(page); // método que renderiza la página
-      });
+            e.classList.remove('active');
+            if (e.dataset.page === currentPage) {
+                e.classList.add('active');
+            }
     });
 
     this.agregarEventosModal();
@@ -103,15 +93,21 @@ export class PaginaTemplate {
 
     if (btnAceptar) {
       btnAceptar.addEventListener('click', () => {
-        modalConsent.style.display = 'none';
-        this.cargarPagina('cuestionario');
+          modalConsent.style.display = 'none';
+          
+          // --- ¡CORRECCIÓN! ---
+          // En lugar de: this.cargarPagina('cuestionario');
+          window.location.hash = 'cuestionario';
       });
     }
 
     if (btnGrupal) {
       btnGrupal.addEventListener('click', () => {
-        modalSelect.style.display = 'none';
-        this.cargarPagina('grupal');
+          modalSelect.style.display = 'none';
+
+          // --- ¡CORRECCIÓN! ---
+          // En lugar de: this.cargarPagina('grupal');
+          window.location.hash = 'grupal'; // (o la página que corresponda)
       });
     }
   }
