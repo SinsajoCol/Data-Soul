@@ -40,12 +40,16 @@ export default class Cuestionario {
       if (this.preguntas.length === 0) return 0;
       return (Object.keys(this.respuestas).length / this.preguntas.length) * 100;
   }
+  getPreguntas() {
+        return this.preguntas;
+    }
 
   // --- Métodos del Iterador/Paginación ---
   getRespuestas() {
         return this.respuestas;
     }
 
+// genera el grupo actual de preguntas
   currentGroup() {
       const inicio = this.paginaActual * this.preguntasPorPagina;
       const fin = inicio + this.preguntasPorPagina;
