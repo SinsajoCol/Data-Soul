@@ -2,6 +2,7 @@
 import { PaginaInicio } from "./src/assets/js/PaginaInicio.js";
 import { PaginaTemplate } from "./src/assets/js/PaginaTemplate.js";
 import { PaginaCuestionario } from "./src/assets/js/PaginaCuestionario.js";
+import { PaginaPruebaGrupal } from "./src/assets/js/PaginaPruebaGrupal.js";
 
 const app = document.getElementById("app");
 
@@ -17,6 +18,10 @@ async function cargarPagina(nombre) {
     case "cuestionario":
       pagina = new PaginaCuestionario();
       console.log("Página de cuestionario cargada");
+      break;
+    case "PruebaGrupal":
+      pagina = new PaginaPruebaGrupal();
+      console.log("Página de prueba grupal cargada");
       break;
     default:
       pagina = new PaginaTemplate(); // fallback
