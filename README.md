@@ -24,16 +24,17 @@ mediante pruebas psicométricas y su comparación con modelos de lenguaje (LLM).
 <pre>
 📂 proyecto-psicometria-llm
 ├── 📂 docs/                     # Documentación del proyecto
+├── 📂 LLM-Evaluate-TRAIT/       # Pruebas Realizadas a los modelos
 ├── 📂 src/                      # Código fuente (HTML, CSS, JS)
 │    ├── 📂 assets/              # Imágenes, estilos, etc.
+│    ├── 📂 data/                # Preguntas del cuestionario y resultados llm.
+│    ├── 📂 controllers/         # Controladores js.
+│    ├── 📂 models/              # Modelos js.
+│    ├── 📂 views/               # Vistas js.
 │    └── 📂 pages/               # Páginas principales
 ├── 📂 test/                     # Pruebas y resultados de los LLM 
 │    ├── 📂 unit/                # Pruebas unitarias (frontend/backend)
-│    ├── 📂 integration/         # Pruebas de integración
-│    └── 📂 llm/                 # Pruebas específicas de modelos LLM
-│         ├── 📂prompts/         # Conjuntos de prompts usados en pruebas
-│         ├── 📂results/         # Resultados obtenidos
-│         └── 📂reports/         # Reportes y métricas de evaluación
+│    └── 📂 integration/         # Pruebas de integración
 ├── 📂 templates/                # Plantillas (Excel de entrada)
 ├── .gitignore                   # Archivos ignorados en Git
 ├── README.md                    # Documentación principal
@@ -45,7 +46,20 @@ Para mantener el desarrollo ordenado, seguimos la siguiente estrategia de ramas:
 
 - **`main`** → Rama estable (solo versiones probadas y listas para entrega).  
 - **`develop`** → Rama de integración de funcionalidades antes de pasar a `main`.  
+- **`evaluate-models`** → Rama para hacer la evaluación de los modelos con trait. 
 - **`feature/*`** → Cada funcionalidad o historia de usuario tendrá su propia rama.   
+### Representación Gráfica del Flujo de Ramas
+A continuación, se presentan diagramas que ilustran el flujo de ramas y su estructura:
+
+<p align="center">
+  <img src="docs/Imagenes/Diagrama%20de%20arbol.jpg" alt="Flujo de Ramas - Git Flow" width="600">
+</p>
+<p align="center"><em>Diagrama de líneas mostrando las fases de desarrollo y entrega de las ramas.</em></p>
+
+<p align="center">
+  <img src="docs/Imagenes/Gitflow.jpg" alt="Árbol de Ramas del Repositorio" width="600">
+</p>
+<p align="center"><em>Diagrama de árbol que representa la jerarquía y fusión de ramas.</em></p>
 
 6. ✅ Convenciones de Commits
 
