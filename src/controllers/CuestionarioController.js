@@ -5,6 +5,7 @@ export default class CuestionarioController {
     constructor() {
         this.model = null;
         this.view = null;
+        this.onFinalizar = null;
     }
 
     async iniciar(jsonUrl) {
@@ -46,12 +47,19 @@ export default class CuestionarioController {
         this.view.actualizarBotones(esPrimera, esUltima);
     }
 
-    // --- Handlers (Lógica de tus antiguos listeners) ---
-
     handleNext() {
+        if (!this.validarPaginaActual()) {// Validación: todas las preguntas respondidas
+            alert("Por favor, responde todas las preguntas antes de continuar.");
+            return; 
+        }
+
         if (this.model.esPaginaFinal()) {
-            alert("¡Test completado! Los resultados se han guardado.");
-            // window.location.href = "resultados.html"; // O usa tu router
+            // Cuestionario completado
+            if (this.onFinalizar) {
+                this.onFinalizar(this.model); // ¡Anuncia que terminó y pasa los datos!
+                console.log("Cuestionario completado");
+            }
+
         } else {
             this.model.nextGroup();
             this.mostrarPaginaActual();
@@ -66,5 +74,26 @@ export default class CuestionarioController {
     handleRespuesta(id, valor) {
         this.model.guardarRespuesta(id, valor);
         this.view.actualizarProgreso(this.model.getProgreso());
+    }
+    validarPaginaActual() {
+        // 1. Obtiene las 5 preguntas que se están mostrando
+        const preguntasActuales = this.model.currentGroup();
+        
+        // 2. Obtiene TODAS las respuestas guardadas
+        const respuestas = this.model.getRespuestas();
+
+        // 3. Itera sobre las 5 preguntas de la página
+        for (const pregunta of preguntasActuales) {
+            
+            // 4. Comprueba si la respuesta para esta pregunta NO existe
+            // (es decir, es undefined o null)
+            if (respuestas[pregunta.id] === undefined || respuestas[pregunta.id] === null) {
+                console.warn(`Validación falló: Pregunta ID ${pregunta.id} no está respondida.`);
+                return false; // ¡Encontró una sin responder! Detiene el bucle.
+            }
+        }
+
+        // 5. Si el bucle termina, todas las preguntas tenían respuesta
+        return true; 
     }
 }
