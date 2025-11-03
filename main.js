@@ -1,6 +1,7 @@
 // main.js
 import { PaginaInicio } from "./src/assets/js/PaginaInicio.js";
 import { PaginaCuestionario } from "./src/assets/js/PaginaCuestionario.js";
+import { PaginaPruebaGrupal } from "./src/assets/js/PaginaPruebaGrupal.js";
 import { PaginaResultados } from "/src/assets/js/PaginaResultados.js";
 
 const app = document.getElementById("app");
@@ -18,6 +19,9 @@ async function cargarPagina(nombre) {
       pagina = new PaginaCuestionario();
       console.log("Página de cuestionario cargada");
       break;
+    case "PruebaGrupal":
+      pagina = new PaginaPruebaGrupal();
+      console.log("Página de prueba grupal cargada");
     case "resultados":
       pagina = new PaginaResultados();
       console.log("Página de resultados cargada");
