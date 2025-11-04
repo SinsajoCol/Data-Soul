@@ -1,7 +1,7 @@
-import ProcesadorPsicometrico from "../models/ProcesadorPsicometrico.js";
+import { calcularRasgosDePlantilla } from "../models/ProcesadorPsicometrico.js";
 import Resultados from "../models/Resultados.js";
-import DatosPoblacion from "../models/DatosPoblacion.js";
-import DatosIndividuales from "../models/DatosIndividuales.js";
+import { DatosPoblacion } from "../models/DatosPoblacion.js";
+import { DatosIndividuales } from "../models/DatosIndividuales.js";
 
 const likertMap = {
   "totalmente en desacuerdo": 1,
@@ -42,7 +42,6 @@ function obtenerDimensionPorPregunta(idx) {
 
 export default class CargaMasivaController {
   constructor() {
-    this.procesador = new ProcesadorPsicometrico();
     this.resultados = Resultados.getInstance();
   }
 
@@ -62,6 +61,12 @@ export default class CargaMasivaController {
     if (!Array.isArray(datosRaw) || datosRaw.length === 0) return;
 
     const grupo = this._procesarRespuestasGrupo(datosRaw);
+
+    if (!grupo || grupo.nombreGrupo === "Archivo no compatible") {
+      alert("El archivo no es compatible con el formato esperado.");
+      return;
+    }
+
     this.resultados.agregarResultadosPoblacion(grupo);
     this.resultados.guardarEnLocalStorage();
 
@@ -96,14 +101,11 @@ export default class CargaMasivaController {
   _procesarRespuestasGrupo(data) {
     const encabezadoEsperado = "Soy una persona conversadora.";
     const [headers, ...respuestas] = data;
-    const idxInicio = headers.findIndex(h => h && h.trim().startsWith(encabezadoEsperado));
+    const idxInicio = headers.findIndex(h => typeof h === 'string' && h.trim().startsWith(encabezadoEsperado));
     if (idxInicio === -1) {
-      alert("El archivo no corresponde a la plantilla oficial. Encabezado incorrecto.");
       return new DatosPoblacion("Archivo no compatible");
     }
-
-    const correoIdx = headers.findIndex(h => h && h.toLowerCase().includes("correo"));
-
+    const correoIdx = headers.findIndex(h => typeof h === 'string' && h.toLowerCase().includes("correo"));
     const nombreGrupo = "Grupo_" + new Date().toISOString().slice(0, 10);
     const grupo = new DatosPoblacion(nombreGrupo);
 
@@ -111,10 +113,10 @@ export default class CargaMasivaController {
     Object.values(BigFiveMap).forEach(m => m.invertir.forEach(i => allInvertidos.add(i)));
     Object.values(DarkTriadMap).forEach(m => m.invertir.forEach(i => allInvertidos.add(i)));
 
-    for (const fila of respuestas) {
+    for (let i = 0; i < respuestas.length; i++) {
+      const fila = respuestas[i];
       if (fila.length < idxInicio + 1) continue;
-      const correo = fila[correoIdx] && String(fila[correoIdx]).trim() !== "" ? fila[correoIdx] : `ID-${fila[0]}`;
-      
+
       let respuestasUsuario = fila.slice(idxInicio).map((valor, idx) => {
         const preguntaIndex = idx + 1;
         const dimension = obtenerDimensionPorPregunta(preguntaIndex);
@@ -128,35 +130,14 @@ export default class CargaMasivaController {
           respuesta: respNum,
           invertida,
         };
-      });
-      respuestasUsuario = respuestasUsuario.filter(p => p.dimension != null);
+      }).filter(p => p.dimension !== null);
 
-      // Procesa, muestra valores usados
-      const dimensionValores = {};
-      for (const pregunta of respuestasUsuario) {
-        if (!dimensionValores[pregunta.dimension]) dimensionValores[pregunta.dimension] = [];
-        const valorFinal = pregunta.invertida ? 6 - pregunta.respuesta : pregunta.respuesta;
-        dimensionValores[pregunta.dimension].push(valorFinal);
-        console.log(
-          `DEBUG: ${correo}, ${pregunta.dimension}, Pregunta: ${pregunta.texto} (Idx ${pregunta.id}), Valor: ${pregunta.respuesta}, Invertida: ${pregunta.invertida}, Valor usado: ${valorFinal}`
-        );
+      const rasgosInstancia = calcularRasgosDePlantilla(respuestasUsuario);
+
+      console.log(`\n======= Persona #${i + 1} =======`);
+      for (const rasgo of rasgosInstancia.listaRasgos) {
+        console.log(`Rasgo: ${rasgo.nombre} - Valor: ${rasgo.valor}`);
       }
-      // Promedio de cada rasgo
-      const rasgosDeCadaPersona = {};
-      for (const [dim, valores] of Object.entries(dimensionValores)) {
-        rasgosDeCadaPersona[dim] = valores.reduce((a, b) => a + b, 0) / valores.length;
-        console.log(`DEBUG: ${correo} - Rasgo: ${dim} - Valores usados:`, valores);
-      }
-
-      // Mostrar la tabla final
-      console.log("===================================");
-      console.log(`Correo: ${correo}`);
-      console.table(rasgosDeCadaPersona);
-
-      // Procesa los rasgos
-      const rasgos = this.procesador.calcularRasgos(respuestasUsuario);
-      const individuo = new DatosIndividuales(correo, rasgos);
-      grupo.agregar(individuo);
     }
     return grupo;
   }
