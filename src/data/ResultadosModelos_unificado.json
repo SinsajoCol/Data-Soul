@@ -1,0 +1,31 @@
+{
+    "Gemma 3.4B": {
+        "Openness": 51.9,
+        "Conscientiousness": 86.0,
+        "Extraversion": 24.8,
+        "Agreeableness": 78.4,
+        "Machiavellianism": 22.7,
+        "Narcissism": 10.3,
+        "Psychopathy": 2.1
+    },
+    "Llama3.1": {
+        "Openness": 56.3,
+        "Conscientiousness": 88.8,
+        "Extraversion": 33.3,
+        "Agreeableness": 70.5,
+        "Neuroticism": 30.4,
+        "Machiavellianism": 15.4,
+        "Narcissism": 9.14,
+        "Psychopathy": 1.01
+    },
+    "Mistral7B": {
+        "Openness": 55.4,
+        "Conscientiousness": 77.1,
+        "Extraversion": 36.0,
+        "Agreeableness": 73.2,
+        "Neuroticism": 42.0,
+        "Machiavellianism": 18.0,
+        "Narcissism": 11.1,
+        "Psychopathy": 3.2
+    }
+}

@@ -7,19 +7,37 @@ export class GestorModelosLLM {
 
     // Carga modelos desde una ruta (e.g., archivo JSON)
     // @param {string} ruta - URL o ruta del archivo JSON con datos de modelos
-    async cargarModelos(ruta) {
-        try {
-            // Realiza una solicitud HTTP para obtener el archivo JSON
-            const response = await fetch(ruta);
-            // Parsea los datos JSON
-            const data = await response.json();
-            // Convierte cada elemento del JSON en una instancia de ModeloLLM
-            this.modelos = data.map(item => ModeloLLM.fromJSON(item));
-        } catch (error) {
-            console.error('Error al cargar modelos:', error);
-            throw error;
-        }
+   // GestorModelosLLM.js → método cargarModelos (versión CORREGIDA)
+async cargarModelos(ruta) {
+    try {
+        const response = await fetch(ruta);
+        const data = await response.json(); // Data es el objeto { "Gemma 3.4B": {...}, ... }
+
+        // Paso 1: Transforma el objeto JSON a un Array de objetos 
+        // con el formato que espera ModeloLLM.fromJSON
+        const modelosArray = Object.entries(data).map(([nombre, rasgosObj]) => {
+            
+            // Paso 2: Transforma el objeto de rasgos (rasgosObj) 
+            // a un array de {nombre, valor} para que Rasgos.fromJSON funcione
+            const rasgosArray = Object.entries(rasgosObj).map(([nombreRasgo, valor]) => ({
+                nombre: nombreRasgo,
+                valor: valor
+            }));
+
+            // Estructura final esperada por ModeloLLM.fromJSON(item)
+            return {
+                nombre: nombre,
+                rasgos: rasgosArray 
+            };
+        });
+
+        // Convierte cada elemento del nuevo array en una instancia de ModeloLLM
+        this.modelos = modelosArray.map(item => ModeloLLM.fromJSON(item));
+    } catch (error) {
+        console.error('Error al cargar modelos:', error);
+        throw error;
     }
+}
 
     guardarModelo(modelo) {
         // Verifica si ya existe un modelo con el mismo nombre
