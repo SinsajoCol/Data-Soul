@@ -1,144 +1,231 @@
-import { calcularRasgosDePlantilla } from "../models/ProcesadorPsicometrico.js";
-import Resultados from "../models/Resultados.js";
-import { DatosPoblacion } from "../models/DatosPoblacion.js";
+// Importa los Modelos que SÍ necesita
 import { DatosIndividuales } from "../models/DatosIndividuales.js";
+import { DatosPoblacion } from "../models/DatosPoblacion.js";
+import Resultados from "../models/Resultados.js"; // El Singleton
+import ProcesadorPsicometrico from "../models/ProcesadorPsicometrico.js";
+import CuestionarioModel from "../models/Cuestionario.js";
+const ruta = "src/data/cuestionario.json";
 
+// Tu mapa de Likert sí es útil aquí para parsear
 const likertMap = {
-  "totalmente en desacuerdo": 1,
-  "en desacuerdo": 2,
-  "neutral": 3,
-  "de acuerdo": 4,
-  "totalmente de acuerdo": 5
+    "totalmente en desacuerdo": 1,
+    "en desacuerdo": 2,
+    "neutral": 3,
+    "de acuerdo": 4,
+    "totalmente de acuerdo": 5
 };
 
-const BigFiveMap = {
-  "Extraversión": { items: [1, 6, 11, 16, 21, 26, 31, 36], invertir: [6, 21, 31] },
-  "Amabilidad": { items: [2, 7, 12, 17, 22, 27, 32, 37, 42], invertir: [2, 12, 27, 37] },
-  "Responsabilidad": { items: [3, 8, 13, 18, 23, 28, 33, 38, 43], invertir: [8, 18, 23, 43] },
-  "Neuroticismo": { items: [4, 9, 14, 19, 24, 29, 34, 39], invertir: [9, 24, 34] },
-  "Apertura": { items: [5, 10, 15, 20, 25, 30, 35, 40, 41, 44], invertir: [35, 41] }
-};
+export class CargaMasivaController {
 
-const DarkTriadMap = {
-  "Narcisismo": { items: range(45, 56), invertir: [52, 53] },
-  "Maquiavelismo": { items: range(57, 68), invertir: [64, 68] },
-  "Psicopatía": { items: range(69, 80), invertir: [72, 76] },
-  "Sadismo": { items: range(81, 92), invertir: [88] }
-};
-
-function range(start, end) {
-  return Array.from({ length: (end - start + 1) }, (_, i) => i + start);
-}
-
-function obtenerDimensionPorPregunta(idx) {
-  for (const [dim, info] of Object.entries(BigFiveMap)) {
-    if (info.items.includes(idx)) return dim;
-  }
-  for (const [dim, info] of Object.entries(DarkTriadMap)) {
-    if (info.items.includes(idx)) return dim;
-  }
-  return null;
-}
-
-export default class CargaMasivaController {
-  constructor() {
-    this.resultados = Resultados.getInstance();
-  }
-
-  async manejarArchivoSubido(file) {
-    if (!file) return alert("Selecciona un archivo válido");
-    const ext = file.name.split('.').pop().toLowerCase();
-    let datosRaw = [];
-
-    if (ext === "xlsx" || ext === "xls") {
-      datosRaw = await this._leerExcel(file);
-    } else if (ext === "csv") {
-      datosRaw = await this._leerCSV(file);
-    } else {
-      alert("Solo se admiten archivos XLSX o CSV");
-      return;
-    }
-    if (!Array.isArray(datosRaw) || datosRaw.length === 0) return;
-
-    const grupo = this._procesarRespuestasGrupo(datosRaw);
-
-    if (!grupo || grupo.nombreGrupo === "Archivo no compatible") {
-      alert("El archivo no es compatible con el formato esperado.");
-      return;
+    constructor(view) {
+        this.view = view;
+        this.model = new CuestionarioModel();
+        this.resultados = Resultados.getInstance();
+        this.procesador = new ProcesadorPsicometrico();
+        
+        // Aquí guardaremos las definiciones de preguntas (del JSON)
+        this.definicionesPreguntas = []; 
     }
 
-    this.resultados.agregarResultadosPoblacion(grupo);
-    this.resultados.guardarEnLocalStorage();
+    async iniciar() {
+        this.view.conectarDOM();
+        // (El que se dispara AL HACER CLIC)
+        this.view.onImportClick = this._limpiarDatosAntiguos.bind(this);
+        // Conecta el "callback" de la vista a un método de este controlador
+        this.view.onFileSelected = this.manejarArchivoSubido.bind(this);
+        this.view.bindEvents();
 
-    return grupo;
-  }
+        // Carga el 'cuestionario.json' para mapear las cabeceras del CSV
+        try {
+            await this.cargarDefinicionesPreguntas(ruta);
+            console.log("Controlador de Carga Masiva iniciado correctamente.");
+        } catch (error) {
+            this.view.mostrarError("Error fatal: No se pudieron cargar las definiciones de preguntas.");
+            
+        }
+    }
 
-  async _leerExcel(file) {
-    return new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const wb = XLSX.read(e.target.result, { type: 'binary' });
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-        resolve(data);
+    async cargarDefinicionesPreguntas(url) {
+        try {
+            // 1. Llama al método del modelo y ESPERA a que termine.
+            // (Este método hace el fetch y rellena 'this.model.preguntas')
+          await this.model.cargarPreguntas(url); 
+
+            // 2. Ahora que el modelo está cargado, copia el array de preguntas
+            //    a la propiedad de ESTE controlador.
+          this.definicionesPreguntas = this.model.preguntas;
+          console.log("Preguntas cargadas desde el modelo:", this.definicionesPreguntas);
+          console.log("Definiciones de preguntas cargadas para mapeo.");
+
+        } catch (error) {
+            console.error("Error en cargarDefinicionesPreguntas:", error);
+            throw error; // Lanza el error para que 'iniciar' lo atrape
+        }
+    }
+
+    /**
+     * Se llama cuando la Vista confirma que un archivo fue seleccionado
+     * @param {File} file El archivo .csv o .xlsx
+     */
+    async manejarArchivoSubido(file) {
+        if (!file) {
+            this.view.mostrarError("No se seleccionó ningún archivo.");
+            return;
+        }
+        
+        const ext = file.name.split('.').pop().toLowerCase();
+        let datosRaw = []; // Esto será un array de arrays, ej: [ [...headers], [...row1], [...row2] ]
+
+        try {
+            if (ext === "xlsx" || ext === "xls") {
+                datosRaw = await this._leerExcel(file);
+            } else if (ext === "csv") {
+                datosRaw = await this._leerCSV(file);
+            } else {
+                throw new Error("Solo se admiten archivos XLSX o CSV");
+            }
+
+            if (!Array.isArray(datosRaw) || datosRaw.length < 2) {
+                throw new Error("El archivo está vacío o no tiene datos. La poblacion minima debe ser de 30 participantes.");
+            }
+
+            const grupo = this._procesarDatos(datosRaw);
+            
+            this.resultados.agregarResultadosPoblacion(grupo);
+            console.log("Resultados agregados al singleton:", this.resultados);
+            console.log("Grupo poblacional procesado:", grupo);
+            const promedios = grupo.obtenerPromediosGrupales();
+            console.log("Promedios grupales calculados:", promedios);
+
+        } catch (error) {
+            console.error("Error al procesar el archivo:", error);
+            this.view.mostrarError(`Error: ${error.message}`);
+        }
+    }
+
+    /**
+     * Parsea los datos crudos, calcula rasgos y retorna un DatosPoblacion
+     * @param {Array<Array<string>>} data - Array de filas (incluyendo cabecera)
+     */
+    _procesarDatos(data) {
+      const [headers, ...respuestasFilas] = data;
+
+      const normalizeText = (str) => {
+          if (typeof str !== 'string') return '';
+          return str.trim().replace(/\.$/, '').toLowerCase();
       };
-      reader.readAsBinaryString(file);
-    });
-  }
 
-  async _leerCSV(file) {
-    return new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const csv = e.target.result;
-        const rows = csv.split("\n").map(line => line.split(";").map(val => val.trim()));
-        resolve(rows);
-      };
-      reader.readAsText(file);
-    });
-  }
+      // Normaliza las cabeceras del CSV UNA SOLA VEZ
+      const normalizedHeaders = headers.map(h => normalizeText(h));
 
-  _procesarRespuestasGrupo(data) {
-    const encabezadoEsperado = "Soy una persona conversadora.";
-    const [headers, ...respuestas] = data;
-    const idxInicio = headers.findIndex(h => typeof h === 'string' && h.trim().startsWith(encabezadoEsperado));
-    if (idxInicio === -1) {
-      return new DatosPoblacion("Archivo no compatible");
-    }
-    const correoIdx = headers.findIndex(h => typeof h === 'string' && h.toLowerCase().includes("correo"));
-    const nombreGrupo = "Grupo_" + new Date().toISOString().slice(0, 10);
-    const grupo = new DatosPoblacion(nombreGrupo);
+      const mapeoColumnas = [];
+      
+      // --- DEBUG ---
+      const preguntasNoEncontradas = []; // Array para guardar las fallas
 
-    const allInvertidos = new Set();
-    Object.values(BigFiveMap).forEach(m => m.invertir.forEach(i => allInvertidos.add(i)));
-    Object.values(DarkTriadMap).forEach(m => m.invertir.forEach(i => allInvertidos.add(i)));
+      this.definicionesPreguntas.forEach(preguntaJSON => {
+          const textoJSONNormalizado = normalizeText(preguntaJSON.texto);
+          
+          // Busca el índice de esta pregunta en las cabeceras normalizadas
+          const csvIndex = normalizedHeaders.indexOf(textoJSONNormalizado);
 
-    for (let i = 0; i < respuestas.length; i++) {
-      const fila = respuestas[i];
-      if (fila.length < idxInicio + 1) continue;
-
-      let respuestasUsuario = fila.slice(idxInicio).map((valor, idx) => {
-        const preguntaIndex = idx + 1;
-        const dimension = obtenerDimensionPorPregunta(preguntaIndex);
-        const invertida = allInvertidos.has(preguntaIndex);
-        let respNum = valor;
-        if (typeof valor === 'string') respNum = likertMap[valor.toLowerCase()] || null;
-        return {
-          id: String(preguntaIndex),
-          texto: headers[idxInicio + idx],
-          dimension,
-          respuesta: respNum,
-          invertida,
-        };
-      }).filter(p => p.dimension !== null);
-
-      const rasgosInstancia = calcularRasgosDePlantilla(respuestasUsuario);
-
-      console.log(`\n======= Persona #${i + 1} =======`);
-      for (const rasgo of rasgosInstancia.listaRasgos) {
-        console.log(`Rasgo: ${rasgo.nombre} - Valor: ${rasgo.valor}`);
+          if (csvIndex !== -1) {
+              // ¡Encontrado!
+              mapeoColumnas.push({ csvIndex: csvIndex, pregunta: preguntaJSON });
+          } else {
+              // ¡NO ENCONTRADO!
+              preguntasNoEncontradas.push(preguntaJSON.texto);
+          }
+      });
+      // --- FIN DEL DEBUG ---
+      if (mapeoColumnas.length <= 92) { // O un número mínimo que esperes
+          console.warn("Mapeo parcial: ", mapeoColumnas.length, "de", this.definicionesPreguntas.length, "preguntas mapeadas.");
       }
+
+      if (mapeoColumnas.length === 0) {
+          throw new Error("No se pudo mapear ninguna columna. Asegúrate de que las cabeceras del archivo coincidan con la plantilla.");
+      }
+
+      // 2. Procesar cada fila (cada usuario)
+      const grupoPoblacion = new DatosPoblacion('grupo_' + Date.now());
+      
+      respuestasFilas.forEach((fila, rowIndex) => {
+        if (fila.length === 0) return; // Ignorar filas vacías
+        
+        const respuestasUsuario = {}; // {id: valor}
+
+        // Construye el objeto de respuestas para este usuario
+        mapeoColumnas.forEach(map => {
+            const id = map.pregunta.id;
+            let valor = fila[map.csvIndex]; // Valor de la celda
+
+            if (typeof valor === 'string') {
+                // Intenta convertir texto (ej. "de acuerdo") a número
+                valor = likertMap[valor.toLowerCase().trim()] || Number(valor);
+            }
+            
+            if (typeof valor === 'number' && !isNaN(valor)) {
+                respuestasUsuario[id] = valor;
+            }
+        });
+          // 3. Calcular rasgos
+          const rasgosObjeto = this.procesador.calcularRasgos(this.definicionesPreguntas, respuestasUsuario);
+
+          // 4. Crear 'DatosIndividuales'
+          const usuarioId = `usuario_${rowIndex + 1}`;
+          const individuo = new DatosIndividuales(usuarioId, rasgosObjeto);
+          
+          // 5. Añadir al grupo
+          grupoPoblacion.agregar(individuo);
+      });
+
+      if (grupoPoblacion.lista.length === 0) {
+          throw new Error("Se leyó el archivo, pero no se pudo procesar ningún participante.");
+      }
+
+      return grupoPoblacion;
     }
-    return grupo;
-  }
+
+    // --- Métodos para leer archivos ---
+    // (Estos métodos dependen de librerías externas)
+
+    async _leerExcel(file) {
+        if (typeof XLSX === 'undefined') {
+            this.view.mostrarError("La librería de Excel (XLSX) no está cargada.");
+            throw new Error("Librería XLSX no encontrada.");
+        }
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const wb = XLSX.read(e.target.result, { type: 'binary' });
+                    const ws = wb.Sheets[wb.SheetNames[0]];
+                    const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+                    resolve(data);
+                } catch (err) { reject(err); }
+            };
+            reader.onerror = (err) => reject(err);
+            reader.readAsBinaryString(file);
+        });
+    }
+
+    async _leerCSV(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const csv = e.target.result;
+                    // Un parser de CSV simple (esto puede fallar con comas dentro de comillas)
+                    const rows = csv.split("\n").map(line => line.split(",").map(val => val.trim().replace(/^"|"$/g, '')));
+                    resolve(rows);
+                } catch (err) { reject(err); }
+            };
+            reader.onerror = (err) => reject(err);
+            reader.readAsText(file, 'UTF-8'); // Especificar encoding
+        });
+    }
+
+    _limpiarDatosAntiguos() {
+      this.resultados.limpiarResultadosPoblacion();
+    }
 }
