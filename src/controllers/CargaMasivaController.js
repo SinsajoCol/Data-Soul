@@ -94,8 +94,38 @@ export class CargaMasivaController {
             this.resultados.agregarResultadosPoblacion(grupo);
             console.log("Resultados agregados al singleton:", this.resultados);
             console.log("Grupo poblacional procesado:", grupo);
-            const promedios = grupo.obtenerPromediosGrupales();
-            console.log("Promedios grupales calculados:", promedios);
+
+            const estadisticas = grupo.obtenerEstadisticasGrupales();
+            
+            console.log("--- ESTADÍSTICAS DEL GRUPO (Calculadas por el Controlador) ---");
+            console.table(estadisticas.map(stat => ({
+                Rasgo: stat.nombre,
+                Promedio: stat.media.toFixed(2),
+                StdDev: stat.stdDev.toFixed(2), // Desviación Estándar
+                ErrorStd: stat.stdErr.toFixed(2),
+                Lim_Inf_95: stat.limInf_95.toFixed(2),
+                Lim_Sup_95: stat.limSup_95.toFixed(2)
+            })));
+            console.log("---------------------------------------------------------------");
+
+            console.log("--- VALORES DE LOS INDIVIDUOS (Promedios 1-5) ---");
+
+            // 2a. Transforma los datos para la tabla
+            const tablaIndividuos = grupo.lista.map(individuo => {
+                // Inicia la fila con el ID del participante
+                const fila = { Participante: individuo.usuarioId };
+
+                // Añade cada rasgo (columna) con su valor
+                individuo.rasgos.listaRasgos.forEach(rasgo => {
+                    fila[rasgo.nombre] = rasgo.valor.toFixed(2);
+                });
+                
+                return fila;
+            });
+            
+            // 2b. Muestra la tabla de individuos en la consola
+            console.table(tablaIndividuos);
+            console.log("-----------------------------------------------------");
 
         } catch (error) {
             console.error("Error al procesar el archivo:", error);
