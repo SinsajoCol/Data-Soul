@@ -114,10 +114,9 @@ canvas {
 
 .llm-selection {
   margin-bottom: 2rem;
-  position: sticky;
-  top: 0px;
+  position:static;
+  top: 40px;
   z-index: 10;
-  background-color: #f5f6fa;
   padding-top: 5px;
   padding-bottom: 5px;
 }
@@ -326,10 +325,10 @@ canvas {
 }
 
 /* Estilo para el reporte secundario (vista completa) */
-#downloadFullPDF {
+#downloadComparativePDF {
     background-color: #2ecc71; /* Verde (o color diferente para destacar el propósito) */
     color: white;
 }
-#downloadFullPDF:hover {
+#downloadComparativePDF:hover {
     background-color: #27ae60;
 }

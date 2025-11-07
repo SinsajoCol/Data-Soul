@@ -7,6 +7,7 @@ export class PaginaResultados extends PaginaTemplate {
 
     constructor() {
         super();
+        this.cargarCSS("/src/assets/css/styles2.css");
         // 2. Crea la Vista
         this.view = new ResultadosView();
         // 3. Crea el Controlador y le "inyecta" la Vista
@@ -17,13 +18,18 @@ export class PaginaResultados extends PaginaTemplate {
      * Pide a la Vista su HTML estático (el "esqueleto")
      */
     async mostrarContenido() {
-        return this.view.getHtmlBase();
+         const response = await fetch("/src/pages/resultados.html");
+         const html = await response.text();
+        return html;
+        //return this.view.getHtmlBase();
     }
 
     /**
      * Llama al Controlador para que "encienda" la página
      */
     async despuesDeCargar() {
+        const view = new ResultadosView();
+        view.init();
         this.controller.iniciar();
     }
 }
