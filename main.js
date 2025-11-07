@@ -2,12 +2,12 @@
 import { PaginaInicio } from "./src/assets/js/PaginaInicio.js";
 import { PaginaCuestionario } from "./src/assets/js/PaginaCuestionario.js";
 import { PaginaPruebaGrupal } from "./src/assets/js/PaginaPruebaGrupal.js";
-import { PaginaResultados } from "/src/assets/js/PaginaResultados.js";
+import { PaginaComparacion } from "/src/assets/js/PaginaComparacion.js";
 
 const app = document.getElementById("app");
 
 // Esta función sigue igual, pero ya no maneja los clics
-async function cargarPagina(nombre) {
+async function cargarPagina(nombre, parametro) {
   let pagina;
 
   switch (nombre) {
@@ -22,10 +22,6 @@ async function cargarPagina(nombre) {
     case "PruebaGrupal":
       pagina = new PaginaPruebaGrupal();
       console.log("Página de prueba grupal cargada");
-      break;
-    case "resultados":
-      pagina = new PaginaResultados();
-      console.log("Página de resultados cargada");
       break;
     case "comparacion":
       // Pasa el ID del grupo (ej. 'grupo_csv_12345') a la página
