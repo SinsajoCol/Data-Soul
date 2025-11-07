@@ -1,11 +1,11 @@
 export class Footer {
-  render() {
+  mostrarFooter() {
     return `
       <footer class="footer">
         <div class="footer-container">
           <div class="footer-left">
             <div class="footer-logo">
-              <img src="./src/assets/img/LogoBrand.png" alt="Logo Data Soul">
+              <img src="/src/assets/img/LogoBrand.png" alt="Logo Data Soul">
               <h2>Data Soul</h2>
             </div>
           </div>
@@ -17,7 +17,7 @@ export class Footer {
             <div class="footer-links">
               <a href="#" data-page="inicio">Inicio</a> •
               <a href="#" data-page="cuestionario">Prueba Individual</a>•
-              <a href="#" data-page="">Prueba Grupal</a> •
+              <a href="#" data-page="PruebaGrupal">Prueba Grupal</a> •
               <a href="#" data-page="">Rasgos LLM</a> •
               <a href="#" data-page="">Términos del servicio</a> •
               <a href="#" data-page="">Políticas de privacidad</a>
@@ -32,7 +32,7 @@ export class Footer {
 
           </div>
         </div>
-    </footer>
-    `;
-   }
+      </footer>
+  `;
+  }
 }

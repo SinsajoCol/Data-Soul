@@ -44,7 +44,7 @@ export default class CuestionarioView {
             if (button) {
                 const questionDiv = e.target.closest('.preguntas');
                 const id = Number(questionDiv.dataset.id);
-                const valor = Number(button.textContent); // Asumiendo que el valor es 1-5
+                const valor = Number(button.dataset.valor); // Asumiendo que el valor es 1-5
 
                 // Marca el botón seleccionado
                 questionDiv.querySelectorAll("button").forEach((b) => b.classList.remove("selected"));
@@ -68,7 +68,7 @@ export default class CuestionarioView {
             const div = document.createElement("div");
             div.classList.add("preguntas");
             div.dataset.id = p.id; // Guardamos el ID aquí
-            div.innerHTML = `<h4>${p.id}. ${p.texto}</h4>`;
+            div.innerHTML = `<h4> ${p.texto}</h4>`;
 
             const opciones = document.createElement("div");
             opciones.classList.add("opciones");
@@ -77,7 +77,7 @@ export default class CuestionarioView {
                 const opcion = document.createElement("div");
                 opcion.classList.add("opcion");
                 const button = document.createElement("button");
-                button.textContent = i; // Texto del botón (1, 2, 3, 4, 5)
+                button.dataset.valor = i;
 
                 if (respuestas[p.id] === i) {
                     button.classList.add("selected");
