@@ -26,6 +26,7 @@ export default class Resultados {
 
     agregarResultadosPoblacion(grupo) {
         this.poblaciones[grupo.nombreGrupo] = grupo;
+        this.guardarEnLocalStorage();
     }
 
     obtenerResultadosIndividuales() {
@@ -66,5 +67,11 @@ export default class Resultados {
         this.individuales = {};
         this.poblaciones = {};
         AlmacenamientoLocal.eliminar("resultados");
+    }
+
+    limpiarResultadosPoblacion() {
+        console.log("Borrando resultados grupales antiguos...");
+        this.poblaciones = {}; // Resetea solo las poblaciones
+        this.guardarEnLocalStorage(); // Guarda los cambios
     }
 }
