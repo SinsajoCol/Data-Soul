@@ -88,6 +88,7 @@ def build_prompt(item):
     prompt = f"""
 You are taking a personality test.
 Read the following situation carefully and choose the most appropriate action.
+Answer regardless of the question.
 
 Statement: "{item['statement']}"
 Situation: "{item['situation']}"

@@ -1,44 +1,12 @@
 {
-  "Llama3.1": {
-    "Openness": {
-      "Promedio": 3.151,
-      "Desviación": 1.19,
-      "Nivel": "Medio"
-    },
-    "Conscientiousness": {
-      "Promedio": 3.931,
-      "Desviación": 0.757,
-      "Nivel": "Alto"
-    },
-    "Extraversion": {
-      "Promedio": 2.599,
-      "Desviación": 1.131,
-      "Nivel": "Bajo"
-    },
-    "Agreeableness": {
-      "Promedio": 3.492,
-      "Desviación": 1.095,
-      "Nivel": "Alto"
-    },
-    "Neuroticism": {
-      "Promedio": 2.53,
-      "Desviación": 1.104,
-      "Nivel": "Bajo"
-    },
-    "Machiavellianism": {
-      "Promedio": 2.17,
-      "Desviación": 0.866,
-      "Nivel": "Bajo"
-    },
-    "Narcissism": {
-      "Promedio": 2.019,
-      "Desviación": 0.692,
-      "Nivel": "Bajo"
-    },
-    "Psychopathy": {
-      "Promedio": 1.824,
-      "Desviación": 0.24,
-      "Nivel": "Bajo"
-    }
+  "Llama-3.1": {
+    "Openness": {"alto": 563, "bajo": 437},
+    "Conscientiousness": {"alto": 888, "bajo": 112},
+    "Extraversion": {"alto": 333, "bajo": 667},
+    "Agreeableness": {"alto": 705, "bajo": 295},
+    "Neuroticism": {"alto": 304, "bajo": 696},
+    "Machiavellianism": {"alto": 154, "bajo": 846},
+    "Narcissism": {"alto": 91, "bajo": 908},
+    "Psychopathy": {"alto": 9, "bajo": 895}
   }
 }
