@@ -43,11 +43,8 @@ export class PruebaGrupalView {
         });
     }
 
-    mostrarResultados(grupoPoblacion) {
-        const total = grupoPoblacion.lista.length;
-        this.mostrarMensaje(`✅ ¡Éxito! Se procesaron ${total} participantes.`, "exito");
-        
-        // Aquí puedes agregar código para mostrar una tabla de promedios si lo deseas
+    mostrarResultados(totalParticipantes) {
+        alert(`¡Procesamiento Exitoso! Se procesaron ${totalParticipantes} respuestas.`);
     }
 
     mostrarError(mensaje) {

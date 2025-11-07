@@ -27,9 +27,11 @@ async function cargarPagina(nombre) {
       pagina = new PaginaResultados();
       console.log("Página de resultados cargada");
       break;
+    case "comparacion":
+      // Pasa el ID del grupo (ej. 'grupo_csv_12345') a la página
+      pagina = new PaginaComparacion(parametro); 
+      break;
     default:
-      // ¡IMPORTANTE! Asegúrate de que tu PaginaTemplate implemente
-      // mostrarPagina() o cambia esto a PaginaInicio()
       pagina = new PaginaInicio(); 
       break;
   }
@@ -47,9 +49,12 @@ async function cargarPagina(nombre) {
  * Lee el hash de la URL (ej. #cuestionario) y llama a cargarPagina
  */
 function router() {
-    // Obtiene el hash, quita el '#' y si está vacío, usa 'inicio'
-    const ruta = window.location.hash.substring(1) || 'inicio';
-    cargarPagina(ruta);
+    const hash = window.location.hash.substring(1); // ej. "comparacion/grupo_123"
+    const partes = hash.split('/');
+    const ruta = partes[0] || 'inicio'; // ej. "comparacion"
+    const parametro = partes[1] || null; // ej. "grupo_123"
+
+    cargarPagina(ruta, parametro);
 }
 
 // --- PUNTO DE ENTRADA DE LA APLICACIÓN ---

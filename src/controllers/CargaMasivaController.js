@@ -4,7 +4,9 @@ import { DatosPoblacion } from "../models/DatosPoblacion.js";
 import Resultados from "../models/Resultados.js"; // El Singleton
 import ProcesadorPsicometrico from "../models/ProcesadorPsicometrico.js";
 import CuestionarioModel from "../models/Cuestionario.js";
+
 const ruta = "src/data/cuestionario.json";
+
 
 // Tu mapa de Likert sí es útil aquí para parsear
 const likertMap = {
@@ -29,9 +31,7 @@ export class CargaMasivaController {
 
     async iniciar() {
         this.view.conectarDOM();
-        // (El que se dispara AL HACER CLIC)
         this.view.onImportClick = this._limpiarDatosAntiguos.bind(this);
-        // Conecta el "callback" de la vista a un método de este controlador
         this.view.onFileSelected = this.manejarArchivoSubido.bind(this);
         this.view.bindEvents();
 
@@ -41,7 +41,6 @@ export class CargaMasivaController {
             console.log("Controlador de Carga Masiva iniciado correctamente.");
         } catch (error) {
             this.view.mostrarError("Error fatal: No se pudieron cargar las definiciones de preguntas.");
-            
         }
     }
 
@@ -90,42 +89,18 @@ export class CargaMasivaController {
             }
 
             const grupo = this._procesarDatos(datosRaw);
-            
+            // 1. Guarda el grupo en el Singleton
             this.resultados.agregarResultadosPoblacion(grupo);
-            console.log("Resultados agregados al singleton:", this.resultados);
+            
             console.log("Grupo poblacional procesado:", grupo);
 
-            const estadisticas = grupo.obtenerEstadisticasGrupales();
-            
-            console.log("--- ESTADÍSTICAS DEL GRUPO (Calculadas por el Controlador) ---");
-            console.table(estadisticas.map(stat => ({
-                Rasgo: stat.nombre,
-                Promedio: stat.media.toFixed(2),
-                StdDev: stat.stdDev.toFixed(2), // Desviación Estándar
-                ErrorStd: stat.stdErr.toFixed(2),
-                Lim_Inf_95: stat.limInf_95.toFixed(2),
-                Lim_Sup_95: stat.limSup_95.toFixed(2)
-            })));
-            console.log("---------------------------------------------------------------");
+            // 2. Muestra solo el mensaje de éxito en la vista actual
+            this.view.mostrarResultados(grupo.lista.length);
 
-            console.log("--- VALORES DE LOS INDIVIDUOS (Promedios 1-5) ---");
-
-            // 2a. Transforma los datos para la tabla
-            const tablaIndividuos = grupo.lista.map(individuo => {
-                // Inicia la fila con el ID del participante
-                const fila = { Participante: individuo.usuarioId };
-
-                // Añade cada rasgo (columna) con su valor
-                individuo.rasgos.listaRasgos.forEach(rasgo => {
-                    fila[rasgo.nombre] = rasgo.valor.toFixed(2);
-                });
-                
-                return fila;
-            });
-            
-            // 2b. Muestra la tabla de individuos en la consola
-            console.table(tablaIndividuos);
-            console.log("-----------------------------------------------------");
+            // 3. ¡NUEVO! Navega a la página de comparación
+            // Pasa el nombre del grupo en el hash para que la otra
+            // página sepa qué grupo cargar.
+            //window.location.hash = `comparacion/${grupo.nombreGrupo}`;
 
         } catch (error) {
             console.error("Error al procesar el archivo:", error);
