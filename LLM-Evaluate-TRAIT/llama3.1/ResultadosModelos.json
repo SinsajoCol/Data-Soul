@@ -1,12 +1,44 @@
 {
   "Llama3.1": {
-    "Openness": 56.3,
-    "Conscientiousness": 88.8,
-    "Extraversion": 33.3,
-    "Agreeableness": 70.5,
-    "Neuroticism": 30.4,
-    "Machiavellianism": 15.4,
-    "Narcissism": 9.14,
-    "Psychopathy": 1.01
+    "Openness": {
+      "Promedio": 3.151,
+      "Desviación": 1.19,
+      "Nivel": "Medio"
+    },
+    "Conscientiousness": {
+      "Promedio": 3.931,
+      "Desviación": 0.757,
+      "Nivel": "Alto"
+    },
+    "Extraversion": {
+      "Promedio": 2.599,
+      "Desviación": 1.131,
+      "Nivel": "Bajo"
+    },
+    "Agreeableness": {
+      "Promedio": 3.492,
+      "Desviación": 1.095,
+      "Nivel": "Alto"
+    },
+    "Neuroticism": {
+      "Promedio": 2.53,
+      "Desviación": 1.104,
+      "Nivel": "Bajo"
+    },
+    "Machiavellianism": {
+      "Promedio": 2.17,
+      "Desviación": 0.866,
+      "Nivel": "Bajo"
+    },
+    "Narcissism": {
+      "Promedio": 2.019,
+      "Desviación": 0.692,
+      "Nivel": "Bajo"
+    },
+    "Psychopathy": {
+      "Promedio": 1.824,
+      "Desviación": 0.24,
+      "Nivel": "Bajo"
+    }
   }
 }
