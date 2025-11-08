@@ -1,96 +1,89 @@
-// ============================================================================
-// Modelo: ComparadorRasgos
-// Descripción: Calcula similitudes entre rasgos de usuario/población y modelos LLM.
-// Patrón aplicado: Factory Method (produce ComparacionResultado o ComparacionMasiva)
-// ============================================================================
-
-import ComparacionResultado from "./ComparacionResultado.js";
-import ComparacionMasiva from "./ComparacionMasiva.js";
+import { ResultadoComparacionIndividual } from './ResultadoComparacionIndividual.js';
+import { DistanciaModeloLLM } from './DistanciaModeloLLM.js';
 
 export default class ComparadorRasgos {
-  /**
-   * @param {Function|null} strategyFn - Función de similitud personalizada (opcional).
-   */
-  constructor(strategyFn = null) {
-    this.strategyFn = strategyFn || this._defaultSimilarity;
-  }
+    /**
+     * CASO 1: Compara un individuo vs. LLM
+     * @returns {ResultadoComparacionIndividual} Un objeto Modelo con el ranking.
+     */
+    compararIndividuo(individuo, modelosLLM) {
+        // 2. El array contendrá instancias de 'DistanciaModeloLLM'
+        const resultadosDistancia = []; 
 
-  // --------------------------------------------------------------------------
-  // Estrategia por defecto: correlación de Pearson simplificada (normalizada)
-  // --------------------------------------------------------------------------
-  _defaultSimilarity(valoresA, valoresB) {
-    if (valoresA.length !== valoresB.length || valoresA.length === 0) return 0;
-    const n = valoresA.length;
-    const meanA = valoresA.reduce((a, b) => a + b, 0) / n;
-    const meanB = valoresB.reduce((a, b) => a + b, 0) / n;
+        modelosLLM.forEach(modelo => {
+            let sumaDeCuadrados = 0;
+            let rasgosComparados = 0;
 
-    let num = 0,
-      denA = 0,
-      denB = 0;
-    for (let i = 0; i < n; i++) {
-      const diffA = valoresA[i] - meanA;
-      const diffB = valoresB[i] - meanB;
-      num += diffA * diffB;
-      denA += diffA ** 2;
-      denB += diffB ** 2;
+            // ... (Lógica de cálculo de 'sumaDeCuadrados' y 'rasgosComparados') ...
+            individuo.rasgos.listaRasgos.forEach(rasgoHumano => {
+                const statLLM = modelo.estadisticas.find(s => s.nombre === rasgoHumano.nombre);
+                if (!statLLM) return;
+                const puntajeHumano = rasgoHumano.valor;
+                const mediaLLM = statLLM.media;
+                sumaDeCuadrados += Math.pow(puntajeHumano - mediaLLM, 2);
+                rasgosComparados++;
+            });
+
+            if (rasgosComparados > 0) {
+                const distanciaEuclidiana = Math.sqrt(sumaDeCuadrados);
+                
+                // 3. ¡AQUÍ ESTÁ EL CAMBIO!
+                // En lugar de un objeto simple: { nombreModelo: ..., distancia: ... }
+                // Creamos una instancia de la nueva clase:
+                resultadosDistancia.push(
+                    new DistanciaModeloLLM(
+                        modelo.nombre, 
+                        distanciaEuclidiana, 
+                        rasgosComparados
+                    )
+                );
+            }
+        });
+
+        // 4. Ordena el array de instancias (sigue funcionando igual)
+        const ranking = resultadosDistancia.sort((a, b) => a.distancia - b.distancia);
+
+        // 5. Retorna la clase contenedora (sigue funcionando igual)
+        return new ResultadoComparacionIndividual(individuo.usuarioId, ranking);
     }
 
-    const denom = Math.sqrt(denA * denB);
-    return denom === 0 ? 0 : Math.max(0, num / denom);
-  }
+  /**
+   * CASO 2: Compara un grupo (con sus rangos) contra los modelos.
+   * @param {DatosPoblacion} grupo - El objeto del grupo
+   * @param {Array<ModeloLLM>} modelosLLM - La lista de modelos
+   * @returns {Object} Un objeto con los resultados de la comparación
+   */
+  compararGrupo(grupo, modelosLLM) {
+    const resultadosFinales = {};
+    const statsGrupo = grupo.obtenerEstadisticasGrupales(); // [{nombre, media, limInf...}]
 
-  // --------------------------------------------------------------------------
-  // Comparación individual: usuario ↔ modelo
-  // --------------------------------------------------------------------------
-  comparar(rasgosUsuario, rasgosModelo) {
-    const labels = Object.keys(rasgosUsuario);
-    const valoresUsuario = labels.map((k) => rasgosUsuario[k]);
-    const valoresModelo = labels.map((k) => rasgosModelo[k]);
-    const similarity = this.strategyFn(valoresUsuario, valoresModelo);
+    modelosLLM.forEach(modelo => {
+        const comparacionesModelo = [];
 
-    return new ComparacionResultado(labels, valoresUsuario, valoresModelo, similarity);
-  }
+        statsGrupo.forEach(statHumano => {
+            const statLLM = modelo.estadisticas.find(s => s.nombre === statHumano.nombre);
+            if (!statLLM) return;
 
-  // --------------------------------------------------------------------------
-  // Comparar un usuario con todos los modelos disponibles
-  // --------------------------------------------------------------------------
-  compararConTodos(rasgosUsuario, modelos) {
-    return modelos.map((modelo) => {
-      const resultado = this.comparar(rasgosUsuario, modelo.rasgos);
-      resultado.modeloNombre = modelo.nombre;
-      return resultado;
-    });
-  }
+            const rangoHumano = [statHumano.limInf_95, statHumano.limSup_95];
+            const rangoLLM = [statLLM.limInf_95, statLLM.limSup_95];
 
-  // --------------------------------------------------------------------------
-  // Comparación masiva: grupo ↔ modelo
-  // --------------------------------------------------------------------------
-  compararMasiva(rasgosPoblacion, modelo) {
-    const distribucion = [];
-    const resumen = {};
-    const labels = Object.keys(modelo.rasgos);
-
-    rasgosPoblacion.forEach((rasgosUsuario) => {
-      const valoresUsuario = labels.map((k) => rasgosUsuario[k]);
-      const valoresModelo = labels.map((k) => modelo.rasgos[k]);
-      const sim = this.strategyFn(valoresUsuario, valoresModelo);
-      distribucion.push(sim);
+            // 1. Comprueba si los dos rangos se TRASLAPAN
+            const coincide = (rangoHumano[0] <= rangoLLM[1] && rangoHumano[1] >= rangoLLM[0]);
+            
+            comparacionesModelo.push({
+                rasgo: statHumano.nombre,
+                mediaHumana: statHumano.media,
+                rangoHumano_95: rangoHumano,
+                mediaLLM: statLLM.media,
+                rangoLLM_95: rangoLLM,
+                coincide: coincide
+            });
+        });
+        resultadosFinales[modelo.nombre] = comparacionesModelo;
     });
 
-    // Promedio de similitud por rasgo
-    labels.forEach((r) => {
-      const valsGrupo = rasgosPoblacion.map((p) => p[r]);
-      const meanGrupo = valsGrupo.reduce((a, b) => a + b, 0) / valsGrupo.length;
-      const diff = Math.abs(meanGrupo - modelo.rasgos[r]);
-      resumen[r] = Number((1 - diff / 5).toFixed(3)); // normalización básica
-    });
-
-    return new ComparacionMasiva({
-      modeloNombre: modelo.nombre,
-      resumenSimilitud: resumen,
-      distribucionSimilitud: distribucion,
-      sampleSize: rasgosPoblacion.length,
-      timestamp: new Date(),
-    });
+    return resultadosFinales;
   }
 }
+
+  

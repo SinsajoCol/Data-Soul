@@ -67,26 +67,31 @@ export class ComparacionController {
         }
     }
 
-    mostrarTablasConsola(humanDataLabel, humanStats, modelosLLM) {
-        // Tabla de Estadísticas Humanas (Grupo O Individuo)
-        console.log(`--- ESTADÍSTICAS ${humanDataLabel.toUpperCase()} (IC 95%) ---`);
-        console.table(humanStats.map(stat => ({
-            Rasgo: stat.nombre,
-            Promedio: stat.media.toFixed(2),
-            Lim_Inf_95: stat.limInf_95.toFixed(2),
-            Lim_Sup_95: stat.limSup_95.toFixed(2)
-        })));
+    mostrarTablasConsola(humanDataLabel, comparacion, tipo) {
+        console.log(`--- COMPARACIÓN ${tipo.toUpperCase()} PARA: ${humanDataLabel.toUpperCase()} ---`);
+        
+        if (tipo === "individual") {
+            // 'comparacion' ES el array de resultados
+            console.log("Ranking de Modelos (Distancia Euclidiana - 0 es idéntico):");
+            const tabla = comparacion.map(item => ({
+                "Modelo LLM": item.nombreModelo,
+                "Distancia": item.distancia.toFixed(2),
+                "Rasgos Comparados": item.rasgosComparados
+            }));
+            console.table(tabla);
 
-        // Tablas de Estadísticas (LLMs)
-        console.log("--- ESTADÍSTICAS MODELOS LLM (IC 95%) ---");
-        modelosLLM.forEach(modeloLLM => {
-            console.log(`\nModelo: ${modeloLLM.nombre}`);
-            console.table(modeloLLM.estadisticas.map(stat => ({
-                Rasgo: stat.nombre,
-                Promedio: stat.media.toFixed(2),
-                Lim_Inf_95: stat.limInf_95.toFixed(2),
-                Lim_Sup_95: stat.limSup_95.toFixed(2)
-            })));
-        });
+        } else { // tipo === "grupo"
+            // 'comparacion' es un OBJETO (como antes)
+            for (const nombreModelo in comparacion) {
+                console.log(`\nModelo: ${nombreModelo}`);
+                const tabla = comparacion[nombreModelo].map(item => ({
+                    Rasgo: item.rasgo,
+                    Rango_Humano_95: `${item.rangoHumano_95[0].toFixed(2)} - ${item.rangoHumano_95[1].toFixed(2)}`,
+                    Rango_LLM_95: `${item.rangoLLM_95[0].toFixed(2)} - ${item.rangoLLM_95[1].toFixed(2)}`,
+                    Coincide: item.coincide ? "✅ Sí" : "❌ No"
+                }));
+                console.table(tabla);
+            }
+        }
     }
 }
