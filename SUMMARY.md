@@ -1,5 +1,9 @@
 # Table of contents
 
 * [Documentación](README.md)
-  * [Prueba](documentacion/prueba.md)
+  * [Acceso a la aplicación](documentacion/acceso-a-la-aplicacion.md)
+  * [Manual de usario](documentacion/manual-de-usario.md)
+  * [Arquitectura del Sistema](documentacion/arquitectura-del-sistema.md)
+  * [Funcionamiento del sistema](documentacion/funcionamiento-del-sistema.md)
   * [📊 Proyecto Psicometría y LLM](documentacion/readme.md)
+* [Prueba de merge](prueba-de-merge.md)
