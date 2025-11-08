@@ -6,14 +6,14 @@ export class ResultadosView {
     ];
 
     this.descripciones = {
-    "Apertura": "Describe la curiosidad, imaginación e interés por nuevas experiencias.",
-    "Responsabilidad": "Refleja el nivel de organización, autodisciplina y cumplimiento de compromisos.",
-    "Extraversión": "Mide la sociabilidad, entusiasmo y tendencia a buscar estímulos externos.",
-    "Amabilidad": "Evalúa la empatía, cooperación y consideración hacia los demás.",
-    "Neuroticismo": "Indica la estabilidad emocional y la propensión a experimentar emociones negativas.",
-    "Machiavellismo": "Evalúa la manipulación, cinismo y enfoque estratégico en las relaciones.",
-    "Narcisismo": "Mide el ego, la necesidad de admiración y la autoimportancia percibida.",
-    "Psicopatía": "Se relaciona con la impulsividad, falta de empatía y tendencia al riesgo."
+    "Apertura": "La apertura a la experiencia (Openness) es el grado en que una persona es imaginativa, curiosa, creativa y abierta a nuevas ideas, experiencias y perspectivas no convencionales.",
+    "Responsabilidad": "La responsabilidad (Conscientiousness) se refiere a la autodisciplina, la planificación, la fiabilidad y la orientación a objetivos. Las personas responsables son organizadas y diligentes.",
+    "Extraversión": "La extraversión (Extraversion) se caracteriza por la sociabilidad, la asertividad, la energía y la tendencia a buscar estimulación y compañía de otros.",
+    "Amabilidad": "La amabilidad (Agreeableness) se relaciona con ser cooperativo, compasivo, empático y considerado. Las personas amables tienden a evitar conflictos.",
+    "Neuroticismo": "El neuroticismo (Neuroticism) describe la tendencia a experimentar emociones negativas como ansiedad, tristeza, irritabilidad y a tener inestabilidad emocional",
+    "Machiavellismo": "El Maquiavelismo es un rasgo de personalidad que se enfoca en la manipulación y la explotación interpersonal, el cinismo y la falta de moralidad para lograr objetivos personales.",
+    "Narcisismo": "El Narcisismo se caracteriza por la grandiosidad, el derecho a un trato especial, la necesidad de admiración y una baja empatía hacia los demás.",
+    "Psicopatía": "La Psicopatía se define por la impulsividad, la búsqueda de emociones fuertes, la falta de remordimiento y una marcada incapacidad para sentir miedo o empatía."
     };
 
     this.usuario = [75, 60, 55, 80, 40, 30, 45, 20];
@@ -44,6 +44,8 @@ export class ResultadosView {
     this.mostSimilarEl = document.querySelector(".most-similar-llm");
     this.radarCanvas = document.getElementById("radarChart");
     this.barCanvas = document.getElementById("barChart");
+    this.barCanvasBigFive = document.getElementById("barChartBigFive");
+    this.barCanvasDark = document.getElementById("barChartDark");
   }
 
   init() {
@@ -110,86 +112,137 @@ export class ResultadosView {
     const masSimilar = this.calcularLLMMasSimilar();
     const valores = this.llms[masSimilar];
 
-    this.tableBody.innerHTML = this.rasgos.map((r, i) => {
+    const tabla = document.getElementById("comparison");
+    tabla.innerHTML = ""; // limpiar contenido anterior
+
+    // 🔹 Crear encabezados dinámicos
+    const headers = ["Rasgo", "Usuario", masSimilar, "Diferencia"];
+    const thead = document.createElement("thead");
+    const headRow = document.createElement("tr");
+
+    headers.forEach(h => {
+      const th = document.createElement("th");
+      th.textContent = h;
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    tabla.appendChild(thead);
+
+    // 🔹 Crear cuerpo de tabla
+    const tbody = document.createElement("tbody");
+
+    this.rasgos.forEach((r, i) => {
+      const fila = document.createElement("tr");
       const dif = (this.usuario[i] - valores[i]).toFixed(1);
       const signo = dif > 0 ? "+" : "";
-      return `
-        <tr>
-          <td>${r}</td>
-          <td>${this.usuario[i]}</td>
-          <td>${valores[i]}</td>
-          <td>${signo}${dif}</td>
-        </tr>
+
+      fila.innerHTML = `
+        <td>${r}</td>
+        <td>${this.usuario[i]}</td>
+        <td>${valores[i]}</td>
+        <td>${signo}${dif}</td>
       `;
-    }).join('');
+
+      tbody.appendChild(fila);
+    });
+
+    tabla.appendChild(tbody);
   }
+
 
 
   inicializarGraficos() {
-    const hexToRgba = (hex, alpha) => {
-      const r = parseInt(hex.slice(1, 3), 16);
-      const g = parseInt(hex.slice(3, 5), 16);
-      const b = parseInt(hex.slice(5, 7), 16);
-      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  const hexToRgba = (hex, alpha) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
+
+  const USER_COLOR = '#16348C';
+  const LLM_PALETTE = ['#6586E7', '#884FFD', '#B18BFD', '#FFA64D', '#FF8000'];
+
+  this.llmColors = {};
+  Object.keys(this.llms).forEach((name, index) => {
+    const color = LLM_PALETTE[index % LLM_PALETTE.length];
+    this.llmColors[name] = {
+      fill: hexToRgba(color, 0.2),
+      border: color,
+      bar: hexToRgba(color, 0.8)
     };
+  });
 
-    const USER_COLOR = '#16348C';
-    const LLM_PALETTE = ['#6586E7', '#884FFD', '#B18BFD', '#FFA64D', '#FF8000'];
+  // 🔹 Radar general (sigue igual)
+  this.radarChart = new Chart(this.radarCanvas, {
+    type: 'radar',
+    data: {
+      labels: this.rasgos,
+      datasets: [
+        {
+          label: 'Usuario',
+          data: this.usuario,
+          backgroundColor: hexToRgba(USER_COLOR, 0.2),
+          borderColor: USER_COLOR,
+          borderWidth: 2
+        },
+        ...Object.keys(this.llms).map(llm => ({
+          label: llm,
+          data: this.llms[llm],
+          backgroundColor: this.llmColors[llm].fill,
+          borderColor: this.llmColors[llm].border,
+          borderWidth: 2
+        }))
+      ]
+    },
+    options: { responsive: true }
+  });
 
-    this.llmColors = {};
-    Object.keys(this.llms).forEach((name, index) => {
-      const color = LLM_PALETTE[index % LLM_PALETTE.length];
-      this.llmColors[name] = {
-        fill: hexToRgba(color, 0.2),
-        border: color,
-        bar: hexToRgba(color, 0.8)
-      };
-    });
+  // --- División de rasgos ---
+  const bigFiveIndices = [0, 1, 2, 3, 4]; // primeros cinco
+  const darkIndices = [5, 6, 7]; // últimos tres
 
-    this.radarChart = new Chart(this.radarCanvas, {
-      type: 'radar',
-      data: {
-        labels: this.rasgos,
-        datasets: [
-          {
-            label: 'Usuario',
-            data: this.usuario,
-            backgroundColor: hexToRgba(USER_COLOR, 0.2),
-            borderColor: USER_COLOR,
-            borderWidth: 2
-          },
-          ...Object.keys(this.llms).map(llm => ({
-            label: llm,
-            data: this.llms[llm],
-            backgroundColor: this.llmColors[llm].fill,
-            borderColor: this.llmColors[llm].border,
-            borderWidth: 2
-          }))
-        ]
-      },
-      options: { responsive: true }
-    });
+  // --- Gráfica de barras Big Five ---
+  this.barChartBigFive = new Chart(this.barCanvasBigFive, {
+    type: 'bar',
+    data: {
+      labels: bigFiveIndices.map(i => this.rasgos[i]),
+      datasets: [
+        {
+          label: 'Usuario',
+          data: bigFiveIndices.map(i => this.usuario[i]),
+          backgroundColor: hexToRgba(USER_COLOR, 0.8)
+        },
+        ...Object.keys(this.llms).map(llm => ({
+          label: llm,
+          data: bigFiveIndices.map(i => this.llms[llm][i]),
+          backgroundColor: this.llmColors[llm].bar
+        }))
+      ]
+    },
+    options: { responsive: true }
+  });
 
-    this.barChart = new Chart(this.barCanvas, {
-      type: 'bar',
-      data: {
-        labels: this.rasgos,
-        datasets: [
-          {
-            label: 'Usuario',
-            data: this.usuario,
-            backgroundColor: hexToRgba(USER_COLOR, 0.8)
-          },
-          ...Object.keys(this.llms).map(llm => ({
-            label: llm,
-            data: this.llms[llm],
-            backgroundColor: this.llmColors[llm].bar
-          }))
-        ]
-      },
-      options: { responsive: true }
-    });
-  }
+  // --- Gráfica de barras Dark Traits ---
+  this.barChartDark = new Chart(this.barCanvasDark, {
+    type: 'bar',
+    data: {
+      labels: darkIndices.map(i => this.rasgos[i]),
+      datasets: [
+        {
+          label: 'Usuario',
+          data: darkIndices.map(i => this.usuario[i]),
+          backgroundColor: hexToRgba(USER_COLOR, 0.8)
+        },
+        ...Object.keys(this.llms).map(llm => ({
+          label: llm,
+          data: darkIndices.map(i => this.llms[llm][i]),
+          backgroundColor: this.llmColors[llm].bar
+        }))
+      ]
+    },
+    options: { responsive: true }
+  });
+}
 
   configurarEventos() {
   // --- Eventos de selección de LLM ---
@@ -241,7 +294,10 @@ export class ResultadosView {
     };
 
     const USER_COLOR = '#16348C';
+    const bigFiveIndices = [0, 1, 2, 3, 4];
+    const darkIndices = [5, 6, 7];
 
+    // Radar
     this.radarChart.data.datasets = [
       {
         label: 'Usuario',
@@ -249,36 +305,49 @@ export class ResultadosView {
         backgroundColor: hexToRgba(USER_COLOR, 0.2),
         borderColor: USER_COLOR,
         borderWidth: 2
-      }
+      },
+      ...checkedLLMs.map(llm => ({
+        label: llm,
+        data: this.llms[llm],
+        backgroundColor: this.llmColors[llm].fill,
+        borderColor: this.llmColors[llm].border,
+        borderWidth: 2
+      }))
     ];
 
-    this.barChart.data.datasets = [
+    // Big Five
+    this.barChartBigFive.data.datasets = [
       {
         label: 'Usuario',
-        data: this.usuario,
+        data: bigFiveIndices.map(i => this.usuario[i]),
         backgroundColor: hexToRgba(USER_COLOR, 0.8)
-      }
+      },
+      ...checkedLLMs.map(llm => ({
+        label: llm,
+        data: bigFiveIndices.map(i => this.llms[llm][i]),
+        backgroundColor: this.llmColors[llm].bar
+      }))
     ];
 
-    checkedLLMs.forEach(llm => {
-      const c = this.llmColors[llm];
-      this.radarChart.data.datasets.push({
+    // Dark Traits
+    this.barChartDark.data.datasets = [
+      {
+        label: 'Usuario',
+        data: darkIndices.map(i => this.usuario[i]),
+        backgroundColor: hexToRgba(USER_COLOR, 0.8)
+      },
+      ...checkedLLMs.map(llm => ({
         label: llm,
-        data: this.llms[llm],
-        backgroundColor: c.fill,
-        borderColor: c.border,
-        borderWidth: 2
-      });
-      this.barChart.data.datasets.push({
-        label: llm,
-        data: this.llms[llm],
-        backgroundColor: c.bar
-      });
-    });
+        data: darkIndices.map(i => this.llms[llm][i]),
+        backgroundColor: this.llmColors[llm].bar
+      }))
+    ];
 
     this.radarChart.update();
-    this.barChart.update();
+    this.barChartBigFive.update();
+    this.barChartDark.update();
   }
+
 }
 
 // 🔹 Inicializa solo cuando se cargue el HTML

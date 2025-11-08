@@ -3,7 +3,10 @@
 
   <!-- 🔹 Cards resumen de rasgos -->
   <section class="sumary-traits">
-    <h2>El LLM con los rasgos más similares es:</h2><h3 class="most-similar-llm">Mistral</h3>
+    <div class="most-similar-container">
+      <h2>El LLM con los rasgos más similares es: </h2>
+      <h3 class="most-similar-llm"></h3>
+    </div>
     <!-- Aquí se generan dinámicamente las tarjetas de cada rasgo -->
      <div class="summary-cards"></div>
   </section>
@@ -20,9 +23,15 @@
       <h2>Radar: Usuario vs LLM</h2>
       <canvas id="radarChart"></canvas>
     </div>
+
     <div class="chart-container">
-      <h2>Barras: Comparativa de Rasgos</h2>
-      <canvas id="barChart"></canvas>
+      <h2>Comparación Rasgos Dark Triad</h2>
+      <canvas id="barChartDark"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <h2>Comparación Rasgos Big Five</h2>
+      <canvas id="barChartBigFive"></canvas>
     </div>
   </section>
 
@@ -30,31 +39,30 @@
   <section class="comparative-table">
     <h2>Tabla Comparativa</h2>
     <table id="comparison">
-      <thead>
-        <tr>
-          <th>Rasgo</th>
-          <th>Usuario</th>
-          <th>LLM</th>
-          <th>Diferencia</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- JS llena esta tabla -->
-      </tbody>
+     <!-- JS realiza la tabla -->
     </table>
   </section>
 
-  <!-- 🔹 Botones de exportación -->
-  <section class="export-buttons">
-    <button id="downloadUserPDF">
-      <img src="/src/assets/img/DescargaUser_icon.png" alt="Icono Usuario" class="button-icon">
-      Reporte Individual
-    </button>
-    <button id="downloadComparativePDF">
-      <img src="/src/assets/img/Descarga_icon.png" alt="Icono Vista Completa" class="button-icon">
-      Reporte Vista Completa
-    </button>
+    <!-- Sección de Descargas -->
+  <section class="export-section">
+    <div class="export-title">
+      <hr class="line-top">
+      <h2>Descarga</h2>
+      <hr class="line-bottom">
+    </div>
+
+    <div class="export-buttons">
+      <button id="downloadUserPDF">
+        <img src="/src/assets/img/DescargaUser_icon.png" alt="Icono Usuario" class="button-icon">
+        Reporte Individual
+      </button>
+      <button id="downloadComparativePDF">
+        <img src="/src/assets/img/Descarga_icon.png" alt="Icono Vista Completa" class="button-icon">
+        Reporte Vista Completa
+      </button>
+    </div>
   </section>
+
 
 </div>
 

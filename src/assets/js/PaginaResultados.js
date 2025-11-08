@@ -7,7 +7,7 @@ export class PaginaResultados extends PaginaTemplate {
 
     constructor() {
         super();
-        this.cargarCSS("/src/assets/css/styles2.css");
+        this.cargarCSS("/src/assets/css/Dashboard.css");
         // 2. Crea la Vista
         this.view = new ResultadosView();
         // 3. Crea el Controlador y le "inyecta" la Vista
