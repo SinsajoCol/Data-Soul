@@ -1,5 +1,5 @@
-import { PaginaTemplate } from "/src/assets/js/PaginaTemplate.js";
-import { PaginaLLM } from "/src/assets/js/PaginaLLM.js";
+import { PaginaTemplate } from "./src/assets/js/PaginaTemplate.js";
+import { PaginaLLM } from "./src/assets/js/PaginaLLM.js";
 
 const app = document.getElementById("app");
 

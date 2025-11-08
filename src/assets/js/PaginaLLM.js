@@ -1,4 +1,5 @@
 import { PaginaTemplate } from "./PaginaTemplate.js";
+import { RasgosLLM } from "../../views/RasgosLLM.js";
 
 export class PaginaLLM extends PaginaTemplate {
   constructor() {
@@ -7,13 +8,23 @@ export class PaginaLLM extends PaginaTemplate {
   }
 
   async mostrarContenido() {
-    const response = await fetch("/src/pages/RasgosLLM.html");
-    if (!response.ok) {
-      console.error("Error al cargar /src/pages/RasgosLLM.html:", response.status);
-      return "<p>Error al cargar contenido.</p>";
+    try {
+      const response = await fetch("/src/pages/RasgosLLM.html");
+      if (!response.ok) throw new Error("No se pudo cargar RasgosLLM.html");
+
+      const html = await response.text();
+
+      queueMicrotask(async () => {
+        await new Promise((r) => setTimeout(r, 50));
+        const vista = new RasgosLLM();
+        await vista.inicializar();
+      });
+
+      return html;
+    } catch (error) {
+      console.error("Error cargando contenido de LLM:", error);
+      return `<p style="color:red;text-align:center;">Error cargando la página de Rasgos LLM.</p>`;
     }
-    const html = await response.text();
-    return html;
   }
 
   cargarCSS(ruta) {
@@ -36,7 +47,7 @@ export class PaginaLLM extends PaginaTemplate {
     let sliderSpeed = 0.5;
     let offset = 0;
 
-    function fillSlider() {
+    const fillSlider = () => {
       const sliderWidth = slider.scrollWidth;
       const containerWidth = slider.parentElement.offsetWidth;
       let totalWidth = sliderWidth;
@@ -48,17 +59,18 @@ export class PaginaLLM extends PaginaTemplate {
         });
         totalWidth = slider.scrollWidth;
       }
-    }
+    };
+
     fillSlider();
 
-    function animate() {
+    const animate = () => {
       offset -= sliderSpeed;
       if (Math.abs(offset) >= slider.scrollWidth / 2) {
         offset = 0;
       }
       slider.style.transform = `translateX(${offset}px)`;
       requestAnimationFrame(animate);
-    }
+    };
     animate();
 
     window.addEventListener("resize", () => {
