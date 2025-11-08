@@ -1,16 +1,16 @@
 import { Rasgos } from './Rasgos.js';
 
 export class ModeloLLM {
-    constructor(nombre, estadisticas = []) {
-        this.nombre = nombre;
-        // Esta propiedad reemplaza a 'this.rasgos'
-        this.estadisticas = estadisticas; // Un array de objetos
+    constructor(nombre, rasgos = new Rasgos()) {
+        this.nombre = nombre; // Nombre único del modelo
+        this.rasgos = rasgos; // Colección de rasgos psicométricos
     }
 
     // Verifica si el modelo tiene rasgos válidos (no vacío)
     validar() {
-        return this.estadisticas.length > 0;
+        return this.rasgos.listaRasgos.length > 0;
     }
+
     // Serializa el modelo a un formato JSON
     toJSON() {
         return {
