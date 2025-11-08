@@ -1,5 +1,5 @@
 # Table of contents
 
-* [Page 1](README.md)
-  * [Prueba](page-1/prueba.md)
-  * [📊 Proyecto Psicometría y LLM](page-1/readme.md)
+* [Documentación](README.md)
+  * [Prueba](documentacion/prueba.md)
+  * [📊 Proyecto Psicometría y LLM](documentacion/readme.md)
