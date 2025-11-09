@@ -17,3 +17,9 @@ La necesidad de desarrollar este aplicativo surgió del siguiente cuestionamient
 3. Permitir a los investigadores cargar archivos Excel/CSV con respuestas de un grupo poblacional y procesar automáticamente los resultados.
 4. Generar un reporte comparativo que visualice las similitudes y diferencias entre los perfiles de los LLM (precargados localmente) y las tendencias de los rasgos humanos o grupales.
 5. Descargar los reportes individuales y comparativos en formato PDF (con un tamaño máximo de 5 MB)
+
+#### No incluye:
+
+* Diagnósticos clínicos definitivos.
+* Módulos de seguimiento terapéutico.
+* Conexión directa con sistemas externos (historias clínicas, APIs externas).
