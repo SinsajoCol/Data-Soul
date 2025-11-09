@@ -1,6 +1,8 @@
-# Arquitectura del Sistema
+# 04 Arquitectura del Sistema
 
-###
+### Descripción general
+
+El sistema sigue una **arquitectura monolítica enfocada a cliente,** basada en el patrón **MVC (Modelo-Vista-Controlador)**.
 
 ### Tecnologías
 
