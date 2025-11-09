@@ -2,7 +2,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Open Sans','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   background-color: #f5f6fa;
   color: #333;
 }
@@ -72,6 +72,7 @@ body {
 
 .chart-container h2 {
   text-align: center;
+  font-family: "Poppins", sans-serif;
   margin-bottom: 15px;
 }
 
@@ -90,6 +91,7 @@ canvas {
 
 .comparative-table h2 {
   text-align: center;
+  font-family: "Poppins", sans-serif;
   margin-bottom: 15px;
 }
 
@@ -274,13 +276,13 @@ canvas {
     font-weight: bold;
 }
 
-/* 🔹 Contenedor general de la sección de descarga */
+/* Contenedor general de la sección de descarga */
 .export-section {
   text-align: center;
   margin: 50px 0;
 }
 
-/* 🔹 Título con línea arriba y abajo */
+/* Título descarga entre lineas */
 .export-title {
   display: flex;
   flex-direction: column;
@@ -288,6 +290,7 @@ canvas {
   gap: 10px;
   width: 100%;
   margin-bottom: 30px;
+  font-family: "Poppins", sans-serif;
 }
 
 .export-title hr {
@@ -305,7 +308,7 @@ canvas {
   margin: 0;
 }
 
-/* 🔹 Contenedor de botones */
+/* Contenedor de botones */
 .export-buttons {
   display: flex;
   justify-content: center;
@@ -313,7 +316,7 @@ canvas {
   flex-wrap: wrap;
 }
 
-/* 🔹 Estilo de botones */
+/* Estilo de botones */
 .export-buttons button {
   background-color: #FFA64D;
   color: #000;
