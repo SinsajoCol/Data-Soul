@@ -4,6 +4,11 @@
   --white: #f7f7f7;
   --brand-primary: #11296e;
   --brand-secondary: #cbb2fe;
+  --peppercorn-typography-scale-h3-font-family: OpenSans-SemiBold, sans-serif;
+  --peppercorn-typography-scale-h3-font-size: 31px;
+  --peppercorn-typography-scale-h3-line-height: 47px;
+  --peppercorn-typography-scale-h3-font-weight: 600;
+  --peppercorn-typography-scale-h3-font-style: normal;
   --peppercorn-typography-scale-h2-font-family: Poppins, sans-serif;
   --peppercorn-typography-scale-h2-font-size: 39px;
   --peppercorn-typography-scale-h2-line-height: 59px;
@@ -194,9 +199,22 @@ body {
   position: relative;
   width: 100%;
   max-width: 1000px;
-  margin: 50px auto;
+  margin: 15px auto;
   overflow: hidden;
-  border-radius: 20px;
+}
+
+.titleCarrusel {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 20px; 
+}
+
+.titleCarrusel h2 {
+  margin: 0;
+  font-family: var(--peppercorn-typography-scale-h2-font-family);
+  font-size: 40px;
+  color: var(--brand-primary);
 }
 
 .carousel-main {
@@ -365,7 +383,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 60px;
+  gap: 20px;
   flex-wrap: wrap;
   padding: 60px 20px;
   width: 100%;
@@ -422,13 +440,13 @@ body {
   position: relative;
 }
 
-.sobre-nosotros {
+.titleUs {
   color: var(--black);
   text-align: center;
-  font-family: var(--peppercorn-typography-scale-h2-font-family);
-  font-size: var(--peppercorn-typography-scale-h2-font-size);
-  line-height: var(--peppercorn-typography-scale-h2-line-height);
-  font-weight: var(--peppercorn-typography-scale-h2-font-weight);
+  font-family: var(--peppercorn-typography-scale-h3-font-family);
+  font-size: 25px;
+  line-height: var(--peppercorn-typography-scale-h3-line-height);
+  font-weight: var(--peppercorn-typography-scale-h3-font-weight);
   position: relative;
 }
 
@@ -468,6 +486,14 @@ body {
 
   .lenses {
     filter: blur(2.5px);
+  }
+
+  .titleCarrusel h2 {
+    font-size: clamp(1.1rem, 4vw, 1.8rem);
+  }
+
+  .frame-98 {
+    margin-top: 50px;
   }
 }
 
