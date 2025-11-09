@@ -1,3 +1,38 @@
+:root,
+[data-peppercorn-typography-scale-mode="mode-1"] {
+  --accent-color: #ffa64d;
+  --black: #010101;
+  --white: #f7f7f7;
+  --brand-primary: #11296e;
+  --brand-secondary: #cbb2fe;
+  --peppercorn-typography-scale-h3-font-family: OpenSans-SemiBold, sans-serif;
+  --peppercorn-typography-scale-h3-font-size: 31px;
+  --peppercorn-typography-scale-h3-line-height: 47px;
+  --peppercorn-typography-scale-h3-font-weight: 600;
+  --peppercorn-typography-scale-h3-font-style: normal;
+  --peppercorn-typography-scale-h2-font-family: Poppins, sans-serif;
+  --peppercorn-typography-scale-h2-font-size: 39px;
+  --peppercorn-typography-scale-h2-line-height: 59px;
+  --peppercorn-typography-scale-h2-font-weight: 700;
+  --peppercorn-typography-scale-h2-font-style: normal;
+  --peppercorn-typography-scale-h1-font-family: Poppins, sans-serif;
+  --peppercorn-typography-scale-h1-font-size: 61px;
+  --peppercorn-typography-scale-h1-line-height: 92px;
+  --peppercorn-typography-scale-h1-font-weight: 600;
+  --peppercorn-typography-scale-h1-font-style: normal;
+  --peppercorn-typography-scale-body-font-family: OpenSans, sans-serif;
+  --peppercorn-typography-scale-body-font-size: 20px;
+  --peppercorn-typography-scale-body-line-height: 30px;
+  --peppercorn-typography-scale-body-font-weight: 400;
+  --peppercorn-typography-scale-body-font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* === CONTENEDOR PRINCIPAL === */
 .prueba-grupal-container {
   width: 100%;
@@ -5,27 +40,31 @@
   margin: auto;
   padding: 40px 20px;
   font-family: "Poppins", sans-serif;
-  color: #010101;
+  color: var(--black);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  margin-top: 50px;
 }
 
 /* === TITULOS GENERALES === */
 .prueba-grupal-container h1 {
+  font-family: var(--peppercorn-typography-scale-h1-font-family);
   font-size: 2rem;
-  color: #11296e;
+  color: var(--brand-primary);
   margin-bottom: 10px;
 }
+
 .prueba-grupal-container p {
-  font-size: 1.1rem;
+  font-family: var(--peppercorn-typography-scale-body-font-family);
+  font-size: 1.2rem;
   max-width: 800px;
   line-height: 1.6;
   margin-bottom: 30px;
 }
-/* === SECCIÓN DE PASOS === */
 
+/* === SECCIÓN DE PASOS === */
 .instrucciones-prueba-grupal {
   text-align: center;         /* centra el título y los pasos */
   padding: 20px;
@@ -61,7 +100,9 @@
 }
 
 .instrucciones-prueba-grupal p {
-  font-size: 15px;
+  font-family: var(--peppercorn-typography-scale-body-font-family);
+  font-size: 17px;
+  font-weight: var(--peppercorn-typography-scale-body-font-weight);
   line-height: 1.4;
   margin: 0;
   max-width: 90%;
@@ -77,22 +118,26 @@
 }
 
 .boton-descarga,.boton-importar {
-  background-color: #11296e;
+  background-color: var(--brand-primary);
   color: white;
-  border: 2px solid #11296e;
+  border: 2px solid var(--brand-primary);
   border-radius: 8px;
   padding: 12px 24px;
+  font-family: var(--peppercorn-typography-scale-body-font-family);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
+  flex: 1 1 200px;
+  max-width: 220px;
+  min-width: 160px;
 }
 
 .boton-descarga:hover,
 .boton-importar:hover {
   background-color: #CBB2FE;
-  color: #11296e;
+  color: var(--brand-primary);
 }
 
 /* === DIVISOR DE RECOMENDACIONES === */
@@ -103,6 +148,10 @@
   gap: 15px;
   margin: 0 30px;
   width: 100%; 
+}
+
+#division-recomendaciones h2 {
+  font-family: var(--peppercorn-typography-scale-h2-font-family);
 }
 
 #division-recomendaciones .line-1,
@@ -118,6 +167,7 @@
   flex-direction: column;
   width: 100%;
   align-items: center;
+  margin-top: 30px;
 }
 /* === BLOQUES DE RECOMENDACIÓN === */
 .Recomendaciones article {
@@ -131,11 +181,12 @@
 /* === CUERPO DEL TEXTO (PÁRRAFOS) === */
 .Recomendaciones article p {
   background: #fff;
-  border: 3px solid #11296e;
+  border: 3px solid var(--brand-primary);
   border-radius: 40px;
   padding: 30px 40px;
   flex: 1;
-  font-size: 1rem;
+  font-family: var(--peppercorn-typography-scale-body-font-family);
+  font-size: 18px;
   line-height: 1.6;
   color: #000;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -143,8 +194,10 @@
 
 /* === TÍTULOS (H3) === */
 .Recomendaciones article h3 {
+  font-family: var(--peppercorn-typography-scale-h3-font-family);
   font-size: 1.5rem;
-  color: #11296e;
+  font-weight: 600;
+  color: var(--brand-primary);
   width: 200px;
   text-align: center;
 }
@@ -173,13 +226,19 @@
 
 /* === Dos columnas === */
 @media (max-width: 974px) {
+  .instrucciones-prueba-grupal {
+    gap: 30px;
+  }
   .instrucciones-prueba-grupal .paso {
     width: 45%;
   }
 }
 
-/* === Ajuste entre 662px y 673px === */
-@media (max-width: 673px) {
+/* === Ajuste entre 662px y 674px === */
+@media (max-width: 674px) {
+  .instrucciones-prueba-grupal {
+    gap: 100px;
+  }
   .instrucciones-prueba-grupal .pasos {
     display: flex;
     flex-wrap: wrap;
@@ -201,28 +260,42 @@
     max-width: 85%;
   }
 
-  .boton-descarga, .boton-importar { 
-    width: auto; 
-    text-align: center; 
+  .botones {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
   }
 
-  .Recomendaciones article { 
-    flex-direction: column; 
-    text-align: center; 
-    gap: 20px; 
-  } 
-  
+  .boton-descarga, .boton-importar {
+    flex: none;
+    width: 220px;
+    max-width: none;
+    min-width: 180px;
+  }
+
+  .Recomendaciones article {
+    flex-direction: column !important;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+  }
+
   .Recomendaciones article h3 {
-    max-width: fit-content; 
-  } 
-  
-  .Recomendaciones article p { 
-    width: 100%; 
+    order: 0;
+    width: auto;
+    margin-bottom: 2px;
+  }
+
+  .Recomendaciones article p {
+    order: 1;
+    width: 90%;
+    padding: 20px;
+    font-size: 0.95rem;
   }
 }
 
 /* === Una columna === */
-@media (max-width: 554px) {
+@media (max-width: 555px) {
   .instrucciones-prueba-grupal .paso {
     width: 100%;
   }
