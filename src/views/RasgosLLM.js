@@ -38,21 +38,36 @@ export class RasgosLLM {
         return;
       }
 
+      const mapaRasgos = {
+        "Openness": "Apertura",
+        "Conscientiousness": "Responsabilidad",
+        "Extraversion": "Extroversión",
+        "Agreeableness": "Amabilidad",
+        "Neuroticism": "Neuroticismo",
+        "Narcissism": "Narcicismo",
+        "Psychopathy": "Psicopatía",
+        "Machiavellianism": "Maquiavelismo"
+      };
+
+
       const resultados = contenedor.querySelectorAll('.result');
       const nombresRasgos = Object.keys(rasgos);
       const valores = Object.values(rasgos);
 
-      resultados.forEach((res, index) => {
-        const valor = valores[index] ?? 'N/A';
-        const textoRasgo = nombresRasgos[index] ?? 'Rasgo';
-        res.querySelector('._77').textContent = valor;
-        res.querySelector('.responsabilidad').textContent = textoRasgo;
+      resultados.forEach(res => {
+        const rasgoHTML = res.querySelector('.rasgos').textContent.trim();
+        const claveJSON = Object.keys(mapaRasgos).find(k => mapaRasgos[k] === rasgoHTML);
+
+        const valor = claveJSON ? rasgos[claveJSON] : 'N/A';
+        res.querySelector('.puntaje').textContent = valor;
       });
+
+      const nombreTraducido = nombresRasgos.map(key => mapaRasgos[key] || key);
 
       // Renderiza la gráfica
       const canvas = contenedor.querySelector('canvas');
       if (canvas) {
-        this.crearGrafica(canvas, nombre, nombresRasgos, valores);
+        this.crearGrafica(canvas, nombre, nombreTraducido, valores);
       }
     });
   }
@@ -62,11 +77,8 @@ export class RasgosLLM {
     const cards = document.querySelectorAll('.resultado-card');
 
     for (const card of cards) {
-      // Busca el texto existente en .span o en .text-cont en el HTML de RasgosLLM
-      const tituloElemento =
-        card.querySelector('.span') ||
-        card.querySelector('.text-cont div') ||
-        card.querySelector('.llm-info div');
+      // Busca el texto existente en .text-cont div en el HTML de RasgosLLM
+      const tituloElemento = card.querySelector('.text-cont div')
 
       if (!tituloElemento) continue;
 
@@ -90,15 +102,14 @@ export class RasgosLLM {
     }
 
     const colores = {
-      "Gemma 3.4B": { borde: 'rgba(255, 99, 132, 1)', fondo: 'rgba(255, 99, 132, 0.2)' },
-      "Llama3.1": { borde: 'rgba(54, 162, 235, 1)', fondo: 'rgba(54, 162, 235, 0.2)' },
-      "Mistral7B": { borde: 'rgba(255, 206, 86, 1)', fondo: 'rgba(255, 206, 86, 0.2)' },
-      "ChatGPT": { borde: 'rgba(75, 192, 192, 1)', fondo: 'rgba(75, 192, 192, 0.2)' },
-      "Gemini": { borde: 'rgba(153, 102, 255, 1)', fondo: 'rgba(153, 102, 255, 0.2)' },
-      "Deepseek": { borde: 'rgba(255, 159, 64, 1)', fondo: 'rgba(255, 159, 64, 0.2)' },
+      "Gemma 3.4B": { borde: '#11296E', fondo: 'rgba(17, 41, 110, 0.44)' },
+      "Llama3.1": { borde: '#884FFD', fondo: 'rgba(203, 178, 254, 0.43)' },
+      "Mistral7B": { borde: '#FFA64D', fondo: 'rgba(255, 166, 77, 0.39)' },
+      "Deepseek": { borde: '#5403FA', fondo: 'rgba(101, 134, 231, 0.40)' },
+      "Gemini": { borde: '#C60', fondo: 'rgba(255, 196, 138, 0.54)' }
     };
 
-    const color = colores[nombreModelo] || { borde: 'rgba(75, 192, 192, 1)', fondo: 'rgba(75, 192, 192, 0.2)' };
+    const color = colores[nombreModelo] || { borde: '#884FFD', fondo: 'rgba(203, 178, 254, 0.43)' };
 
     // Crea radar chart
     canvas.chart = new Chart(ctx, {
@@ -112,9 +123,9 @@ export class RasgosLLM {
             borderColor: color.borde,
             backgroundColor: color.fondo,
             borderWidth: 2,
-            pointBackgroundColor: color.borde,
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
+            pointBackgroundColor: '#F7F7F7',
+            pointBorderColor: color.borde,
+            pointHoverBackgroundColor: '#F7F7F7',
             pointHoverBorderColor: color.borde,
           },
         ],
@@ -125,8 +136,9 @@ export class RasgosLLM {
             beginAtZero: true,
             max: 100,
             ticks: { stepSize: 20, showLabelBackdrop: false },
-            grid: { color: 'rgba(231, 48, 48, 0.2)' },
-            angleLines: { color: 'rgba(181, 64, 64, 0.3)' },
+            backgroundColor: '#F0F0F0',
+            grid: { color: '#A6A6A6' },
+            angleLines: { color: '#A6A6A6' },
           },
         },
         plugins: {
