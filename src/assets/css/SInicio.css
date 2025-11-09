@@ -314,6 +314,12 @@ body {
   transform: rotateY(180deg);
   font-size: 17px;
   padding: 30px;
+  color: var(--black);
+}
+
+.tarjeta-back h3 {
+  font-family: var(--peppercorn-typography-scale-h3-font-family);
+  font-size: 25px;
 }
 
 .tarjeta-back p{

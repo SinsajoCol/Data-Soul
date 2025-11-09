@@ -249,7 +249,7 @@ main.contenido {
   backdrop-filter: blur(4px);
   justify-content: center;
   align-items: center;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding: 40px 0;
 }
 
@@ -260,7 +260,7 @@ main.contenido {
 .consentimiento-informado {
   background: linear-gradient(180deg, rgba(17, 41, 110, 1) 0%, rgba(136, 79, 253, 1) 58.65384340286255%, rgba(175, 145, 236, 1) 99.98999834060669%);
   border-radius: 60px;
-  width: 35%;
+  width: 45%;
   max-width: 900px;
   max-height: 90vh;
   padding: 40px 50px;
@@ -319,8 +319,7 @@ main.contenido {
   color: var(--white);
   text-align: center;
   font-family: var(--peppercorn-typography-scale-h3-font-family);
-  font-size: var(--peppercorn-typography-scale-h3-font-size);
-  line-height: var(--peppercorn-typography-scale-h3-line-height);
+  font-size: 1rem;
   font-weight: var(--peppercorn-typography-scale-h3-font-weight);
   position: relative;
   align-self: stretch;
@@ -463,7 +462,7 @@ main.contenido {
   height: 24px;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1090px) {
   .modalText {
     max-width: 40%;
     padding: 25px;
@@ -646,6 +645,12 @@ main.contenido {
   .lucideIX, .lucidICheck {
     width: 20px;
     height: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .consentimiento-informado{
+    width: 80%;
   }
 }
 
