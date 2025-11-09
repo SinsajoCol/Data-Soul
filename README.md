@@ -2,7 +2,7 @@
 icon: hand-wave
 ---
 
-# 📊 Proyecto Psicometría y LLM
+# Documentación
 
 1. 📖 Descripción del Proyecto Este repositorio contiene el desarrollo del **aplicativo web para la evaluación de rasgos no cognitivos** mediante pruebas psicométricas y su comparación con modelos de lenguaje (LLM).
 2. 👥 Equipo de Desarrollo
@@ -56,11 +56,11 @@ Para mantener el desarrollo ordenado, seguimos la siguiente estrategia de ramas:
 
 A continuación, se presentan diagramas que ilustran el flujo de ramas y su estructura:
 
-<div align="center"><img src="../docs/Imagenes/Diagrama de arbol.jpg" alt="Flujo de Ramas - Git Flow" width="600"></div>
+<div align="center"><img src="broken-reference" alt="Flujo de Ramas - Git Flow" width="600"></div>
 
 <p align="center"><em>Diagrama de líneas mostrando las fases de desarrollo y entrega de las ramas.</em></p>
 
-<div align="center"><img src="../docs/Imagenes/Gitflow.jpg" alt="Árbol de Ramas del Repositorio" width="600"></div>
+<div align="center"><img src="broken-reference" alt="Árbol de Ramas del Repositorio" width="600"></div>
 
 <p align="center"><em>Diagrama de árbol que representa la jerarquía y fusión de ramas.</em></p>
 

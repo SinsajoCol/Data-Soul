@@ -8,24 +8,54 @@ Este manual está diseñado para guiar al usuario final del aplicativo Data-Soul
 
 #### Modo Usuario no técnico (Individual):
 
-1. Abre el navegador e ingresa a la URL del aplicativo(Link).
-2. Elige la opción “Prueba Individual”.
-3. Acepta el aviso de consentimiento informado.
-4. Responde el cuestionario psicométrico.
-5. Haz clic en “Terminar” → espera el cálculo automático (aproximadamente 3 segundos).
-6. Observa el dashboard con gráficos que muestran: tus resultados, los perfiles de los LLM y la similitud.
-7. Haz clic en “Descargar reporte” para obtener un PDF con tus resultados.
+* Abre el navegador e ingresa al aplicativo
+
+<figure><img src="../.gitbook/assets/Pagina de inicio.png" alt=""><figcaption></figcaption></figure>
+
+* Elige la opción **“Realizar Prueba”**.
+
+<figure><img src="../.gitbook/assets/Realizar Prueba.png" alt=""><figcaption></figcaption></figure>
+
+* Elige la opción **“Prueba Individual”.**
+
+<figure><img src="../.gitbook/assets/Selecciona Prueba individual.png" alt=""><figcaption></figcaption></figure>
+
+* Acepta el aviso de consentimiento informado.
+
+<figure><img src="../.gitbook/assets/consentimiento.png" alt=""><figcaption></figcaption></figure>
+
+* Responde el cuestionario psicométrico.
+* Haz clic en “Terminar” → espera el cálculo automático (aproximadamente 3 segundos).
+* Observa el dashboard con gráficos que muestran: tus resultados, los perfiles de los LLM y la similitud.
+* Haz clic en “Descargar reporte” para obtener un PDF con tus resultados.
+
+
+
+
 
 #### Modo Investigador (Grupal):
 
-1. Abre el navegador e ingresa a la URL del aplicativo(Link).
-2. Accede a “Prueba Grupal”.
-3. Descarga la plantilla Excel (.xlsx).
-4. Recoge respuestas del grupo poblacional.
-5. Carga el archivo Excel/CSV en la interfaz.
-6. El sistema procesa los resultados del grupo (hasta \~50 personas, en \~10 segundos).
-7. Visualiza la comparativa del grupo frente a perfiles de LLM.
-8. Descarga el reporte grupal en PDF.
+* Abre el navegador e ingresa al aplicativo.
+
+<figure><img src="../.gitbook/assets/Pagina de inicio.png" alt=""><figcaption></figcaption></figure>
+
+* Elige la opción “Realizar Prueba”.
+
+<figure><img src="../.gitbook/assets/Realizar Prueba.png" alt=""><figcaption></figcaption></figure>
+
+* Accede a “Prueba Grupal”.
+
+<figure><img src="../.gitbook/assets/Selecciona Prueba Grupal.png" alt=""><figcaption></figcaption></figure>
+
+* Descarga la plantilla Excel (.xlsx).
+
+
+
+* Recoge respuestas del grupo poblacional.
+* Carga el archivo Excel/CSV en la interfaz.
+* El sistema procesa los resultados del grupo (hasta \~50 personas, en \~10 segundos).
+* Visualiza la comparativa del grupo frente a perfiles de LLM.
+* Descarga el reporte grupal en PDF.
 
 ### Capturas de pantalla
 

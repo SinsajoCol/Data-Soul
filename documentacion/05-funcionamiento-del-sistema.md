@@ -7,6 +7,20 @@
 
 ### Módulos principales
 
+#### 1. Procesamiento
+
+* **Modelo :**
+* **Controlador:**
+* **Vista:**
+
+#### 2. Comparación
+
+* **Modelo :**
+* **Controlador:**
+* **Vista:**
+
+#### 3. Reportes
+
 * **Modelo :**
 * **Controlador:**
 * **Vista:**
