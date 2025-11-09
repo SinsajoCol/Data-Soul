@@ -34,4 +34,12 @@ El sistema sigue una **arquitectura monolítica enfocada a cliente,** basada en 
 * **Backend**: Procesa datos y genera PDF.
 * **Integración LLM**: Evalúa modelos en /test/.
 
-(Añade diagramas: Usa herramientas como Draw.io y sube imágenes de los diagramas del README, como "Flujo de Ramas - Git Flow").
+### Diagramas&#x20;
+
+#### Arquitectura de Sistema
+
+<figure><img src="../.gitbook/assets/Arquitectura de Sistema .png" alt=""><figcaption></figcaption></figure>
+
+#### Arquitectura de software
+
+<figure><img src="../.gitbook/assets/Arquitectura de SW.png" alt=""><figcaption></figcaption></figure>

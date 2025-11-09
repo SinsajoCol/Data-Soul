@@ -25,11 +25,20 @@ Este manual está diseñado para guiar al usuario final del aplicativo Data-Soul
 <figure><img src="../.gitbook/assets/consentimiento.png" alt=""><figcaption></figcaption></figure>
 
 * Responde el cuestionario psicométrico.
+
+<figure><img src="../.gitbook/assets/Cuestionario.png" alt=""><figcaption></figcaption></figure>
+
 * Haz clic en “Terminar” → espera el cálculo automático (aproximadamente 3 segundos).
+
+<figure><img src="../.gitbook/assets/Finaliza cuestionario.png" alt=""><figcaption></figcaption></figure>
+
 * Observa el dashboard con gráficos que muestran: tus resultados, los perfiles de los LLM y la similitud.
+
+<div><figure><img src="../.gitbook/assets/Dashboard1 (1).png" alt=""><figcaption></figcaption></figure> <figure><img src="../.gitbook/assets/Dashboard2 (1).png" alt=""><figcaption></figcaption></figure> <figure><img src="../.gitbook/assets/Dashboard3 (1).png" alt=""><figcaption></figcaption></figure> <figure><img src="../.gitbook/assets/Dashboard4 (1).png" alt=""><figcaption></figcaption></figure></div>
+
 * Haz clic en “Descargar reporte” para obtener un PDF con tus resultados.
 
-
+<figure><img src="../.gitbook/assets/Descarga.png" alt=""><figcaption></figcaption></figure>
 
 
 
@@ -49,15 +58,18 @@ Este manual está diseñado para guiar al usuario final del aplicativo Data-Soul
 
 * Descarga la plantilla Excel (.xlsx).
 
-
+<figure><img src="../.gitbook/assets/Descarga Plantilla.png" alt=""><figcaption></figcaption></figure>
 
 * Recoge respuestas del grupo poblacional.
 * Carga el archivo Excel/CSV en la interfaz.
+
+<figure><img src="../.gitbook/assets/ImportarPlantilla.png" alt=""><figcaption></figcaption></figure>
+
 * El sistema procesa los resultados del grupo (hasta \~50 personas, en \~10 segundos).
 * Visualiza la comparativa del grupo frente a perfiles de LLM.
 * Descarga el reporte grupal en PDF.
 
-### Capturas de pantalla
+
 
 
 
