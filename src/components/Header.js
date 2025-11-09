@@ -67,29 +67,29 @@ export class Header {
             </div>
             
             <div class="secret">
-              <br><h4>Confidencialidad y tratamiento de la información:</h4>
+              <h4>Confidencialidad y tratamiento de la información:</h4>
               <p>• Data Soul no solicita ni almacena datos personales (nombre, correo,
               edad, género u otros identificadores).
 
-              <br>• Las respuestas se procesan de forma local y temporal, únicamente
+              • Las respuestas se procesan de forma local y temporal, únicamente
               para calcular los resultados de la prueba en la sesión actual.
 
-              <br>• No se guardan ni transmiten los resultados a servidores externos.
+              • No se guardan ni transmiten los resultados a servidores externos.
 
-              <br>• Los datos presentados son anónimos y no permiten identificar a los
+              • Los datos presentados son anónimos y no permiten identificar a los
               participantes.</p>
             </div>
 
             <div class="accept">
-              <br><h4>Carácter voluntario de la participación:</h4>
+              <h4>Carácter voluntario de la participación:</h4>
               <p>La participación en esta aplicación es completamente voluntaria.
               Puede abandonar la prueba en cualquier momento antes de finalizarla,
               sin que esto tenga consecuencias de ningún tipo</p>
             </div>
             <div class="infoAccept">
-              <br><br><br><h4>Consentimiento:</h4>
+              <h4>Consentimiento:</h4>
               <p>Al aceptar, confirmas que has leído la información anterior y deseas
-              continuar con la evaluación.</p><br>
+              continuar con la evaluación.</p>
             </div>
           </div>
 

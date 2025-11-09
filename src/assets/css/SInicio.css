@@ -265,6 +265,7 @@ body {
 }
 
 .tarjeta-front h2 {
+  font-family: var(--peppercorn-typography-scale-h2-font-family);
   font-size: 22px;
   margin-bottom: 5px;
   margin-right: 0;
