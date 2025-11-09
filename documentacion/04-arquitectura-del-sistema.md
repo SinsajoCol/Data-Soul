@@ -2,7 +2,7 @@
 
 ### Descripción general
 
-El sistema sigue una **arquitectura monolítica enfocada a cliente,** basada en el patrón **MVC (Modelo-Vista-Controlador)**.
+El sistema sigue una **arquitectura monolítica enfocada a cliente,** basada en el patrón arquitectónico **MVC (Modelo-Vista-Controlador)**.
 
 ### Tecnologías
 

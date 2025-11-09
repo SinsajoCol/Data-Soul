@@ -7,4 +7,3 @@
   * [04 Arquitectura del Sistema](documentacion/04-arquitectura-del-sistema.md)
   * [05 Funcionamiento del sistema](documentacion/05-funcionamiento-del-sistema.md)
   * [06 Pruebas](documentacion/06-pruebas.md)
-* [📊 Proyecto Psicometría y LLM](readme.md)
