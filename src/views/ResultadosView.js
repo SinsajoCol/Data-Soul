@@ -52,7 +52,9 @@ export class ResultadosView {
     this.conectarDOM();
     this.generarLLMCards();
     this.generarCardsResumen();
-    this.generarTabla();
+    //Cuestionario: Si se quiere ver la tabla para el individuo: this.generarTabla("usuario")
+    //Archivo: Si se quiere ver la tabla para del grupo y los LLM: this.generarTabla("llm")
+    this.generarTabla("llm"); 
     this.inicializarGraficos();
     this.configurarEventos();
   }
@@ -108,11 +110,27 @@ export class ResultadosView {
     `).join('');
   }
 
-  generarTabla() {
+  //Aquí se define el tipo de tabla a mostrar
+  generarTabla(tipo) {
+    const tabla = document.getElementById("comparison");
+    tabla.innerHTML = ""; // limpiar contenido previo
+
+    if (tipo === "usuario") {
+      // Tabla individual (la que ya tienes)
+      this.generarTablaIndividual(tabla);
+    } else if (tipo === "llm") {
+      // Tabla por LLM y rasgos (lo que me pediste)
+      this.generarTablaLLM(tabla);
+    }
+  }
+
+  //Tabla para el usuario no técnico
+  generarTablaIndividual() {
     const masSimilar = this.calcularLLMMasSimilar();
     const valores = this.llms[masSimilar];
 
     const tabla = document.getElementById("comparison");
+    if(!tabla) return;
     tabla.innerHTML = ""; // limpiar contenido anterior
 
     // 🔹 Crear encabezados dinámicos
@@ -149,7 +167,39 @@ export class ResultadosView {
     tabla.appendChild(tbody);
   }
 
+  //Tabla para el grupo y los LLM con los %
+  generarTablaLLM(tabla) {
+    if(!tabla) return;
 
+    const thead = document.createElement("thead");
+    const headRow = document.createElement("tr");
+    const emptyTh = document.createElement("th");
+    emptyTh.textContent = "LLM";
+    headRow.appendChild(emptyTh);
+    
+    this.rasgos.forEach(r => {
+      const th = document.createElement("th");
+      th.textContent = r;
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    tabla.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    Object.entries(this.llms).forEach(([llmName, valores]) => {
+      const fila = document.createElement("tr");
+      const nombreTd = document.createElement("td");
+      nombreTd.textContent = llmName;
+      fila.appendChild(nombreTd);
+      valores.forEach(v => {
+        const td = document.createElement("td");
+        td.textContent = v;
+        fila.appendChild(td);
+      });
+      tbody.appendChild(fila);
+    });
+    tabla.appendChild(tbody);
+  }
 
   inicializarGraficos() {
   const hexToRgba = (hex, alpha) => {
