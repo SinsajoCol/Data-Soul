@@ -194,7 +194,15 @@ export class ResultadosView {
         }))
       ]
     },
-    options: { responsive: true }
+    options: { 
+      responsive: true,
+      plugins: {
+        legend:{
+          display: true,
+          onClick: null
+        }
+      } 
+    }
   });
 
   // --- División de rasgos ---
@@ -219,7 +227,15 @@ export class ResultadosView {
         }))
       ]
     },
-    options: { responsive: true }
+    options: { 
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          onClick: null
+        }
+      }
+    }
   });
 
   // --- Gráfica de barras Dark Traits ---
@@ -240,7 +256,15 @@ export class ResultadosView {
         }))
       ]
     },
-    options: { responsive: true }
+    options: { 
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          onClick: null
+        }
+      }
+    }
   });
 }
 
