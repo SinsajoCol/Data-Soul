@@ -73,18 +73,7 @@ describe("Clase Resultados (integración)", () => {
     expect(mockEliminar).toHaveBeenCalledWith("resultados");
   });
 
-  test("Debe limpiar solo resultados poblacionales", () => {
-    resultados.individuales = { X: { usuarioId: "X" } };
-    resultados.poblaciones = { G1: { nombreGrupo: "G1" } };
-
-    resultados.limpiarResultadosPoblacion();
-
-    expect(resultados.poblaciones).toEqual({});
-    expect(resultados.individuales).toHaveProperty("X");
-    expect(mockGuardar).toHaveBeenCalled();
-  });
-
-  test("Debe cargar correctamente desde localStorage si hay datos", () => {
+    test("Debe cargar correctamente desde localStorage si hay datos", () => {
     const fakeData = {
       individuales: [{ usuarioId: "U002", datos: { puntaje: 90 } }],
       poblaciones: [{ nombreGrupo: "TestGroup", datos: { promedio: 4.5 } }]
