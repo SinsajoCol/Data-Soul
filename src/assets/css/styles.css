@@ -83,7 +83,7 @@ nav a {
 
 .nameBrand h1{
   color: #F7F7F7;
-  font-family: var(--H1-font-family);
+  font-family: var(--peppercorn-typography-scale-h1-font-family);
   font-size: 28px;
   font-style: normal;
   font-weight: 700;

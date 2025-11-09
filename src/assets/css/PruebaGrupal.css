@@ -34,7 +34,7 @@
 /* contenedor de los pasos */
 .instrucciones-prueba-grupal .pasos {
   display: flex;              /* pone los pasos en una línea */
-  justify-content: space-around; /* separa los pasos de forma uniforme */
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;            /* si la pantalla es pequeña, se bajan */
   margin-top: 16px;
@@ -43,8 +43,10 @@
 
 /* cada paso individual */
 .instrucciones-prueba-grupal .paso {
-  width: 22%;                 /* cada paso ocupa aprox. 1/4 del ancho */
-  min-width: 150px;           /* evita que se encojan demasiado */
+  width: calc(25% - 20px);
+  min-width: 200px;
+  height: auto;
+  justify-content: flex-start;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,11 +57,14 @@
   width: 200px;
   height: 200px;
   object-fit: contain;
+  margin-bottom: 8px;
 }
 
 .instrucciones-prueba-grupal p {
-  margin-top: 10px;
   font-size: 15px;
+  line-height: 1.4;
+  margin: 0;
+  max-width: 90%;
 }
 
 /* === BOTONES === */
@@ -153,30 +158,81 @@
 .Recomendaciones .visualizar-resultados {
   flex-direction: row-reverse; /* título a la izquierda */
 }
-/* === RESPONSIVE (pantallas pequeñas) === */
-@media (max-width: 768px) {
-  .Recomendaciones article {
-    flex-direction: column;
-    text-align: center;
+
+@media (max-width: 1200px) {
+  .instrucciones-prueba-grupal .pasos {
+    justify-content: space-around;
+    align-items: flex-start;
   }
 
-  .Recomendaciones article h3 {
-    width: auto;
-  }
-
-  .Recomendaciones article p {
-    width: 100%;
+  .instrucciones-prueba-grupal .paso {
+    width: 23%;
+    height: auto;
   }
 }
 
-@media (max-width: 600px) {
-  .prueba-grupal-container h1 {
-    font-size: 1.6rem;
+/* === Dos columnas === */
+@media (max-width: 974px) {
+  .instrucciones-prueba-grupal .paso {
+    width: 45%;
+  }
+}
+
+/* === Ajuste entre 662px y 673px === */
+@media (max-width: 673px) {
+  .instrucciones-prueba-grupal .pasos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+  }
+  .instrucciones-prueba-grupal .paso {
+    width: 45%;
   }
 
-  .boton-descarga,
-  .boton-importar {
+  .instrucciones-prueba-grupal img {
+    width: 160px;
+    height: 160px;
+  }
+
+  .instrucciones-prueba-grupal p {
+    font-size: 14px;
+    line-height: 1.3;
+    max-width: 85%;
+  }
+
+  .boton-descarga, .boton-importar { 
+    width: auto; 
+    text-align: center; 
+  }
+
+  .Recomendaciones article { 
+    flex-direction: column; 
+    text-align: center; 
+    gap: 20px; 
+  } 
+  
+  .Recomendaciones article h3 {
+    max-width: fit-content; 
+  } 
+  
+  .Recomendaciones article p { 
+    width: 100%; 
+  }
+}
+
+/* === Una columna === */
+@media (max-width: 554px) {
+  .instrucciones-prueba-grupal .paso {
     width: 100%;
-    text-align: center;
+  }
+
+  .instrucciones-prueba-grupal img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .instrucciones-prueba-grupal p {
+    max-width: 90%;
   }
 }
