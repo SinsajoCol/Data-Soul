@@ -18,10 +18,13 @@ async function cargarPagina(nombre, parametro) {
     case "cuestionario":
       pagina = new PaginaCuestionario();
       console.log("Página de cuestionario cargada");
+      break;  
     case "PruebaGrupal":
       pagina = new PaginaPruebaGrupal();
       console.log("Página de prueba grupal cargada");
       break;
+    case "resultados":
+      pagina = new PaginaResultados(parametro);
       console.log("Página de resultados cargada");
       break;
     default:
