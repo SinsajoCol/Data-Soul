@@ -1,12 +1,12 @@
 # 03 Manual de usario
 
-### Introducción
+## Introducción
 
 Este manual está diseñado para guiar al usuario final del aplicativo Data-Soul, ya sea para la modalidad individual o grupal, sin necesidad de conocimientos técnicos.
 
-### Flujo de uso principal
+## Flujo de uso principal
 
-#### Modo Usuario no técnico (Individual):
+### Modo Usuario no técnico (Individual):
 
 * Abre el navegador e ingresa al aplicativo
 
@@ -42,7 +42,7 @@ Este manual está diseñado para guiar al usuario final del aplicativo Data-Soul
 
 
 
-#### Modo Investigador (Grupal):
+### Modo Investigador (Grupal):
 
 * Abre el navegador e ingresa al aplicativo.
 
@@ -73,7 +73,7 @@ Este manual está diseñado para guiar al usuario final del aplicativo Data-Soul
 
 
 
-### Consejos de uso
+## Consejos de uso
 
 * Lee cada pregunta cuidadosamente y responde sin interrupciones.
 * No recargues la página mientras respondes.
@@ -81,7 +81,7 @@ Este manual está diseñado para guiar al usuario final del aplicativo Data-Soul
 * El archivo de carga grupal debe cumplir la estructura oficial y no superar 5 MB.
 * Recuerda que los resultados son **informativos**, no sustituyen una evaluación profesional.
 
-### Interpretación de resultados
+## Interpretación de resultados
 
 * El reporte muestra **8 rasgos no cognitivos** evaluados: los cinco del Big Five (Apertura, Responsabilidad, Extraversión, Amabilidad, Neuroticismo) y los tres de la Dark Triad (Narcisismo, Maquiavelismo, Psicopatía).
 * Los resultados se presentan en gráficas (barra o radar) comparando el usuario/grupo con los perfiles de LLM.

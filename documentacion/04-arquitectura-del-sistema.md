@@ -1,16 +1,22 @@
 # 04 Arquitectura del Sistema
 
-### Descripción general
+## Descripción general
 
 El sistema sigue una **arquitectura monolítica enfocada a cliente,** basada en el patrón arquitectónico **MVC (Modelo-Vista-Controlador)**.
 
-### Tecnologías
+## Tecnologías
 
 * Frontend: HTML, CSS, JavaScript.
 * Backend: JavaScript (Full JS).
 * Herramientas: Git & GitHub para control de versiones.
 
-### Estructura del repositorio
+## Componentes clave
+
+* **Frontend**: Maneja la UI y carga de archivos.
+* **Backend**: Procesa datos y genera PDF.
+* **Integración LLM**: Evalúa modelos en /test/.
+
+## Estructura del repositorio
 
 📂 proyecto-psicometria-llm\
 ├── 📂 docs/ # Documentación\
@@ -28,18 +34,12 @@ El sistema sigue una **arquitectura monolítica enfocada a cliente,** basada en 
 ├── README.md\
 └── LICENSE
 
-### Componentes clave
+## Diagramas de Arquitectura
 
-* **Frontend**: Maneja la UI y carga de archivos.
-* **Backend**: Procesa datos y genera PDF.
-* **Integración LLM**: Evalúa modelos en /test/.
-
-### Diagramas&#x20;
-
-#### Arquitectura de Sistema
+### Arquitectura de Sistema
 
 <figure><img src="../.gitbook/assets/Arquitectura de Sistema .png" alt=""><figcaption></figcaption></figure>
 
-#### Arquitectura de software
+### Arquitectura de software
 
 <figure><img src="../.gitbook/assets/Arquitectura de SW.png" alt=""><figcaption></figcaption></figure>

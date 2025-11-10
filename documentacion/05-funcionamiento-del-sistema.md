@@ -5,9 +5,67 @@
 1. **Usuario no técnico**: El usuario selecciona “Prueba Individual” → responde el cuestionario → se ejecuta el cálculo del puntaje en el navegador → se compara con los perfiles de LLM → se muestra el dashboard de resultados → opción de descarga en PDF.
 2. **Investigador**: El investigador carga archivo Excel/CSV → el sistema valida y procesa el archivo (hasta \~50 personas) → calcula puntajes promedio del grupo → compara con los perfiles de LLM → genera visualización grupal → descarga en PDF.
 
-## ¿Cómo se hacen las comparaciones? &#x20;
+## ¿Cómo se hacen las comparaciones?&#x20;
 
-### 1. Comparación de rasgos entre el modelo LLM y el grupo poblacional
+### 1. Comparación de rasgos entre el modelo LLM y el Usuario no técnico.
+
+La comparación de resultados de rasgos entre un modelo LLM  y un usuario no técnico se realiza a través de un proceso estadístico y de similitud implementado en el código de la aplicación. A continuación, se explicará el paso a paso de cómo funciona:
+
+<details>
+
+<summary>1. Datos de Entrada</summary>
+
+* **Usuario no técnico**:Los datos provienen de cuestionarios psicométricos que miden rasgos de personalidad (ej. Extraversión, Amabilidad, etc.). Cada rasgo tiene un puntaje numérico (generalmente en una escala de 1 a 5).
+  * **Individuo**: El puntaje directo del usuario se usa como "media" (promedio), con intervalo de confianza (IC) igual al valor mismo (sin varianza).
+* **Modelo LLM**: Los datos se cargan desde un archivo JSON (`llm_raw.json`) que contiene conteos de respuestas "altas" y "bajas" por rasgo (ej. para Extraversión: 200 altos, 800 bajos). A partir de esto, se calculan estadísticas similares:
+  * Media: Promedio ponderado (ej. alto = 4.2, bajo = 1.8).
+  * Desviación estándar: Basada en varianza binomial.
+  * Error estándar y IC 95%: Usando z-crítico de 1.96 para 95% de confianza.
+
+
+
+</details>
+
+<details>
+
+<summary>2. Proceso de Comparación</summary>
+
+* **Clase `ComparadorRasgos`**: Es el núcleo de la comparación. Usa una estrategia de similitud (correlación de Pearson normalizada entre 0 y 1).
+  * **Comparación individual**: Toma los valores de rasgos del usuario y del modelo, calcula la similitud (coeficiente de correlación). Resultado: Un objeto `ComparacionResultado` con etiquetas de rasgos, valores del usuario, valores del modelo y puntaje de similitud.
+  * **Comparación con todos los modelos**: Repite la comparación individual para cada modelo LLM disponible.
+* **Fórmula de similitud por defecto**: Correlación de Pearson simplificada:
+  * Calcula medias de los valores de usuario y modelo.
+  * Computa numerador (suma de diferencias) y denominadores (varianzas).
+  * Resultado: Un valor entre 0 (sin similitud) y 1 (perfecta correlación positiva).
+
+</details>
+
+<details>
+
+<summary>3. Visualización y Salida</summary>
+
+* **Controlador (`ComparacionController`)**: Carga los datos, bifurca entre individuo/grupo, calcula estadísticas y pasa a la vista.
+* **Vista (`ComparacionView`)**: Renderiza tablas HTML comparativas:
+  * Una tabla para el usuario/grupo (con media, límites IC 95%).
+  * Una tabla por modelo LLM (con las mismas estadísticas).
+  * No se muestra directamente el puntaje de similitud en la vista actual; se calcula en el comparador pero se usa para análisis interno (ej. en consola para depuración).
+* **Salida en consola**: Para depuración, imprime tablas de estadísticas humanas y de LLMs.
+
+</details>
+
+<details>
+
+<summary>4. Ejemplo </summary>
+
+Supongamos un rasgo "Extraversión":
+
+* Usuario (individuo): Puntaje = 3.5 → Media = 3.5, IC = \[3.5, 3.5].
+* Modelo LLM (ej. Gemma): Media = 3.2, IC = \[3.0, 3.4].
+* Similitud: Correlación basada en arrays de valores (si hay múltiples rasgos).
+
+</details>
+
+### 2. Comparación de rasgos entre el modelo LLM y el grupo poblacional
 
 El proceso de comparación de rasgos tiene como objetivo analizar la similitud entre los resultados obtenidos por los modelos de lenguaje (LLM) y los del grupo poblacional, en base a los rasgos no cognitivos que mide el dataset TRAIT a los LLM.
 
@@ -115,10 +173,6 @@ Este modelo se considera el que mejor refleja el perfil promedio del grupo pobla
 
 </details>
 
-### 2. Comparación de rasgos entre el modelo LLM y el Usuario no técnico.
-
-
-
 
 
 ## Módulos principales del Sistema
@@ -171,24 +225,164 @@ class PaginasDelSistema extends PaginaTemplate {
 ```
 {% endcode %}
 
+### Modelo `Cuestionario`:
+
+Se encarga de cargar las preguntas(Big five y Dark Triad) que el _Usuario no Técnico_ tiene que responder
+
+{% code expandable="true" %}
+```javascript
+class Cuestionario {
+  constructor() {
+    this.preguntas = [];      // Lista de preguntas
+    this.respuestas = {};     // Respuestas del usuario
+    this.preguntasPorPagina = 5;
+    this.paginaActual = 0;
+    this.storageKey = "respuestas";
+  }
+  // Carga preguntas desde un archivo JSON
+  async cargarPreguntas(url) {
+    const res = await fetch(url);
+    const datos = await res.json();
+    this.preguntas = datos.map(p => new Pregunta(p.id, p.texto, p.rasgo, p.invertida));
+  }
+  // Carga respuestas guardadas
+  cargarRespuestas() {
+    this.respuestas = AlmacenamientoLocal.cargar(this.storageKey) || {};
+  }
+  // Guarda una respuesta en memoria y en almacenamiento local
+  guardarRespuesta(id, valor) {
+    this.respuestas[id] = valor;
+    AlmacenamientoLocal.guardar(this.storageKey, this.respuestas);
+  }
+  // Calcula el porcentaje de progreso
+  getProgreso() {
+    return (Object.keys(this.respuestas).length / this.preguntas.length) * 100;
+  }
+  // Devuelve las preguntas actuales (paginadas)
+  currentGroup() {
+    const inicio = this.paginaActual * this.preguntasPorPagina;
+    const fin = inicio + this.preguntasPorPagina;
+    return this.preguntas.slice(inicio, fin);
+  }
+  // Navegación entre páginas
+  nextGroup() {
+    if (!this.esPaginaFinal()) this.paginaActual++;
+  }
+  prevGroup() {
+    if (!this.esPaginaInicial()) this.paginaActual--;
+  }
+  esPaginaInicial() {
+    return this.paginaActual === 0;
+  }
+  esPaginaFinal() {
+    const total = Math.ceil(this.preguntas.length / this.preguntasPorPagina);
+    return this.paginaActual >= total - 1;
+  }
+}
+
+```
+{% endcode %}
+
+### Modelo `ProcesadorPsicometrico`
+
+Se encarga de **procesar respuestas psicométricas** y calcular los **promedios por rasgo** del _Usuario no Técnico_ y el grupo poblacional del _Investigador_  &#x20;
+
+{% code expandable="true" %}
+```javascript
+class ProcesadorPsicometrico {
+  calcularRasgos(preguntas, respuestas) {
+    // Objetos para acumular sumas y conteos por rasgo
+    const puntajesTemporales = {};
+    const conteoTemporales = {};
+    // Recorre todas las preguntas
+    for (const pregunta of preguntas) {
+      const rasgo = pregunta.rasgoAsociado;
+      const respuesta = respuestas[pregunta.id];
+      // Obtiene el valor ajustado según la lógica de la pregunta
+      const puntaje = pregunta.obtenerValorAjustado(Number(respuesta));
+
+      // Acumula la suma y el conteo por rasgo
+      if (puntajesTemporales[rasgo]) {
+        puntajesTemporales[rasgo] += puntaje;
+        conteoTemporales[rasgo]++;
+      } else {
+        puntajesTemporales[rasgo] = puntaje;
+        conteoTemporales[rasgo] = 1;
+      }
+    }
+
+    // Crea un nuevo objeto Rasgos con los promedios finales
+    const rasgosResultado = new Rasgos();
+
+    for (const rasgo in puntajesTemporales) {
+      const suma = puntajesTemporales[rasgo];
+      const cantidad = conteoTemporales[rasgo];
+      const promedio = suma / cantidad;
+
+      rasgosResultado.agregarRasgo(rasgo, promedio);
+    }
+
+    // Devuelve los rasgos calculados
+    return rasgosResultado;
+  }
+}
+
+```
+{% endcode %}
+
+### Modelo `Resultados`
+
+&#x20;Se encarga de almacenar, de manera local en navegador, los resultados del _Usuario no Técnico_ y el _Investigador_, con el fin de tener una persistencia temporal de los datos mientras el usuario está en el aplicativo.
+
+<pre class="language-javascript" data-expandable="true"><code class="lang-javascript"><strong>class Resultados {
+</strong>  // Propiedad estática: solo una instancia (Singleton)
+  static instance = null;
+  constructor() {
+    this.individuales = {};   // Guarda resultados por usuario
+    this.poblaciones = {};    // Guarda resultados por grupo
+    this.cargarDeLocalStorage();
+  }
+  static getInstance() {
+    if (!Resultados.instance) {
+      Resultados.instance = new Resultados();
+    }
+    return Resultados.instance;
+  }
+  agregarResultadoIndividual(individuo) {
+    // Agrega o actualiza un resultado individual
+    this.individuales[individuo.usuarioId] = individuo;
+    this.guardarEnLocalStorage();
+  }
+  agregarResultadosPoblacion(grupo) {
+    // Agrega o actualiza un resultado grupal
+    this.poblaciones[grupo.nombreGrupo] = grupo;
+    this.guardarEnLocalStorage();
+  }
+  obtenerResultadosIndividuales() {
+    return this.individuales;
+  }
+  obtenerResultadosPoblacion() {
+    return this.poblaciones;
+  }
+  guardarEnLocalStorage() {
+    // Convierte los datos a JSON y los guarda localmente
+  }
+  cargarDeLocalStorage() {
+    // Carga los datos desde el almacenamiento local
+  }
+  limpiar() {
+    // Borra todos los datos
+  }
+  limpiarResultadosPoblacion() {
+    // Borra solo los resultados grupales
+  }
+}
+
+</code></pre>
 
 
-#### Modelo `Resultados`
 
-El Model
-
-#### Modelo `ProcesadorPsicometrico`
-
-#### Modelo `Cuestionario`:
-
-\
-&#x20;
-
-
-
-
-
-### Reglas de negocio importantes
+## Reglas de negocio importantes
 
 * No se almacena datos personales en servidores externos; todo se maneja en el navegador.
 * El procesamiento del cuestionario individual debe completarse en ≤ 3 s.
