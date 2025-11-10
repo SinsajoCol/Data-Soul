@@ -73,7 +73,7 @@ Estos valores representan el comportamiento promedio del modelo y la variabilida
 El error estándar de la media permite estimar la precisión de la media calculada, considerando la cantidad de preguntas que evalúan el rasgo.\
 Se obtiene mediante la fórmula:
 
-<p align="center"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF0AAAAxCAMAAACPmVXQAAAAAXNSR0IArs4c6QAAAIdQTFRFAAAAAAAAAAA6AABmADo6ADpmADqQAGa2OgAAOgA6OgBmOjpmOjqQOpC2OpDbZgAAZgA6ZgBmZjoAZjo6ZmYAZrbbZrb/kDoAkDo6kDpmkGY6kGZmkLb/kNv/tmYAtmY6tpBmttv/tv//25A627Zm27aQ29uQ2////7Zm/9uQ/9u2//+2///bPuEz7wAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAZdEVYdFNvZnR3YXJlAE1pY3Jvc29mdCBPZmZpY2V/7TVxAAAB6UlEQVRYR+1W2XLCMAx0UggBCmm53Cuh1G2JE///91WSPUWBzsDENn1hH4JgBsnerFYS4oarMGC+lnkC2MSopvPhzsgoqYVoi9FeiCqDRwRUdx+QtUrLCLnx6JjW1ggOnc8hZ1vEYaYtMLtK8BkeRsKpP3OiJwLMS5IM1hES/1PKtsDeBYCSjmPLIfw63PU9nSYN0TsR3Tix4qp8jEPb16xQSZ14sqLserLyaJCaWVonzqjtjJz5NIhixsDjak7fVPZNTdgPRsIJmyVZTzfe4E30uFTcr5XTAH5cUNTqxDLLY0gLzmHk3MuXyHxqqz0e19kenEPh85wvset0QtQKuzePqxEQNRiXtmRfcD9mMU4wI5FariM8zAHnq7p76wkQz2Og3U0xn2Fj793QXOHxrzabov8oaxbuojDJeVxzGXm0at/39ff/4FQHhE2Njhdpm7Fm/RBl3XAk6Ps4q5JNTzYeC+YpKjHYk9GAZmje87Q02yR9C10G9ajWOl+/7s4768XFzZa00j4SMTqf4noRailT0wXZOIwEEg5+8fLto2vZXcLpkXy87u99p5ShTTs9GomVgq7xdTISrlGJE1siFIxMS2UT0iyDl9o8h0qOOWfOHy0nW4/d8/RUMINjDhlkPh5wr7rhQgZ+AN/vKfqqNwCkAAAAAElFTkSuQmCC" alt="" data-size="original"></p>
+<figure><img src="../.gitbook/assets/image (1).png" alt="" width="161"><figcaption></figcaption></figure>
 
 donde:
 
@@ -84,18 +84,18 @@ donde:
 
 <details>
 
-<summary>Paso 4. Cálculo del intervalo de confianza</summary>
+<summary>4. Cálculo del intervalo de confianza</summary>
 
 Con el error estándar calculado, se determina un intervalo de confianza del 95%, que establece el rango dentro del cual se encuentra la verdadera media del modelo con un 95% de certeza.\
 Se utiliza la siguiente expresión:
 
-<p align="center"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIoAAAAbCAMAAACUY+ewAAAAAXNSR0IArs4c6QAAAJxQTFRFAAAAAAAAAAA6AABmADo6ADpmADqQAGaQAGa2OgAAOgA6OgBmOjoAOjo6OjpmOmaQOma2OpC2OpDbZgAAZjoAZjo6ZjpmZmYAZpC2ZpDbZrbbZrb/kDoAkDo6kGY6kGZmkNvbkNv/tmYAtmY6tpA6ttvbttv/tv//25A625Bm27aQ29uQ29u22////7Zm/9uQ/9u2/9vb//+2///bf/sePQAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAZdEVYdFNvZnR3YXJlAE1pY3Jvc29mdCBPZmZpY2V/7TVxAAACMklEQVRIS+1V23baMBCUSCC4JCmxaSngkNROW/WC5Vr//2/ZiyytMIGe04e8WA+clW2tZmZnF6XGNSowKvB/ChhNa3aIaeyHr2nOdj+PD9p9pvWy/xx24t0QSldwfn31Qx3HfBCeTr+/xeEISrvXOl7XFfODshlDd/VkKzicSmgL/NSV+JvGnn6l9e5NNVMo9v4bXB8+roCeUoaOu3KKm365J69mCOCNZdVMfhwv1kTHLtaU8fQaFEhA8SFfYCZJJV3F+wRhIzgn8YxIufKBZINVayDmyiTnP0Dp8LwUi5IxFldKmhKujKucdmb2O0PBlPq5tVnuHlObnoPCRWezNHpbZ3qyESUCLCkS2rWfvFoy3qFGcBXXmtW8qaNtfD+R5xksLknf6IeD+rNCI1d6+qzci3Qd6HJ7JfuBu4ZlkjFgQBHKXLH5aFV6GWlRdE4VEBKEWP5CVdkaVCuBOu0HuE+phl0v42Z26Irc4G883qTeuwiFspKqDCUpCLhuleSL8vdt5wWYw8FrGGCEz4u/GrT1eVXwGDumhxJpof/THhDyy1K4cgdJ0AOiq+rn8nhcXobCXBuykzBS6KDgFi+/XYAfZExXVJEPKU2+Mcm8G0Dxw7Ur2GF/6wl9T/z7YYL7MFeCE1n+lkakjENbt4Wvp8FOtJnsx4FX3P4Wm+BuA7R4KF1/8T51Nbz4GCQIQ6H77J+1K/8PBNBl3MimOjNsYzu8a3R6rrwrpPHyUYFRgcsKvAKwb0JghVxyBgAAAABJRU5ErkJggg==" alt=""></p>
+<figure><img src="../.gitbook/assets/image (2).png" alt="" width="176"><figcaption></figcaption></figure>
 
 donde 1.96 corresponde al valor z para un nivel de confianza del 95%.\
 Esto genera dos límites:
 
-* Límite inferior (LI):   ![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIoAAAAbCAMAAACUY+ewAAAAAXNSR0IArs4c6QAAAJxQTFRFAAAAAAAAAAA6AABmADo6ADpmADqQAGaQAGa2OgAAOgA6OgBmOjoAOjo6OjpmOmaQOma2OpC2OpDbZgAAZjoAZjo6ZjpmZmYAZpC2ZpDbZrbbZrb/kDoAkDo6kGY6kGZmkNvbkNv/tmYAtmY6tpA6ttvbttv/tv//25A625Bm27aQ29uQ29u22////7Zm/9uQ/9u2/9vb//+2///bf/sePQAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAZdEVYdFNvZnR3YXJlAE1pY3Jvc29mdCBPZmZpY2V/7TVxAAACHUlEQVRIS+1V23aCMBBMvFXUtgq0VqVWoZfYVqDk//+tm90AG2nRnr6SB84Gks3M7GwQohudAp0C/1NASRyjY0uafDuuv+ZbT8p5uRxm7FszRxFQftl/E6cxbYS3w9cLOeRbKevjimB8FJlH0HXSW7dxgCVZYJbqyDzd2NKPpdxciCS7eYHjq8Ux0BNC4XYdDc2kHPppT2EVGCikmvJP4+kS6WTTJWa8cDAoNqQDVM+ebRHENHcQpoyzE4+QlI4WKBuMRAIxHbk5TxE2oRRmPxeL1EAsOuI0OVwexz7O1OjDM4IJcVhnnq8fHXJNqdiZVHQySyrXiSd7K1YiwOIiwVl+Z9Xi8cZolE32VGtS8yo5ZxtOX8nFUXyGxsixHO6EfuauA11mfd4P1DUkE48BgxEh8gWZD0cs5zUt29rYfqQb5WANewAh5u9GVbIG1ootdfsBzhMipe08TkfHIvCVedbb03afNKBgVlSVoDgFAdeFTr5a/rLtrABj2DiY7AmfZRyeb+umP9ExJZSalvG/2wNMfl4KHW0AihGedVWyi1qvyx9VIa4p1pB7uuygyi1W/mwKfuAxWAWo1HxQafSNajeuvVyLgBz2lfRwPfKnBsZRhqxkJH+OXuNx1dZ5YLcr04mZx/uxdmB5wHZmTHy9Alp0KQ0erE91Ah9uKwmqS6G4t+/y0P6BADqPU95Uf7lsG+i6F50CnQKdAr8p8A2RHj3jK2jlxgAAAABJRU5ErkJggg==)
-* Límite superior (LS): ![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIoAAAAbCAMAAACUY+ewAAAAAXNSR0IArs4c6QAAAJxQTFRFAAAAAAAAAAA6AABmADo6ADpmADqQAGaQAGa2OgAAOgA6OgBmOjoAOjo6OjpmOmaQOma2OpC2OpDbZgAAZjoAZjo6ZjpmZmYAZpC2ZpDbZrbbZrb/kDoAkDo6kGY6kGZmkNvbkNv/tmYAtmY6tpA6ttvbttv/tv//25A625Bm27aQ29uQ29u22////7Zm/9uQ/9u2/9vb//+2///bf/sePQAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAZdEVYdFNvZnR3YXJlAE1pY3Jvc29mdCBPZmZpY2V/7TVxAAACKUlEQVRIS+1V2VbCMBBNQJCKC7QoAhWxdakLbW3+/9+cJU0nrVbP8bV56JmQZObOzb1BqWEMDAwM/I+BTNOYHnvSlPtZs1ruA60X9XaYibVujiri/Hr8otoxH4RfJ88/FS/OHuRSude6KVdFs6MqAoZu0tG2rwfYUkS41cT49WPbfqL17kcafCjF5ROUd5sTaE+pjI6beIKTeph724ILEAqzloXteL6mdor5mjJ+P1qsIIcOig25QDby6DMJzz2EuejZi6fUlImXRBuMVENjJvZy/gFKheclWZSMsZhYtinhyjgJaZZN3wMkTKnXbRGE5s5rTvVB4UtnseR6mwZ6tBFXBFh8JDQrry1bMt4hR1CK75rZPE1bsumDAipZHtXHCoWc6MlBmUepOuDlfCz9wK5hmmQMNZCEOFQsPhqJXjRtWWuT/Zg3ziEM+wpELN6QVZYG3ZXY6vsB6imV83EZ59NjFYUZfpvjua89POKbuQWFshKrDMW7EFDdysvX0F/bzhIwg4MnUIjw2Y5XHVv/DoUVU0Np2kL9+x4Q9MurMPEOoCDxwlXpIW4/l79D4V5zukNxe85BTi2W/mIOepAxlUiafohp0k3mCbcDxT6uVcQK+0xHtJ/6rx8TnLt3xSmR6S9JazJ2ti4je58ZOrEIpB87WjH7cxTxxQba4kfp5Nbq1KSwcOUocI9CdWN/K1f2HwigyziXpup5bLuybQwyRAMDAwMDA/0MfAFAFkIbDnExpgAAAABJRU5ErkJggg==)
+* Límite inferior (LI):   <img src="../.gitbook/assets/image (3).png" alt="" data-size="line">
+* Límite superior (LS): <img src="../.gitbook/assets/image (5).png" alt="" data-size="line">
 
 El rango (\[LI, LS]) representa la posición estadística del modelo en ese rasgo.
 
