@@ -1,4 +1,4 @@
-# 03 Manual de usario
+# 03 Manual de Usuario
 
 ## Introducción
 
@@ -10,27 +10,27 @@ Este manual está diseñado para guiar al usuario final del aplicativo Data-Soul
 
 * Abre el navegador e ingresa al aplicativo
 
-<figure><img src="../.gitbook/assets/Pagina de inicio.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Pagina de inicio.png" alt=""><figcaption></figcaption></figure></div>
 
 * Elige la opción **“Realizar Prueba”**.
 
-<figure><img src="../.gitbook/assets/Realizar Prueba.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Realizar Prueba.png" alt=""><figcaption></figcaption></figure></div>
 
 * Elige la opción **“Prueba Individual”.**
 
-<figure><img src="../.gitbook/assets/Selecciona Prueba individual.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Selecciona Prueba individual.png" alt=""><figcaption></figcaption></figure></div>
 
 * Acepta el aviso de consentimiento informado.
 
-<figure><img src="../.gitbook/assets/consentimiento.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/consentimiento.png" alt=""><figcaption></figcaption></figure></div>
 
 * Responde el cuestionario psicométrico.
 
-<figure><img src="../.gitbook/assets/Cuestionario.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Cuestionario.png" alt=""><figcaption></figcaption></figure></div>
 
 * Haz clic en “Terminar” → espera el cálculo automático (aproximadamente 3 segundos).
 
-<figure><img src="../.gitbook/assets/Finaliza cuestionario.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Finaliza cuestionario.png" alt=""><figcaption></figcaption></figure></div>
 
 * Observa el dashboard con gráficos que muestran: tus resultados, los perfiles de los LLM y la similitud.
 
@@ -38,7 +38,7 @@ Este manual está diseñado para guiar al usuario final del aplicativo Data-Soul
 
 * Haz clic en “Descargar reporte” para obtener un PDF con tus resultados.
 
-<figure><img src="../.gitbook/assets/Descarga.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Descarga.png" alt=""><figcaption></figcaption></figure></div>
 
 
 
@@ -46,24 +46,24 @@ Este manual está diseñado para guiar al usuario final del aplicativo Data-Soul
 
 * Abre el navegador e ingresa al aplicativo.
 
-<figure><img src="../.gitbook/assets/Pagina de inicio.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Pagina de inicio.png" alt=""><figcaption></figcaption></figure></div>
 
 * Elige la opción “Realizar Prueba”.
 
-<figure><img src="../.gitbook/assets/Realizar Prueba.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Realizar Prueba.png" alt=""><figcaption></figcaption></figure></div>
 
 * Accede a “Prueba Grupal”.
 
-<figure><img src="../.gitbook/assets/Selecciona Prueba Grupal.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Selecciona Prueba Grupal.png" alt=""><figcaption></figcaption></figure></div>
 
 * Descarga la plantilla Excel (.xlsx).
 
-<figure><img src="../.gitbook/assets/Descarga Plantilla.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/Descarga Plantilla.png" alt=""><figcaption></figcaption></figure></div>
 
 * Recoge respuestas del grupo poblacional.
 * Carga el archivo Excel/CSV en la interfaz.
 
-<figure><img src="../.gitbook/assets/ImportarPlantilla.png" alt=""><figcaption></figcaption></figure>
+<div data-with-frame="true"><figure><img src="../.gitbook/assets/ImportarPlantilla.png" alt=""><figcaption></figcaption></figure></div>
 
 * El sistema procesa los resultados del grupo (hasta \~50 personas, en \~10 segundos).
 * Visualiza la comparativa del grupo frente a perfiles de LLM.

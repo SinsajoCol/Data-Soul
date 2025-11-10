@@ -4,7 +4,9 @@ icon: hand-wave
 
 # Documentación
 
-1. 📖 Descripción del Proyecto Este repositorio contiene el desarrollo del **aplicativo web para la evaluación de rasgos no cognitivos** mediante pruebas psicométricas y su comparación con modelos de lenguaje (LLM).
+1.  📖 Descripción del Proyecto
+
+    Este [repositorio ](https://github.com/SinsajoCol/Data-Soul)contiene el desarrollo del **aplicativo web para la evaluación de rasgos no cognitivos** mediante pruebas psicométricas y su comparación con modelos de lenguaje (LLM).
 2. 👥 Equipo de Desarrollo
 
 * `Catalina Estrada` – **Lider / Frontend /Planificación**

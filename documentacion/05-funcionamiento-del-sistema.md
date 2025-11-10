@@ -1,4 +1,4 @@
-# 05 Funcionamiento del sistema
+# 05 Funcionamiento del Sistema
 
 ## Flujo de datos
 
@@ -7,65 +7,7 @@
 
 ## ¿Cómo se hacen las comparaciones?&#x20;
 
-### 1. Comparación de rasgos entre el modelo LLM y el Usuario no técnico.
-
-La comparación de resultados de rasgos entre un modelo LLM  y un usuario no técnico se realiza a través de un proceso estadístico y de similitud implementado en el código de la aplicación. A continuación, se explicará el paso a paso de cómo funciona:
-
-<details>
-
-<summary>1. Datos de Entrada</summary>
-
-* **Usuario no técnico**:Los datos provienen de cuestionarios psicométricos que miden rasgos de personalidad (ej. Extraversión, Amabilidad, etc.). Cada rasgo tiene un puntaje numérico (generalmente en una escala de 1 a 5).
-  * **Individuo**: El puntaje directo del usuario se usa como "media" (promedio), con intervalo de confianza (IC) igual al valor mismo (sin varianza).
-* **Modelo LLM**: Los datos se cargan desde un archivo JSON (`llm_raw.json`) que contiene conteos de respuestas "altas" y "bajas" por rasgo (ej. para Extraversión: 200 altos, 800 bajos). A partir de esto, se calculan estadísticas similares:
-  * Media: Promedio ponderado (ej. alto = 4.2, bajo = 1.8).
-  * Desviación estándar: Basada en varianza binomial.
-  * Error estándar y IC 95%: Usando z-crítico de 1.96 para 95% de confianza.
-
-
-
-</details>
-
-<details>
-
-<summary>2. Proceso de Comparación</summary>
-
-* **Clase `ComparadorRasgos`**: Es el núcleo de la comparación. Usa una estrategia de similitud (correlación de Pearson normalizada entre 0 y 1).
-  * **Comparación individual**: Toma los valores de rasgos del usuario y del modelo, calcula la similitud (coeficiente de correlación). Resultado: Un objeto `ComparacionResultado` con etiquetas de rasgos, valores del usuario, valores del modelo y puntaje de similitud.
-  * **Comparación con todos los modelos**: Repite la comparación individual para cada modelo LLM disponible.
-* **Fórmula de similitud por defecto**: Correlación de Pearson simplificada:
-  * Calcula medias de los valores de usuario y modelo.
-  * Computa numerador (suma de diferencias) y denominadores (varianzas).
-  * Resultado: Un valor entre 0 (sin similitud) y 1 (perfecta correlación positiva).
-
-</details>
-
-<details>
-
-<summary>3. Visualización y Salida</summary>
-
-* **Controlador (`ComparacionController`)**: Carga los datos, bifurca entre individuo/grupo, calcula estadísticas y pasa a la vista.
-* **Vista (`ComparacionView`)**: Renderiza tablas HTML comparativas:
-  * Una tabla para el usuario/grupo (con media, límites IC 95%).
-  * Una tabla por modelo LLM (con las mismas estadísticas).
-  * No se muestra directamente el puntaje de similitud en la vista actual; se calcula en el comparador pero se usa para análisis interno (ej. en consola para depuración).
-* **Salida en consola**: Para depuración, imprime tablas de estadísticas humanas y de LLMs.
-
-</details>
-
-<details>
-
-<summary>4. Ejemplo </summary>
-
-Supongamos un rasgo "Extraversión":
-
-* Usuario (individuo): Puntaje = 3.5 → Media = 3.5, IC = \[3.5, 3.5].
-* Modelo LLM (ej. Gemma): Media = 3.2, IC = \[3.0, 3.4].
-* Similitud: Correlación basada en arrays de valores (si hay múltiples rasgos).
-
-</details>
-
-### 2. Comparación de rasgos entre el modelo LLM y el grupo poblacional
+### 1. Comparación de rasgos entre el modelo LLM y el grupo poblacional
 
 El proceso de comparación de rasgos tiene como objetivo analizar la similitud entre los resultados obtenidos por los modelos de lenguaje (LLM) y los del grupo poblacional, en base a los rasgos no cognitivos que mide el dataset TRAIT a los LLM.
 
@@ -173,7 +115,63 @@ Este modelo se considera el que mejor refleja el perfil promedio del grupo pobla
 
 </details>
 
+### 2. Comparación de rasgos entre el modelo LLM y el Usuario no técnico.
 
+La comparación de resultados de rasgos entre un modelo LLM  y un usuario no técnico se realiza a través de un proceso estadístico y de similitud implementado en el código de la aplicación. A continuación, se explicará el paso a paso de cómo funciona:
+
+<details>
+
+<summary>1. Datos de Entrada</summary>
+
+* **Usuario no técnico**:Los datos provienen de cuestionarios psicométricos que miden rasgos de personalidad (ej. Extraversión, Amabilidad, etc.). Cada rasgo tiene un puntaje numérico (generalmente en una escala de 1 a 5).
+  * **Individuo**: El puntaje directo del usuario se usa como "media" (promedio), con intervalo de confianza (IC) igual al valor mismo (sin varianza).
+* **Modelo LLM**: Los datos se cargan desde un archivo JSON (`llm_raw.json`) que contiene conteos de respuestas "altas" y "bajas" por rasgo (ej. para Extraversión: 200 altos, 800 bajos). A partir de esto, se calculan estadísticas similares:
+  * Media: Promedio ponderado (ej. alto = 4.2, bajo = 1.8).
+  * Desviación estándar: Basada en varianza binomial.
+  * Error estándar y IC 95%: Usando z-crítico de 1.96 para 95% de confianza.
+
+
+
+</details>
+
+<details>
+
+<summary>2. Proceso de Comparación</summary>
+
+* **Clase `ComparadorRasgos`**: Es el núcleo de la comparación. Usa una estrategia de similitud (correlación de Pearson normalizada entre 0 y 1).
+  * **Comparación individual**: Toma los valores de rasgos del usuario y del modelo, calcula la similitud (coeficiente de correlación). Resultado: Un objeto `ComparacionResultado` con etiquetas de rasgos, valores del usuario, valores del modelo y puntaje de similitud.
+  * **Comparación con todos los modelos**: Repite la comparación individual para cada modelo LLM disponible.
+* **Fórmula de similitud por defecto**: Correlación de Pearson simplificada:
+  * Calcula medias de los valores de usuario y modelo.
+  * Computa numerador (suma de diferencias) y denominadores (varianzas).
+  * Resultado: Un valor entre 0 (sin similitud) y 1 (perfecta correlación positiva).
+
+</details>
+
+<details>
+
+<summary>3. Visualización y Salida</summary>
+
+* **Controlador (`ComparacionController`)**: Carga los datos, bifurca entre individuo/grupo, calcula estadísticas y pasa a la vista.
+* **Vista (`ComparacionView`)**: Renderiza tablas HTML comparativas:
+  * Una tabla para el usuario/grupo (con media, límites IC 95%).
+  * Una tabla por modelo LLM (con las mismas estadísticas).
+  * No se muestra directamente el puntaje de similitud en la vista actual; se calcula en el comparador pero se usa para análisis interno (ej. en consola para depuración).
+* **Salida en consola**: Para depuración, imprime tablas de estadísticas humanas y de LLMs.
+
+</details>
+
+<details>
+
+<summary>4. Ejemplo </summary>
+
+Supongamos un rasgo "Extraversión":
+
+* Usuario (individuo): Puntaje = 3.5 → Media = 3.5, IC = \[3.5, 3.5].
+* Modelo LLM (ej. Gemma): Media = 3.2, IC = \[3.0, 3.4].
+* Similitud: Correlación basada en arrays de valores (si hay múltiples rasgos).
+
+</details>
 
 ## Módulos principales del Sistema
 
@@ -379,8 +377,6 @@ class ProcesadorPsicometrico {
 }
 
 </code></pre>
-
-
 
 ## Reglas de negocio importantes
 
