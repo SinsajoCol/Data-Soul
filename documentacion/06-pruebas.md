@@ -22,7 +22,7 @@ Se seleccionaron cinco (5) modelos clasificados en dos tipos de disponibilidad (
 | Mistral:7b     | Open Source  | Local con Ollama |
 | GPT-OSS:20b    | Open Source  | Local con Ollama |
 
-Los modelos fueron descargador desde la herramienta _Ollama_ para de ejecutarlos localmente, con el objetivo de evitar el uso de recursos externos y tener la posibilidad de interactuar con los LLM mediante scripts. Se debe tener en cuenta que la clasificación de cada uno de los cinco LLM seleccionados tiene cierta influencia en su utilización, ya que los modelos Open Weights tienen una licencia restringida, es decir que estos no se pueden modificar, redistribuir o crear otras versiones a partir de este, mientras que, los modelos Open Source como lo indica su denominación son libres.
+Los modelos fueron descargados desde la herramienta _Ollama_ para de ejecutarlos localmente, con el objetivo de evitar el uso de recursos externos y tener la posibilidad de interactuar con los LLM mediante scripts. Se debe tener en cuenta que la clasificación de cada uno de los cinco LLM seleccionados tiene cierta influencia en su utilización, ya que los modelos Open Weights tienen una licencia restringida, es decir que estos no se pueden modificar, redistribuir o crear otras versiones a partir de este, mientras que, los modelos Open Source como lo indica su denominación son libres.
 
 Sin embargo, en la ejecución del proyecto Data Soul, la utilización de los modelos está destinada a ser únicamente para calcular el porcentaje de rasgos socioemocionales que presentan en sus datos de entrenamiento.
 
