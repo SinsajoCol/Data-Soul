@@ -41,8 +41,6 @@ De esta manera, el modelo obtiene valores numéricos que permiten su comparació
 Una vez asignadas las puntuaciones, se agrupan las respuestas por rasgo (por ejemplo, apertura, responsabilidad, amabilidad, etc.).\
 Para cada rasgo se calcula:
 
-<p align="center"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGEAAAAxCAMAAAD9VjdmAAAAAXNSR0IArs4c6QAAAIdQTFRFAAAAAAAAAAA6AABmADo6ADpmADqQAGa2OgAAOgA6OgBmOjpmOjqQOpC2OpDbZgAAZgA6ZgBmZjoAZjo6ZmYAZrbbZrb/kDoAkDo6kDpmkGY6kGZmkLb/kNv/tmYAtmY6tpBmttv/tv//25A627Zm27aQ29uQ2////7Zm/9uQ/9u2//+2///bPuEz7wAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAZdEVYdFNvZnR3YXJlAE1pY3Jvc29mdCBPZmZpY2V/7TVxAAAB6klEQVRYR+1XXVfCMAxdJ4wBwpSv+rUhVmXd+v9/n0nagxk8gHTRF+/DCJxD0t4kN1mS/OPXGXAfy1wBNlKRbT7cOS3mPknaYrRPkiqDhxCqmzfwXKWlkH+8Arr2cURg8zn4bQs5ltoCIxiFTxk4Dad/z4kqIbgnpQZrIed/7LYtsM8BUGXHtucUfh3uYk5pqb4oT0nXVr7wqlihsT79BqusY09WFMFOVpFNVDMp7NgZtafTs9gmMkxIuF3N6ZvJPqlZr4fTcNJmSXLVtTd4IzsuDdd7E+oCPy4M7OvHM81tcA1K4/Q8WstIsGpfl9yusz0ojcHnOS1j1+qanlnOAberEZA2GJc+bAy4njMbp6HTSDWvLzzQNy6LHDiwE0gEtyENYSLGDi3PQUPziduHum2KuLHYLMKlYUPgds3LK7KlY3J4+l84GUO/vr23SnBbogDtndgqE/iwt3LrWGjfy1rk+vy4B3GSsG9FgQLqXvO0dFuVvkiEwlo1a5uvn3fnFflHB3BbqqH2nkiy+RTXlj6XPzNd0BiEkXKYB9Gaf3RFv6PQuhL2+zpOL08pRIkPteo0Ruv9NaJWoyQ0NPHjw/QJp9PSeKc0EyHRzWO/zVGrWdBVz882ctc9vT7MdOlBhZmQBe5u/7iSgS/Pcioex/Tr9gAAAABJRU5ErkJggg==" alt=""></p>
-
 * Media (x̄): promedio de las puntuaciones del modelo.
 * Desviación estándar (σ): medida de la dispersión de las puntuaciones respecto al promedio.
 
@@ -78,10 +76,12 @@ Se utiliza la siguiente expresión:
 donde 1.96 corresponde al valor z para un nivel de confianza del 95%.\
 Esto genera dos límites:
 
-* Límite inferior (LI):   <img src="../.gitbook/assets/image (3).png" alt="" data-size="line">
-* Límite superior (LS): <img src="../.gitbook/assets/image (5).png" alt="" data-size="line">
+* Límite inferior (X<sub>1</sub>):   <img src="../.gitbook/assets/image (3).png" alt="" data-size="line">
+* Límite superior (X<sub>2</sub>): <img src="../.gitbook/assets/image (5).png" alt="" data-size="line">
 
-El rango (\[LI, LS]) representa la posición estadística del modelo en ese rasgo.
+El rango (\[X<sub>1</sub>, X<sub>2</sub>]) representa la posición estadística del modelo en ese rasgo.
+
+<figure><img src="../.gitbook/assets/Grafica comparacion.png" alt="" width="480"><figcaption></figcaption></figure>
 
 </details>
 
@@ -91,8 +91,11 @@ El rango (\[LI, LS]) representa la posición estadística del modelo en ese rasg
 
 El rango obtenido del modelo se compara con las puntuaciones de los usuarios en el mismo rasgo (escala 1–5). Se calcula el porcentaje de usuarios cuyas puntuaciones se encuentran dentro del intervalo de confianza del modelo.
 
-Este porcentaje indica el grado de similitud entre los rasgos socioemocionales del modelo y el del grupo poblacional en ese rasgo.\
-Por ejemplo, si el intervalo del modelo para el rasgo de “Responsabilidad” es \[3.8, 4.4] y el 60% de los usuarios tienen puntuaciones dentro de ese rango, se concluye que el modelo y el grupo presentan una similitud del 60% en dicho rasgo.
+<figure><img src="../.gitbook/assets/image (7).png" alt="" width="518"><figcaption></figcaption></figure>
+
+Este porcentaje indica el grado de similitud entre los rasgos socioemocionales del modelo y el del grupo poblacional en ese rasgo.
+
+Por ejemplo, si el intervalo del modelo para el rasgo de “Responsabilidad” es \[3.62, 3.74] y el 12% de los usuarios tienen puntuaciones dentro de ese rango, se concluye que el modelo y el grupo presentan una similitud del 12% en dicho rasgo.
 
 </details>
 
