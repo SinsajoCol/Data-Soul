@@ -3,7 +3,7 @@ export class ResultadosView {
     this.conectarDOM();
     this.rasgos = [
       "Apertura", "Responsabilidad", "Extraversión", "Amabilidad",
-      "Neuroticismo", "Machiavellismo", "Narcisismo", "Psicopatía"
+      "Neuroticismo", "Maquiavelismo", "Narcisismo", "Psicopatía"
     ];
 
     this.descripciones = {
@@ -12,7 +12,7 @@ export class ResultadosView {
     "Extraversión": "La extraversión (Extraversion) se caracteriza por la sociabilidad, la asertividad, la energía y la tendencia a buscar estimulación y compañía de otros.",
     "Amabilidad": "La amabilidad (Agreeableness) se relaciona con ser cooperativo, compasivo, empático y considerado. Las personas amables tienden a evitar conflictos.",
     "Neuroticismo": "El neuroticismo (Neuroticism) describe la tendencia a experimentar emociones negativas como ansiedad, tristeza, irritabilidad y a tener inestabilidad emocional",
-    "Machiavellismo": "El Maquiavelismo es un rasgo de personalidad que se enfoca en la manipulación y la explotación interpersonal, el cinismo y la falta de moralidad para lograr objetivos personales.",
+    "Maquiavelismo": "El Maquiavelismo es un rasgo de personalidad que se enfoca en la manipulación y la explotación interpersonal, el cinismo y la falta de moralidad para lograr objetivos personales.",
     "Narcisismo": "El Narcisismo se caracteriza por la grandiosidad, el derecho a un trato especial, la necesidad de admiración y una baja empatía hacia los demás.",
     "Psicopatía": "La Psicopatía se define por la impulsividad, la búsqueda de emociones fuertes, la falta de remordimiento y una marcada incapacidad para sentir miedo o empatía."
     };
@@ -43,7 +43,7 @@ export class ResultadosView {
     this.barCanvasDark = document.getElementById("barChartDark");
   }
 
-  render(usuarioData, llmsData, llmImages, nombreModeloMasSimilar) {
+  render(usuarioData, llmsData, nombreModeloMasSimilar) {
     // 4. Guarda los datos reales en la instancia
     this.usuario = usuarioData;
     this.llms = llmsData;
@@ -62,8 +62,8 @@ export class ResultadosView {
   //  this.conectarDOM();
   //  
   //  this.generarCardsResumen();
-    //Cuestionario: Si se quiere ver la tabla para el individuo: this.generarTabla("usuario")
-    //Archivo: Si se quiere ver la tabla para del grupo y los LLM: this.generarTabla("llm")
+  //  Cuestionario: Si se quiere ver la tabla para el individuo: this.generarTabla("usuario")
+  //  Archivo: Si se quiere ver la tabla para del grupo y los LLM: this.generarTabla("llm")
   //  this.generarTabla("llm"); 
   //  this.inicializarGraficos();
   //  this.configurarEventos();

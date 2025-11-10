@@ -37,7 +37,9 @@ export class ComparacionController {
             console.log("Controlador cargado. Iniciando carga de datos...");
             this.view.conectarDOM();
             await this.gestorLLM.cargarModelos(rutaLLM);
+            
             const modelosLLM = this.gestorLLM.modelos;
+            console.log("Modelos Cargados",modelosLLM)
 
             // Obtiene los datos humanos del Singleton (esto es sync)
             const individuos = this.r.obtenerResultadosIndividuales();
@@ -53,31 +55,33 @@ export class ComparacionController {
                 const modeloMasSimilar = comparacion.getModeloMasCercano();
                 const nombreModeloMasSimilar = modeloMasSimilar ? modeloMasSimilar.nombreModelo : null;
 
-                // b) Formatea los datos para las gráficas
+                // b) Busca el orden de los rasgos.
                 const plantillaRasgos = this.view.rasgos; // ["Apertura", "Responsabilidad", ...]
                 
                 const humanDataForView = plantillaRasgos.map(nombreRasgoESP => {
                     const rasgo = individuo.rasgos.listaRasgos.find(r => r.nombre === nombreRasgoESP);
-                    return rasgo ? rasgo.valor : 0; 
-                });
+                    const valor =  rasgo ? rasgo.valor : 0; 
+                    return parseFloat(valor.toFixed(2));
+                }); //arreglo con los valores de los usuarios organizados. 
 
                 const llmsDataForView = {};
-                const llmImagesForView = { /* ... (tu lógica de imágenes) ... */ };
                 
                 modelosLLM.forEach(modelo => {
                     const llmScoresOrdenados = plantillaRasgos.map(nombreRasgoESP => {
-                        const nombreRasgoLLM = TRAIT_MAP[nombreRasgoESP]; 
-                        const stat = modelo.estadisticas.find(s => s.nombre === nombreRasgoLLM);
-                        return stat ? stat.media : 0;
+                        const stat = modelo.estadisticas.find(s => s.nombre === nombreRasgoESP);
+                        const media = stat ? stat.media : 0;
+                        return parseFloat(media.toFixed(2));
                     });
                     llmsDataForView[modelo.nombre] = llmScoresOrdenados;
                 });
-                
+                console.log("Datos",individuo)
+                console.log("datausuario",humanDataForView)
+                console.log("Datos",modelosLLM)
+                console.log("datallm",llmsDataForView)
                 // c) Llama al render INDIVIDUAL (el dashboard)
                 this.view.render(
                     humanDataForView,
                     llmsDataForView,
-                    llmImagesForView,
                     nombreModeloMasSimilar
                 );
 

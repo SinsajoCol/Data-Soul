@@ -77,6 +77,55 @@ export class GestorModelosLLM {
         }
     }
 
+    async cargarModelos_1(ruta) {
+        const response = await fetch(ruta);
+        const jsonCrudo = await response.json();
+        // jsonCrudo = {"Gemma-3": {"Apertura": ...}, "Llama-3.1": ...}
+
+        const modelosProcesados = [];
+
+        // Itera sobre los nombres de LLM (ej: "Gemma-3")
+        for (const nombreModelo in jsonCrudo) {
+            
+            const datosCrudosDelModelo = jsonCrudo[nombreModelo]; // {"Apertura": {"alto": 519...}}
+            const estadisticasProcesadas = [];
+
+            // Itera sobre los rasgos en el JSON (ej: "Apertura", "Responsabilidad")
+            for (const nombreRasgoESP in datosCrudosDelModelo) {
+                
+                // Traduce al inglés (ej: "Apertura" -> "Openness")
+                const nombreRasgoLLM = TRAIT_MAP[nombreRasgoESP] || nombreRasgoESP;
+                
+                // Obtiene el objeto {"alto": 519, "bajo": 481}
+                const datosRasgo = datosCrudosDelModelo[nombreRasgoESP]; 
+
+                // ¡AQUÍ ESTÁ LA TRANSFORMACIÓN!
+                // Asumimos que el score es el valor "alto" dividido por 10
+                const media = datosRasgo.alto / 10; // 519 -> 51.9
+
+                estadisticasProcesadas.push({
+                    nombre: nombreRasgoLLM, // "Openness"
+                    media: parseFloat(media.toFixed(1)),
+                    // Opcional: guarda los valores crudos si los necesitas
+                    // alto: datosRasgo.alto,
+                    // bajo: datosRasgo.bajo
+                });
+            }
+
+            // Añade el modelo procesado al array
+            modelosProcesados.push({
+                nombre: nombreModelo, // "Gemma-3"
+                estadisticas: estadisticasProcesadas // [{nombre: "Openness", media: 51.9}, ...]
+            });
+        }
+
+        // Guarda los datos YA PROCESADOS en la instancia
+        this.modelos = modelosProcesados;
+        
+        // ¡Un log aquí es muy útil para depurar!
+        console.log("Modelos LLM procesados y listos:", this.modelos); 
+    }
+
     guardarModelo(modelo) {
         // Verifica si ya existe un modelo con el mismo nombre
         if (!this.modelos.some(m => m.nombre === modelo.nombre)) {
