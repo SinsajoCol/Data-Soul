@@ -21,9 +21,7 @@
 
 #### 3. Reportes
 
-* **Modelo :**
-* **Controlador:**
-* **Vista:**
+
 
 
 
