@@ -1,35 +1,19 @@
 # 05 Funcionamiento del sistema
 
-### Flujo de datos
+## Flujo de datos
 
 1. **Usuario no técnico**: El usuario selecciona “Prueba Individual” → responde el cuestionario → se ejecuta el cálculo del puntaje en el navegador → se compara con los perfiles de LLM → se muestra el dashboard de resultados → opción de descarga en PDF.
 2. **Investigador**: El investigador carga archivo Excel/CSV → el sistema valida y procesa el archivo (hasta \~50 personas) → calcula puntajes promedio del grupo → compara con los perfiles de LLM → genera visualización grupal → descarga en PDF.
 
-### Módulos principales
+## ¿Cómo se hacen las comparaciones? &#x20;
 
-#### 1. Procesamiento
-
-* **Modelo :**
-* **Controlador:**
-* **Vista:**
-
-#### 2. Comparación
-
-* **Modelo :**
-* **Controlador:**
-* **Vista:**
-
-#### 3. Reportes
-
-
-
-<h3 align="center">Comparación de rasgos entre el modelo LLM y el grupo poblacional</h3>
+### 1. Comparación de rasgos entre el modelo LLM y el grupo poblacional
 
 El proceso de comparación de rasgos tiene como objetivo analizar la similitud entre los resultados obtenidos por los modelos de lenguaje (LLM) y los del grupo poblacional, en base a los rasgos no cognitivos que mide el dataset TRAIT a los LLM.
 
 TRAIT permite identificar si un modelo presenta una tendencia alta o baja en cada rasgo, mientras que los usuarios son evaluados con una prueba psicométrica en escala numérica de 1 a 5. Para realizar la comparación, se traduce la información cualitativa del modelo a valores cuantitativos dentro de esa misma escala, y posteriormente se aplican métodos estadísticos que permiten establecer un intervalo de confianza y medir la coincidencia con los valores del grupo poblacional.
 
-### Procedimiento de comparación
+#### Procedimiento de comparación
 
 <details>
 
@@ -128,6 +112,79 @@ Este modelo se considera el que mejor refleja el perfil promedio del grupo pobla
 
 </details>
 
+### 2. Comparación de rasgos entre el modelo LLM y el Usuario no técnico.
+
+
+
+
+
+## Módulos principales del Sistema
+
+### &#x20;`PaginaBase`– El Corazón de Todas las Páginas
+
+&#x20;Renderiza la información necesaria para mostrar a los usuarios.&#x20;
+
+* Crea una `PaginaBase` para todas las páginas del aplicativo, esta contiene un `Header`, `Nav` y un `Footer` estático.
+
+{% code expandable="true" %}
+```javascript
+  class PaginaTemplate {
+  constructor() {
+    this.header = new Header();
+    this.footer = new Footer();
+  }
+  async mostrarPagina() {
+    const navbar   = this.header.mostrar();
+    const contenido = await this.mostrarContenido();  // ← ¡Subclase decide qué mostrar!
+    const pie      = this.footer.mostrar();
+    return ;
+  }
+  async mostrarContenido() { // Método obligatorio: cada página lo implementa
+    throw "¡Implementa esto en la página específica!";
+  }
+```
+{% endcode %}
+
+### `PaginaCuestionario,PaginaComparación,PaginaPruebaGrupal` - Páginas del sistema
+
+Todas las páginas del sistema son herencia de la `PaginaBase`, solo se modifica su contenido.
+
+{% code expandable="true" %}
+```javascript
+class PaginasDelSistema extends PaginaTemplate {
+  constructor() {
+    super(); // → hereda header, footer, menú activo, modales...
+  }
+  async mostrarContenido() {
+    // 1. Carga el HTML estático de la página
+    return await cargarArchivo("/src/pages/Pagina.html");
+  }
+  async despuesDeCargar() {
+    // 2. ¡Aquí arranca todo!
+    console.log("Página lista");
+    this.controller.iniciar(); // → enciende: drag & drop, botón cargar, eventos...
+  }
+}
+```
+{% endcode %}
+
+
+
+#### Modelo `Resultados`
+
+El Model
+
+#### Modelo `ProcesadorPsicometrico`
+
+#### Modelo `Cuestionario`:
+
+\
+&#x20;
+
+
+
+
+
 ### Reglas de negocio importantes
 
 * No se almacena datos personales en servidores externos; todo se maneja en el navegador.
@@ -135,3 +192,7 @@ Este modelo se considera el que mejor refleja el perfil promedio del grupo pobla
 * El procesamiento grupal (hasta \~50 personas) debe completarse en ≤ 10 s.
 * El archivo de carga Excel/CSV no debe superar 5 MB y debe respetar la plantilla oficial.
 * Los PDFs generados no deben exceder 5 MB y cumplen con estándares de portabilidad.
+
+
+
+##
