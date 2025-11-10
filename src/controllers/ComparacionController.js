@@ -89,6 +89,7 @@ export class ComparacionController {
                 
                 const tabla = comparacion.resultadosPorModelo[nombreModelo].map(item => ({
                     Rasgo: item.rasgo,
+                    Promedio_LLM: item.mediaLLM.toFixed(2),
                     Rango_LLM_95: `${item.rangoLLM_95[0].toFixed(2)} - ${item.rangoLLM_95[1].toFixed(2)}`,
                     "%_Debajo": item.porcentaje.porDebajo,
                     "%_Dentro": item.porcentaje.dentro,

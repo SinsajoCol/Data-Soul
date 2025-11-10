@@ -72,6 +72,7 @@ export default class ComparadorRasgos {
                 const rasgoNombre = statLLM.nombre;
                 const llm_limInf = statLLM.limInf_95;
                 const llm_limSup = statLLM.limSup_95;
+                const mediaLLM = statLLM.media;
                 
                 // 1. Contadores para este rasgo
                 const conteo = { porDebajo: 0, dentro: 0, porArriba: 0 };
@@ -103,6 +104,7 @@ export default class ComparadorRasgos {
                 comparacionesRasgos.push({
                     rasgo: rasgoNombre,
                     rangoLLM_95: [llm_limInf, llm_limSup],
+                    mediaLLM: mediaLLM,
                     conteo: conteo,
                     porcentaje: porcentajes
                 });
