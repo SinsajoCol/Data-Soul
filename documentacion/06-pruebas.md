@@ -3,7 +3,6 @@ description: >-
   Documentación pertinente sobre el proceso de evaluación de los grandes modelos
   de lenguaje (LLM) seleccionados para determinar los rasgos psicométricos que
   presentan en sus patrones de respuesta.
-icon: microchip-ai
 ---
 
 # 06 Pruebas y Evaluación de LLM
@@ -243,10 +242,11 @@ Las respuestas eran guardadas automáticamente en un archivo JSON, manteniendo l
 
 Se observó que el desempeño que presentaron los modelos al responder la prueba TRAIT tuvo ciertas variaciones entre los cinco (5), identificando que mientras más parámetros tuviera el LLM ofrecían respuestas más detalladas como GPT y Deepseek, demostrando su razonamiento e interpretación a los contextos y prompts solicitados. Aunque la rapidez y el consumo de recursos de los equipos de cómputo también se veían afectados por el tamaño del modelo, resultando en que el resto de modelos eran un poco más rápidos en responder el test.
 
-Cabe resaltar que el modelo de LLaMA se negaba a responder preguntas "oscuras" demostrando así que es un _Modelo Alineado_, evidenciando así que fue entrenado para responder de manera correcta.
+Cabe resaltar que el modelo de LLaMA3.1 se negaba a responder preguntas "oscuras" demostrando así que es un _Modelo Alineado_ y evidenciando que fue entrenado para responder de manera correcta.
 
 ***
 
 Todos los archivos mencionados anteriormente se encuentran en:&#x20;
 
 {% embed url="https://github.com/SinsajoCol/Data-Soul/tree/b8f72d57b1a48b33774d653d0e0e1317c239b1cf/LLM-Evaluate-TRAIT" %}
+
