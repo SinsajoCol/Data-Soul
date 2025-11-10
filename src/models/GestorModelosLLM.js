@@ -4,7 +4,7 @@ export class GestorModelosLLM {
     constructor() {
         this.modelos = []; // Arreglo de instancias de ModeloLLM
         
-        // --- Constantes de tu metodología ---
+        // --- Constantes ---
         this.PUNTAJE_ALTO = 4.2;
         this.PUNTAJE_BAJO = 1.8;
         this.Z_CRITICO_95 = 1.96; // Para el IC 95%
@@ -12,8 +12,9 @@ export class GestorModelosLLM {
 
     // Carga modelos desde una ruta (e.g., archivo JSON)
     // @param {string} ruta - URL o ruta del archivo JSON con datos de modelos
-   // GestorModelosLLM.js → método cargarModelos (versión CORREGIDA)
-async cargarModelos(ruta) {
+    // GestorModelosLLM.js → método cargarModelos
+
+    async cargarModelos(ruta) {
         try {
             const response = await fetch(ruta);
             const dataConteos = await response.json(); // { "Gemma 3.4B": { "Extraversion": { "alto": 200, "bajo": 800 } } }
@@ -76,6 +77,55 @@ async cargarModelos(ruta) {
         }
     }
 
+    async cargarModelos_1(ruta) {
+        const response = await fetch(ruta);
+        const jsonCrudo = await response.json();
+        // jsonCrudo = {"Gemma-3": {"Apertura": ...}, "Llama-3.1": ...}
+
+        const modelosProcesados = [];
+
+        // Itera sobre los nombres de LLM (ej: "Gemma-3")
+        for (const nombreModelo in jsonCrudo) {
+            
+            const datosCrudosDelModelo = jsonCrudo[nombreModelo]; // {"Apertura": {"alto": 519...}}
+            const estadisticasProcesadas = [];
+
+            // Itera sobre los rasgos en el JSON (ej: "Apertura", "Responsabilidad")
+            for (const nombreRasgoESP in datosCrudosDelModelo) {
+                
+                // Traduce al inglés (ej: "Apertura" -> "Openness")
+                const nombreRasgoLLM = TRAIT_MAP[nombreRasgoESP] || nombreRasgoESP;
+                
+                // Obtiene el objeto {"alto": 519, "bajo": 481}
+                const datosRasgo = datosCrudosDelModelo[nombreRasgoESP]; 
+
+                // ¡AQUÍ ESTÁ LA TRANSFORMACIÓN!
+                // Asumimos que el score es el valor "alto" dividido por 10
+                const media = datosRasgo.alto / 10; // 519 -> 51.9
+
+                estadisticasProcesadas.push({
+                    nombre: nombreRasgoLLM, // "Openness"
+                    media: parseFloat(media.toFixed(1)),
+                    // Opcional: guarda los valores crudos si los necesitas
+                    // alto: datosRasgo.alto,
+                    // bajo: datosRasgo.bajo
+                });
+            }
+
+            // Añade el modelo procesado al array
+            modelosProcesados.push({
+                nombre: nombreModelo, // "Gemma-3"
+                estadisticas: estadisticasProcesadas // [{nombre: "Openness", media: 51.9}, ...]
+            });
+        }
+
+        // Guarda los datos YA PROCESADOS en la instancia
+        this.modelos = modelosProcesados;
+        
+        // ¡Un log aquí es muy útil para depurar!
+        console.log("Modelos LLM procesados y listos:", this.modelos); 
+    }
+
     guardarModelo(modelo) {
         // Verifica si ya existe un modelo con el mismo nombre
         if (!this.modelos.some(m => m.nombre === modelo.nombre)) {
@@ -83,14 +133,17 @@ async cargarModelos(ruta) {
             this.modelos.push(modelo);
         }
     }
+
     eliminarModelo(nombre) {
         // Filtra la lista para excluir el modelo con el nombre especificado
         this.modelos = this.modelos.filter(m => m.nombre !== nombre);
     }
+
     obtenerModelo(nombre) {
         // Devuelve el modelo encontrado o null
         return this.modelos.find(m => m.nombre === nombre) || null;
     }
+    
     listarModelos() {
         // Mapea la lista de modelos a sus nombres
         return this.modelos.map(m => m.nombre);

@@ -1,32 +1,32 @@
 {
   "Gemma-3": {
-    "Openness": {"alto": 519, "bajo": 481},
-    "Conscientiousness": {"alto": 860, "bajo": 140},
-    "Extraversion": {"alto": 248, "bajo": 752},
-    "Agreeableness": {"alto": 784, "bajo": 216},
-    "Neuroticism": {"alto": 381, "bajo": 619},
-    "Machiavellianism": {"alto": 227, "bajo": 773},
-    "Narcissism": {"alto": 103, "bajo": 897},
-    "Psychopathy": {"alto": 21, "bajo": 979}
+    "Apertura": {"alto": 519, "bajo": 481},
+    "Responsabilidad": {"alto": 860, "bajo": 140},
+    "Extraversión": {"alto": 248, "bajo": 752},
+    "Amabilidad": {"alto": 784, "bajo": 216},
+    "Neuroticismo": {"alto": 381, "bajo": 619},
+    "Maquiavelismo": {"alto": 227, "bajo": 773},
+    "Narcisismo": {"alto": 103, "bajo": 897},
+    "Psicopatía": {"alto": 21, "bajo": 979}
   },
   "Llama-3.1": {
-    "Openness": {"alto": 563, "bajo": 437},
-    "Conscientiousness": {"alto": 888, "bajo": 112},
-    "Extraversion": {"alto": 333, "bajo": 667},
-    "Agreeableness": {"alto": 705, "bajo": 295},
-    "Neuroticism": {"alto": 304, "bajo": 696},
-    "Machiavellianism": {"alto": 154, "bajo": 846},
-    "Narcissism": {"alto": 91, "bajo": 908},
-    "Psychopathy": {"alto": 9, "bajo": 895}
+    "Apertura": {"alto": 563, "bajo": 437},
+    "Responsabilidad": {"alto": 888, "bajo": 112},
+    "Extraversión": {"alto": 333, "bajo": 667},
+    "Amabilidad": {"alto": 705, "bajo": 295},
+    "Neuroticismo": {"alto": 304, "bajo": 696},
+    "Maquiavelismo": {"alto": 154, "bajo": 846},
+    "Narcisismo": {"alto": 91, "bajo": 908},
+    "Psicopatía": {"alto": 9, "bajo": 895}
   },
   "Mistral-7b": {
-    "Openness": {"alto": 554, "bajo": 446},
-    "Conscientiousness": {"alto": 771, "bajo": 229},
-    "Extraversion": {"alto": 360, "bajo": 640},
-    "Agreeableness": {"alto": 732, "bajo": 268},
-    "Neuroticism": {"alto": 420, "bajo": 580},
-    "Machiavellianism": {"alto": 180, "bajo": 820},
-    "Narcissism": {"alto": 111, "bajo": 889},
-    "Psychopathy": {"alto": 32, "bajo": 968}
+    "Apertura": {"alto": 554, "bajo": 446},
+    "Responsabilidad": {"alto": 771, "bajo": 229},
+    "Extraversión": {"alto": 360, "bajo": 640},
+    "Amabilidad": {"alto": 732, "bajo": 268},
+    "Neuroticismo": {"alto": 420, "bajo": 580},
+    "Maquiavelismo": {"alto": 180, "bajo": 820},
+    "Narcisismo": {"alto": 111, "bajo": 889},
+    "Psicopatía": {"alto": 32, "bajo": 968}
   }
 }

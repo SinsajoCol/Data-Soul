@@ -26,7 +26,6 @@ export default class Resultados {
 
     agregarResultadosPoblacion(grupo) {
         this.poblaciones[grupo.nombreGrupo] = grupo;
-        this.guardarEnLocalStorage();
     }
 
     obtenerResultadosIndividuales() {

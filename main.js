@@ -2,7 +2,7 @@
 import { PaginaInicio } from "./src/assets/js/PaginaInicio.js";
 import { PaginaCuestionario } from "./src/assets/js/PaginaCuestionario.js";
 import { PaginaPruebaGrupal } from "./src/assets/js/PaginaPruebaGrupal.js";
-import { PaginaComparacion } from "/src/assets/js/PaginaComparacion.js";
+import { PaginaResultados } from "/src/assets/js/PaginaResultados.js";
 
 const app = document.getElementById("app");
 
@@ -18,16 +18,15 @@ async function cargarPagina(nombre, parametro) {
     case "cuestionario":
       pagina = new PaginaCuestionario();
       console.log("Página de cuestionario cargada");
-      break;
     case "PruebaGrupal":
       pagina = new PaginaPruebaGrupal();
       console.log("Página de prueba grupal cargada");
       break;
-    case "comparacion":
-      // Pasa el ID del grupo (ej. 'grupo_csv_12345') a la página
-      pagina = new PaginaComparacion(parametro); 
+      console.log("Página de resultados cargada");
       break;
     default:
+      // ¡IMPORTANTE! Asegúrate de que tu PaginaTemplate implemente
+      // mostrarPagina() o cambia esto a PaginaInicio()
       pagina = new PaginaInicio(); 
       break;
   }

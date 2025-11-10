@@ -29,7 +29,7 @@ export class PaginaCuestionario extends PaginaTemplate {
             const rasgos = this.procesadorCtrl.calcularResultados(modelo);
             console.log("Rasgos calculados:", rasgos);
             alert("Los resultados se han calculado correctamente. ¡Gracias por completar el cuestionario!");
-            window.location.hash = 'comparacion/default_user';
+            window.location.hash = 'resultados/default_user';
         } catch (error) {
 
             console.error("Error al procesar los resultados:", error);
