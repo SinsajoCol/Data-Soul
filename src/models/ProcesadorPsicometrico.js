@@ -14,6 +14,7 @@ export default class ProcesadorPsicometrico {
         
         // 1. Usamos un objeto simple para acumular los puntajes temporalmente.
         const puntajesTemporales = {};
+        const conteoTemporales = {}; // Para contar cuántas preguntas contribuyen a cada rasgo
 
         // 2. Iteramos sobre cada pregunta (del modelo)
         for (const pregunta of preguntas) {
@@ -29,6 +30,7 @@ export default class ProcesadorPsicometrico {
                 conteoTemporales[rasgoNombre]++; // Incrementa el conteo de preguntas para este rasgo
             } else {
                 puntajesTemporales[rasgoNombre] = puntaje;
+                conteoTemporales[rasgoNombre] = 1;
             }
         }
         

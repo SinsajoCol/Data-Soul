@@ -6,7 +6,7 @@ import { PaginaResultados } from "/src/assets/js/PaginaResultados.js";
 const app = document.getElementById("app");
 
 // Esta función sigue igual, pero ya no maneja los clics
-async function cargarPagina(nombre) {
+async function cargarPagina(nombre, parametro) {
   let pagina;
 
   switch (nombre) {
@@ -19,7 +19,7 @@ async function cargarPagina(nombre) {
       console.log("Página de cuestionario cargada");
       break;
     case "resultados":
-      pagina = new PaginaResultados();
+      pagina = new PaginaResultados(parametro);
       console.log("Página de resultados cargada");
       break;
     default:
@@ -42,9 +42,12 @@ async function cargarPagina(nombre) {
  * Lee el hash de la URL (ej. #cuestionario) y llama a cargarPagina
  */
 function router() {
-    // Obtiene el hash, quita el '#' y si está vacío, usa 'inicio'
-    const ruta = window.location.hash.substring(1) || 'inicio';
-    cargarPagina(ruta);
+    const hash = window.location.hash.substring(1); // ej. "comparacion/grupo_123"
+    const partes = hash.split('/');
+    const ruta = partes[0] || 'inicio'; // ej. "comparacion"
+    const parametro = partes[1] || null; // ej. "grupo_123"
+
+    cargarPagina(ruta, parametro);
 }
 
 // --- PUNTO DE ENTRADA DE LA APLICACIÓN ---

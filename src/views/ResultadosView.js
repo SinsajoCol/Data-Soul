@@ -1,5 +1,6 @@
 export class ResultadosView {
   constructor() {
+    this.conectarDOM();
     this.rasgos = [
       "Apertura", "Responsabilidad", "Extraversión", "Amabilidad",
       "Neuroticismo", "Machiavellismo", "Narcisismo", "Psicopatía"
@@ -16,24 +17,18 @@ export class ResultadosView {
     "Psicopatía": "La Psicopatía se define por la impulsividad, la búsqueda de emociones fuertes, la falta de remordimiento y una marcada incapacidad para sentir miedo o empatía."
     };
 
-    this.usuario = [75, 60, 55, 80, 40, 30, 45, 20];
+    // --- 2. INICIALIZA LOS DATOS COMO VACÍOS ---
+    this.usuario = []; // (BORRA LOS DATOS DE PRUEBA)
+    this.llms = {};    // (BORRA LOS DATOS DE PRUEBA)
 
-    // Datos de prueba
-    this.llms = {
-      "ChatGPT": [65, 70, 50, 75, 35, 40, 50, 25],
-      "Mistral": [70, 65, 55, 70, 40, 35, 45, 30],
-      "LLama": [60, 75, 45, 80, 30, 45, 55, 20],
-      "DeepSeek": [12, 24, 35, 100, 50, 20, 55, 55],
-      "Gemini": [68, 72, 52, 78, 38, 42, 48, 28]
-    };
 
     // Rutas de imágenes de cada LLM (ajústalas según tu estructura)
     this.llmImages = {
-      "ChatGPT": "/src/assets/img/images.png",
-      "Mistral": "/src/assets/img/Logo_mistral.png",
-      "LLama": "/src/assets/img/Logo_llama.png",
-      "DeepSeek": "/src/assets/img/Logo_deepseek.png",
-      "Gemini": "/src/assets/img/Logo_gemini.png"
+      "ChatGPT": "src/assets/img/images.png",
+      "Mistral-7b": "src/assets/img/Logo_mistral.png",
+      "Llama-3.1": "src/assets/img/Logo_llama.png",
+      "DeepSeek": "src/assets/img/Logo_deepseek.png",
+      "Gemma-3": "src/assets/img/Logo_gemini.png"
     };
   }
 
@@ -48,16 +43,31 @@ export class ResultadosView {
     this.barCanvasDark = document.getElementById("barChartDark");
   }
 
-  init() {
-    this.conectarDOM();
+  render(usuarioData, llmsData, llmImages, nombreModeloMasSimilar) {
+    // 4. Guarda los datos reales en la instancia
+    this.usuario = usuarioData;
+    this.llms = llmsData;
+    console.log("data llms cargada",llmsData)
+    this.nombreModeloMasSimilar = nombreModeloMasSimilar;
+
+    // 5. Llama a todos los métodos que antes estaban en init()
     this.generarLLMCards();
     this.generarCardsResumen();
-    //Cuestionario: Si se quiere ver la tabla para el individuo: this.generarTabla("usuario")
-    //Archivo: Si se quiere ver la tabla para del grupo y los LLM: this.generarTabla("llm")
-    this.generarTabla("llm"); 
+    this.generarTabla("usuario"); 
     this.inicializarGraficos();
     this.configurarEventos();
   }
+
+//  init() {
+  //  this.conectarDOM();
+  //  
+  //  this.generarCardsResumen();
+    //Cuestionario: Si se quiere ver la tabla para el individuo: this.generarTabla("usuario")
+    //Archivo: Si se quiere ver la tabla para del grupo y los LLM: this.generarTabla("llm")
+  //  this.generarTabla("llm"); 
+  //  this.inicializarGraficos();
+  //  this.configurarEventos();
+  //}
 
    calcularLLMMasSimilar() {
     let menorDistancia = Infinity;
@@ -79,7 +89,7 @@ export class ResultadosView {
     // Crear dinámicamente las cards según los llms disponibles
     this.llmCardsContainer.innerHTML = Object.keys(this.llms).map(llm => `
       <div class="llm-card">
-        <img src="${this.llmImages[llm] || ''}" alt="${llm} logo" onerror="this.src='../assets/img/placeholder.png'">
+        <img src="${this.llmImages[llm] || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'}" alt="${llm} logo">
         <div class="llm-info">
           <span>${llm}</span>
           <label class="checkbox-container">
@@ -423,9 +433,3 @@ export class ResultadosView {
   }
 
 }
-
-// 🔹 Inicializa solo cuando se cargue el HTML
-document.addEventListener("DOMContentLoaded", () => {
-  const view = new ResultadosView();
-  view.init();
-});

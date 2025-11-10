@@ -4,15 +4,26 @@ import ProcesadorComparacion  from "../models/ProcesadorComparacion.js";
 import ResultadosComparacion from "../models/ResultadosComparacion.js";
 const rutaLLM = "src/data/llm_raw.json";
 
+const TRAIT_MAP = {
+    "Apertura": "Openness",
+    "Responsabilidad": "Conscientiousness",
+    "Extraversión": "Extraversion",
+    "Amabilidad": "Agreeableness",
+    "Neuroticismo": "Neuroticism",
+    "Maquiavelismo": "Machiavellianism",
+    "Narcisismo": "Narcissism",
+    "Psicopatía": "Psychopathy"
+};
+
 export class ComparacionController {
 
     /**
      * @param {ResultadosView} view La instancia de la vista
      */
-    constructor(view) {
+    constructor(view,id) {
         this.view = view;
         this.id = id;
-        this.resultados = Resultados.getInstance();
+        this.r = Resultados.getInstance();
         this.gestorLLM = new GestorModelosLLM();
         this.procesadorComparacion = new ProcesadorComparacion();
     }
@@ -21,55 +32,74 @@ export class ComparacionController {
      * El "interruptor de encendido" de esta página
      */
     async iniciar() {
-
-        this.view.conectarDOM(); // Conecta la vista (para gráficas, etc.)
         try {
-            // 1. Carga los modelos LLM
+
+            console.log("Controlador cargado. Iniciando carga de datos...");
+            this.view.conectarDOM();
             await this.gestorLLM.cargarModelos(rutaLLM);
             const modelosLLM = this.gestorLLM.modelos;
 
-            // 2. Carga los datos del grupo desde el Singleton
-            const grupos = this.resultados.obtenerResultadosPoblacion();
-            const individuos = this.resultados.obtenerResultadosIndividuales();
+            // Obtiene los datos humanos del Singleton (esto es sync)
+            const individuos = this.r.obtenerResultadosIndividuales();
+            const grupos = this.r.obtenerResultadosPoblacion();
 
-            let humanDataLabel;   // "Grupo: X" o "Individuo: Y"
-
-            let comparacion; // El resultado del procesamiento
-            let tipoComparacion; // "individual" o "grupo"
-
-            // 3. ¡AQUÍ ESTÁ LA LÓGICA DE BIFURCACIÓN!
-            if (grupos[this.id]) {
-                // --- CASO A: Es un GRUPO ---
-                const grupo = grupos[this.id];
-                humanDataLabel = `Grupo: ${grupo.nombreGrupo}`;
-                tipoComparacion = "grupo";
-                // Calcula las estadísticas del grupo
-                comparacion = this.procesadorComparacion.compararGrupo(grupo, modelosLLM);
-                
-            } else if (individuos[this.id]) {
-                // --- CASO B: Es un INDIVIDUO ---
+            if (individuos[this.id]) {
+                // --- CASO INDIVIDUAL ---
                 const individuo = individuos[this.id];
-                humanDataLabel = `Individuo: ${individuo.usuarioId}`;
-                tipoComparacion = "individual";
+                console.log(`Renderizando dashboard para INDIVIDUO: ${this.id}`);
+
+                // a) Calcula el ranking de similitud (Distancia Euclidiana)
+                const comparacion = this.procesadorComparacion.compararIndividuo(individuo, modelosLLM);
+                const modeloMasSimilar = comparacion.getModeloMasCercano();
+                const nombreModeloMasSimilar = modeloMasSimilar ? modeloMasSimilar.nombreModelo : null;
+
+                // b) Formatea los datos para las gráficas
+                const plantillaRasgos = this.view.rasgos; // ["Apertura", "Responsabilidad", ...]
                 
-                comparacion = this.procesadorComparacion.compararIndividuo(individuo, modelosLLM);
+                const humanDataForView = plantillaRasgos.map(nombreRasgoESP => {
+                    const rasgo = individuo.rasgos.listaRasgos.find(r => r.nombre === nombreRasgoESP);
+                    return rasgo ? rasgo.valor : 0; 
+                });
 
-            } else {
-                throw new Error(`No se encontraron datos para el ID: "${this.id}"`);
-            }
-            
-            ResultadosComparacion.getInstance().setResultados(this.id, comparacion);
+                const llmsDataForView = {};
+                const llmImagesForView = { /* ... (tu lógica de imágenes) ... */ };
+                
+                modelosLLM.forEach(modelo => {
+                    const llmScoresOrdenados = plantillaRasgos.map(nombreRasgoESP => {
+                        const nombreRasgoLLM = TRAIT_MAP[nombreRasgoESP]; 
+                        const stat = modelo.estadisticas.find(s => s.nombre === nombreRasgoLLM);
+                        return stat ? stat.media : 0;
+                    });
+                    llmsDataForView[modelo.nombre] = llmScoresOrdenados;
+                });
+                
+                // c) Llama al render INDIVIDUAL (el dashboard)
+                this.view.render(
+                    humanDataForView,
+                    llmsDataForView,
+                    llmImagesForView,
+                    nombreModeloMasSimilar
+                );
 
-            // 4. Muestra las tablas en consola (¡Ahora 'comparacion' y 'tipo' existen!)
-            this.mostrarTablasConsola(humanDataLabel, comparacion, tipoComparacion);
-            
-            // 5. Pasa los datos a la Vista para renderizar
-            this.view.render(humanDataLabel, comparacion, tipoComparacion);
+            } else if (grupos[this.id]) {
+                // --- CASO GRUPO ---
+                 const grupo = grupos[this.id];
+                console.log(`Renderizando dashboard para GRUPO: ${this.id}`);
 
-        } catch (error) {
-            console.error("Error al cargar datos de comparación:", error);
-            this.view.mostrarError(error.message);
+                // a) Calcula la distribución de porcentajes
+                const comparacion = this.procesadorComparacion.compararGrupo(grupo, modelosLLM);
+                
+                // b) Llama al render GRUPAL
+                this.view.renderGrupo(comparacion);
+        } else {
+                 throw new Error(`No se encontraron datos para el ID: "${this.id}"`);
         }
+
+        } catch(error) {
+            console.error("Error al iniciar el ComparacionController:", error);
+            if (this.view.mostrarError) this.view.mostrarError(error.message);
+        }
+
     }
 
     mostrarTablasConsola(humanDataLabel, comparacion, tipo) {
