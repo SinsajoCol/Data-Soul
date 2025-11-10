@@ -1,0 +1,32 @@
+{
+  "Gemma-3": {
+    "Apertura": {"alto": 519, "bajo": 481},
+    "Responsabilidad": {"alto": 860, "bajo": 140},
+    "Extraversión": {"alto": 248, "bajo": 752},
+    "Amabilidad": {"alto": 784, "bajo": 216},
+    "Neuroticismo": {"alto": 381, "bajo": 619},
+    "Maquiavelismo": {"alto": 227, "bajo": 773},
+    "Narcisismo": {"alto": 103, "bajo": 897},
+    "Psicopatía": {"alto": 21, "bajo": 979}
+  },
+  "Llama-3.1": {
+    "Apertura": {"alto": 563, "bajo": 437},
+    "Responsabilidad": {"alto": 888, "bajo": 112},
+    "Extraversión": {"alto": 333, "bajo": 667},
+    "Amabilidad": {"alto": 705, "bajo": 295},
+    "Neuroticismo": {"alto": 304, "bajo": 696},
+    "Maquiavelismo": {"alto": 154, "bajo": 846},
+    "Narcisismo": {"alto": 91, "bajo": 908},
+    "Psicopatía": {"alto": 9, "bajo": 895}
+  },
+  "Mistral-7b": {
+    "Apertura": {"alto": 554, "bajo": 446},
+    "Responsabilidad": {"alto": 771, "bajo": 229},
+    "Extraversión": {"alto": 360, "bajo": 640},
+    "Amabilidad": {"alto": 732, "bajo": 268},
+    "Neuroticismo": {"alto": 420, "bajo": 580},
+    "Maquiavelismo": {"alto": 180, "bajo": 820},
+    "Narcisismo": {"alto": 111, "bajo": 889},
+    "Psicopatía": {"alto": 32, "bajo": 968}
+  }
+}

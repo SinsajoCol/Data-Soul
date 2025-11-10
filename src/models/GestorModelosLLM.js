@@ -2,11 +2,18 @@ import { ModeloLLM } from './ModeloLLM.js';
 
 export class GestorModelosLLM {
     constructor() {
-        this.modelos = []; // Arreglo para almacenar instancias de ModeloLLM
+        this.modelos = []; // Arreglo de instancias de ModeloLLM
+        
+        // --- Constantes ---
+        this.PUNTAJE_ALTO = 4.2;
+        this.PUNTAJE_BAJO = 1.8;
+        this.Z_CRITICO_95 = 1.96; // Para el IC 95%
     }
 
     // Carga modelos desde una ruta (e.g., archivo JSON)
     // @param {string} ruta - URL o ruta del archivo JSON con datos de modelos
+    // GestorModelosLLM.js → método cargarModelos
+
     async cargarModelos(ruta) {
         try {
             // Realiza una solicitud HTTP para obtener el archivo JSON
@@ -28,14 +35,17 @@ export class GestorModelosLLM {
             this.modelos.push(modelo);
         }
     }
+
     eliminarModelo(nombre) {
         // Filtra la lista para excluir el modelo con el nombre especificado
         this.modelos = this.modelos.filter(m => m.nombre !== nombre);
     }
+
     obtenerModelo(nombre) {
         // Devuelve el modelo encontrado o null
         return this.modelos.find(m => m.nombre === nombre) || null;
     }
+    
     listarModelos() {
         // Mapea la lista de modelos a sus nombres
         return this.modelos.map(m => m.nombre);
