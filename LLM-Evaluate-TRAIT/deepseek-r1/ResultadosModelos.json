@@ -1,0 +1,12 @@
+{
+  "deepseek-r1": {
+    "Openness": {"alto": 541, "bajo": 459},
+    "Conscientiousness": {"alto": 795, "bajo": 205},
+    "Agreeableness": {"alto": 757, "bajo": 243},
+    "Neuroticism": {"alto": 328, "bajo": 672},
+    "Machiavellianism": {"alto": 222, "bajo": 778},
+    "Narcissism": {"alto": 135, "bajo": 865},
+    "Psychopathy": {"alto": 15, "bajo": 984},
+    "Extraversion": {"alto": 343, "bajo": 657}
+  }
+}
