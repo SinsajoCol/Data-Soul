@@ -50,7 +50,8 @@ export class PaginaTemplate {
 
   agregarEventosModal() {
     const modalSelect = document.getElementById('modalSelect');
-    const btnAbrir = document.getElementById('btnRealizar');
+    const btnAbrirHeader = document.getElementById('btnRealizar');
+    const btnAbrirFooter = document.getElementById('btnRealizarFooter');
     const btnCerrar = document.querySelector('.close');
     const btnIndividual = document.getElementById('btnIndividual');
     const btnGrupal = document.getElementById('btnGrupal');
@@ -59,8 +60,15 @@ export class PaginaTemplate {
     const btnRechazar = modalConsent?.querySelector('.frame-72');
     const btnAceptar = modalConsent?.querySelector('.frame-75');
 
-    if (btnAbrir) {
-      btnAbrir.addEventListener('click', (e) => {
+    if (btnAbrirHeader) {
+    btnAbrirHeader.addEventListener('click', (e) => {
+      e.preventDefault();
+      modalSelect.style.display = 'flex';
+      }); 
+    }
+
+    if (btnAbrirFooter) {
+      btnAbrirFooter.addEventListener('click', (e) => {
         e.preventDefault();
         modalSelect.style.display = 'flex';
       });

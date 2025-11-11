@@ -14,14 +14,15 @@ export class Footer {
             <div class="footer-copy">
               <p>© 2025 Data Soul. Todos los derechos reservados</p>
             </div>
+
             <div class="footer-links">
               <a href="#" data-page="inicio">Inicio</a> •
-              <a href="#" data-page="cuestionario">Prueba Individual</a>•
-              <a href="#" data-page="">Prueba Grupal</a> •
-              <a href="#" data-page="">Rasgos LLM</a> •
-              <a href="#" data-page="">Términos del servicio</a> •
-              <a href="#" data-page="">Políticas de privacidad</a>
+              <a href="#" id="btnRealizarFooter">Realizar Prueba</a> •
+              <a href="#" data-page="rasgos">Rasgos LLM</a> •
+              <a href="#" data-page="terminos">Términos del servicio</a> •
+              <a href="#" data-page="politicas">Políticas de privacidad</a>
             </div>
+            
             <div class="footer-info">
               <p>
                 Los resultados son informativos y no constituyen diagnóstico psicológico •
