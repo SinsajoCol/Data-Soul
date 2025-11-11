@@ -16,6 +16,12 @@
     <h2>Selecciona los LLMs a comparar</h2>
     <div class="llm-cards"></div>
   </section>
+  
+  <section class="distancias-section">
+      <div class="distancias-container">
+          <!-- La lista de distancias se generará aquí -->
+      </div>
+  </section>
 
   <!-- 🔹 Gráficos -->
   <section class="charts">
@@ -80,9 +86,4 @@
   </div>
 </div>
 
-<!-- 🔹 Inicialización del script -->
-<script type="module">
-  import { ResultadosView } from "../views/ResultadosView.js";
-  const view = new ResultadosView();
-  view.init();
-</script>
+

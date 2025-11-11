@@ -100,7 +100,7 @@ export class CargaMasivaController {
             // 3. ¡NUEVO! Navega a la página de comparación
             // Pasa el nombre del grupo en el hash para que la otra
             // página sepa qué grupo cargar.
-            window.location.hash = `comparacion/${grupo.nombreGrupo}`;
+            window.location.hash = `resultados/${grupo.nombreGrupo}`;
 
         } catch (error) {
             console.error("Error al procesar el archivo:", error);

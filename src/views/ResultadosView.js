@@ -41,6 +41,7 @@ export class ResultadosView {
     this.barCanvas = document.getElementById("barChart");
     this.barCanvasBigFive = document.getElementById("barChartBigFive");
     this.barCanvasDark = document.getElementById("barChartDark");
+    this.distanciasContainer = document.querySelector(".distancias-container");
   }
 
   render(usuarioData, llmsData, nombreModeloMasSimilar) {
@@ -56,18 +57,40 @@ export class ResultadosView {
     this.generarTabla("usuario"); 
     this.inicializarGraficos();
     this.configurarEventos();
+    this.generarTablaDistancias();
   }
 
-//  init() {
-  //  this.conectarDOM();
-  //  
-  //  this.generarCardsResumen();
-  //  Cuestionario: Si se quiere ver la tabla para el individuo: this.generarTabla("usuario")
-  //  Archivo: Si se quiere ver la tabla para del grupo y los LLM: this.generarTabla("llm")
-  //  this.generarTabla("llm"); 
-  //  this.inicializarGraficos();
-  //  this.configurarEventos();
-  //}
+/**
+ * Renderiza la vista para la comparación de un GRUPO.
+ * @param {Array<number>} groupData - El array de promedios del grupo.
+ * @param {Object} llmsData - Los datos de las medias de los LLMs
+ * @param {ResultadosComparacion} datosComparacion - El objeto con los porcentajes del grupo.
+ */
+  renderGrupo(groupData, llmsData, datosComparacion) {
+    console.log("Renderizando vista de GRUPO con:", llmsData, datosComparacion);
+    
+    this.usuario = groupData;
+    this.llms = llmsData;
+    this.datosComparacion = datosComparacion;
+
+    const masSimilar = this.calcularLLMMasSimilar(); // <-- ¡Ya funciona!
+    
+    if (this.mostSimilarEl) {
+        // (Opcional) Cambiamos el texto para que sea claro
+        const parentLabel = this.mostSimilarEl.parentElement.querySelector('h2');
+        if (parentLabel) parentLabel.textContent = "El LLM más similar al PROMEDIO DEL GRUPO es:";
+        
+        // Mostramos el nombre del LLM
+        this.mostSimilarEl.textContent = masSimilar;
+    }
+
+    this.generarLLMCards();
+    this.generarTabla("llm"); 
+
+    this.inicializarGraficos();
+    this.configurarEventos();
+    
+  }
 
    calcularLLMMasSimilar() {
     let menorDistancia = Infinity;
@@ -179,153 +202,213 @@ export class ResultadosView {
 
   //Tabla para el grupo y los LLM con los %
   generarTablaLLM(tabla) {
-    if(!tabla) return;
+    // Comprueba que los datos de comparación existan
+    if (!tabla || !this.datosComparacion) {
+        console.warn("No hay datos de comparación de grupo para renderizar la tabla LLM.");
+        return;
+    }
 
+    // 1. CREAR ENCABEZADOS (igual que antes)
+    tabla.innerHTML = ""; // Limpiar tabla
     const thead = document.createElement("thead");
     const headRow = document.createElement("tr");
-    const emptyTh = document.createElement("th");
-    emptyTh.textContent = "LLM";
-    headRow.appendChild(emptyTh);
+    headRow.innerHTML = "<th>LLM</th>"; // Celda de esquina
     
     this.rasgos.forEach(r => {
-      const th = document.createElement("th");
-      th.textContent = r;
-      headRow.appendChild(th);
+        const th = document.createElement("th");
+        th.textContent = r;
+        headRow.appendChild(th);
     });
     thead.appendChild(headRow);
     tabla.appendChild(thead);
 
+    // 2. CREAR CUERPO DE TABLA (nueva lógica)
     const tbody = document.createElement("tbody");
-    Object.entries(this.llms).forEach(([llmName, valores]) => {
-      const fila = document.createElement("tr");
-      const nombreTd = document.createElement("td");
-      nombreTd.textContent = llmName;
-      fila.appendChild(nombreTd);
-      valores.forEach(v => {
-        const td = document.createElement("td");
-        td.textContent = v;
-        fila.appendChild(td);
-      });
-      tbody.appendChild(fila);
+    const resultados = this.datosComparacion.resultadosPorModelo;
+
+    // Itera sobre cada LLM en los resultados (ej: "Gemma-3")
+    Object.keys(resultados).forEach(llmName => {
+        const fila = document.createElement("tr");
+        
+        // Añade la primera celda con el nombre del LLM
+        const nombreTd = document.createElement("td");
+        nombreTd.textContent = llmName;
+        fila.appendChild(nombreTd);
+
+        // Obtiene el array de estadísticas para este LLM
+        const statsDelLLM = resultados[llmName];
+
+        // Itera sobre 'this.rasgos' para GARANTIZAR el orden de las columnas
+        this.rasgos.forEach(nombreRasgo => {
+            const td = document.createElement("td");
+            
+            // Busca la estadística para este rasgo (ej: "Apertura")
+            const stat = statsDelLLM.find(s => s.rasgo === nombreRasgo);
+
+            if (stat) {
+                // --- INICIO DE LA NUEVA LÓGICA ---
+
+                // 1. Convertir valores a números
+                const porDebajo = parseFloat(stat.porcentaje.porDebajo);
+                const dentro = parseFloat(stat.porcentaje.dentro);
+                const porArriba = parseFloat(stat.porcentaje.porArriba);
+
+                // 2. Encontrar el valor máximo y su etiqueta
+                let valorMaximo = porDebajo;
+                let labelMaximo = "Debajo";
+
+                if (dentro > valorMaximo) {
+                    valorMaximo = dentro;
+                    labelMaximo = "Dentro";
+                }
+                
+                if (porArriba > valorMaximo) {
+                    valorMaximo = porArriba;
+                    labelMaximo = "Arriba";
+                }
+
+                // 3. Formatear el HTML de la celda
+                td.innerHTML = `
+                    <div class="stat-single">
+                        <span class="stat-value strong">${valorMaximo.toFixed(1)}%</span>
+                        <span class="stat-label">${labelMaximo}</span>
+                    </div>
+                `;
+                td.classList.add("cell-grupo-single"); // Nueva clase para estilizar
+
+                // --- FIN DE LA NUEVA LÓGICA ---
+            } else {
+                td.textContent = "N/A";
+            }
+            fila.appendChild(td);
+        });
+
+        tbody.appendChild(fila);
     });
+
     tabla.appendChild(tbody);
   }
 
   inicializarGraficos() {
-  const hexToRgba = (hex, alpha) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  };
 
-  const USER_COLOR = '#16348C';
-  const LLM_PALETTE = ['#6586E7', '#884FFD', '#B18BFD', '#FFA64D', '#FF8000'];
+    if (this.radarChart) this.radarChart.destroy();
+    if (this.barChartBigFive) this.barChartBigFive.destroy();
+    if (this.barChartDark) this.barChartDark.destroy();
 
-  this.llmColors = {};
-  Object.keys(this.llms).forEach((name, index) => {
-    const color = LLM_PALETTE[index % LLM_PALETTE.length];
-    this.llmColors[name] = {
-      fill: hexToRgba(color, 0.2),
-      border: color,
-      bar: hexToRgba(color, 0.8)
+    const hexToRgba = (hex, alpha) => {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     };
-  });
 
-  // 🔹 Radar general (sigue igual)
-  this.radarChart = new Chart(this.radarCanvas, {
-    type: 'radar',
-    data: {
-      labels: this.rasgos,
-      datasets: [
-        {
-          label: 'Usuario',
-          data: this.usuario,
-          backgroundColor: hexToRgba(USER_COLOR, 0.2),
-          borderColor: USER_COLOR,
-          borderWidth: 2
-        },
-        ...Object.keys(this.llms).map(llm => ({
-          label: llm,
-          data: this.llms[llm],
-          backgroundColor: this.llmColors[llm].fill,
-          borderColor: this.llmColors[llm].border,
-          borderWidth: 2
-        }))
-      ]
-    },
-    options: { 
-      responsive: true,
-      plugins: {
-        legend:{
-          display: true,
-          onClick: null
-        }
-      } 
-    }
-  });
+    const USER_COLOR = '#16348C';
+    const LLM_PALETTE = ['#6586E7', '#884FFD', '#B18BFD', '#FFA64D', '#FF8000'];
 
-  // --- División de rasgos ---
-  const bigFiveIndices = [0, 1, 2, 3, 4]; // primeros cinco
-  const darkIndices = [5, 6, 7]; // últimos tres
+    this.llmColors = {};
+    Object.keys(this.llms).forEach((name, index) => {
+      const color = LLM_PALETTE[index % LLM_PALETTE.length];
+      this.llmColors[name] = {
+        fill: hexToRgba(color, 0.2),
+        border: color,
+        bar: hexToRgba(color, 0.8)
+      };
+    });
 
-  // --- Gráfica de barras Big Five ---
-  this.barChartBigFive = new Chart(this.barCanvasBigFive, {
-    type: 'bar',
-    data: {
-      labels: bigFiveIndices.map(i => this.rasgos[i]),
-      datasets: [
-        {
-          label: 'Usuario',
-          data: bigFiveIndices.map(i => this.usuario[i]),
-          backgroundColor: hexToRgba(USER_COLOR, 0.8)
-        },
-        ...Object.keys(this.llms).map(llm => ({
-          label: llm,
-          data: bigFiveIndices.map(i => this.llms[llm][i]),
-          backgroundColor: this.llmColors[llm].bar
-        }))
-      ]
-    },
-    options: { 
-      responsive: true,
-      plugins: {
-        legend: {
-          display: true,
-          onClick: null
+    // 🔹 Radar general (sigue igual)
+    this.radarChart = new Chart(this.radarCanvas, {
+      type: 'radar',
+      data: {
+        labels: this.rasgos,
+        datasets: [
+          {
+            label: 'Usuario',
+            data: this.usuario,
+            backgroundColor: hexToRgba(USER_COLOR, 0.2),
+            borderColor: USER_COLOR,
+            borderWidth: 2
+          },
+          ...Object.keys(this.llms).map(llm => ({
+            label: llm,
+            data: this.llms[llm],
+            backgroundColor: this.llmColors[llm].fill,
+            borderColor: this.llmColors[llm].border,
+            borderWidth: 2
+          }))
+        ]
+      },
+      options: { 
+        responsive: true,
+        plugins: {
+          legend:{
+            display: true,
+            onClick: null
+          }
+        } 
+      }
+    });
+
+    // --- División de rasgos ---
+    const bigFiveIndices = [0, 1, 2, 3, 4]; // primeros cinco
+    const darkIndices = [5, 6, 7]; // últimos tres
+
+    // --- Gráfica de barras Big Five ---
+    this.barChartBigFive = new Chart(this.barCanvasBigFive, {
+      type: 'bar',
+      data: {
+        labels: bigFiveIndices.map(i => this.rasgos[i]),
+        datasets: [
+          {
+            label: 'Usuario',
+            data: bigFiveIndices.map(i => this.usuario[i]),
+            backgroundColor: hexToRgba(USER_COLOR, 0.8)
+          },
+          ...Object.keys(this.llms).map(llm => ({
+            label: llm,
+            data: bigFiveIndices.map(i => this.llms[llm][i]),
+            backgroundColor: this.llmColors[llm].bar
+          }))
+        ]
+      },
+      options: { 
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            onClick: null
+          }
         }
       }
-    }
-  });
+    });
 
-  // --- Gráfica de barras Dark Traits ---
-  this.barChartDark = new Chart(this.barCanvasDark, {
-    type: 'bar',
-    data: {
-      labels: darkIndices.map(i => this.rasgos[i]),
-      datasets: [
-        {
-          label: 'Usuario',
-          data: darkIndices.map(i => this.usuario[i]),
-          backgroundColor: hexToRgba(USER_COLOR, 0.8)
-        },
-        ...Object.keys(this.llms).map(llm => ({
-          label: llm,
-          data: darkIndices.map(i => this.llms[llm][i]),
-          backgroundColor: this.llmColors[llm].bar
-        }))
-      ]
-    },
-    options: { 
-      responsive: true,
-      plugins: {
-        legend: {
-          display: true,
-          onClick: null
+    // --- Gráfica de barras Dark Traits ---
+    this.barChartDark = new Chart(this.barCanvasDark, {
+      type: 'bar',
+      data: {
+        labels: darkIndices.map(i => this.rasgos[i]),
+        datasets: [
+          {
+            label: 'Usuario',
+            data: darkIndices.map(i => this.usuario[i]),
+            backgroundColor: hexToRgba(USER_COLOR, 0.8)
+          },
+          ...Object.keys(this.llms).map(llm => ({
+            label: llm,
+            data: darkIndices.map(i => this.llms[llm][i]),
+            backgroundColor: this.llmColors[llm].bar
+          }))
+        ]
+      },
+      options: { 
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            onClick: null
+          }
         }
       }
-    }
-  });
+    });
 }
 
   configurarEventos() {
@@ -363,8 +446,6 @@ export class ResultadosView {
       if (e.target === modal) modal.classList.remove("show");
     });
   }
-
-
 
   actualizarGraficos() {
     const checkedLLMs = Array.from(document.querySelectorAll(".llm-card input:checked"))
@@ -430,6 +511,41 @@ export class ResultadosView {
     this.radarChart.update();
     this.barChartBigFive.update();
     this.barChartDark.update();
+  }
+
+  generarTablaDistancias() {
+      // 1. Verifica si el contenedor existe y si tenemos datos
+      if (!this.distanciasContainer || !this.llms || !this.usuario) {
+          return;
+      }
+
+      // 2. Calcula las distancias (misma lógica que 'calcularLLMMasSimilar')
+      const distancias = Object.entries(this.llms).map(([nombre, valores]) => {
+          const distancia = Math.sqrt(
+              valores.reduce((acc, val, i) => acc + Math.pow(val - this.usuario[i], 2), 0)
+          );
+          return { nombre, distancia };
+      });
+
+      // 3. Ordena la lista de más similar (menor distancia) a menos similar
+      distancias.sort((a, b) => a.distancia - b.distancia);
+
+      // 4. Genera el HTML para la lista
+      let distanciasHTML = "<h3>Ranking de Similitud</h3><ul>";
+      
+      distancias.forEach(item => {
+          distanciasHTML += `
+              <li>
+                  <span class="nombre-llm">${item.nombre}</span>
+                  <span class="distancia-valor">${item.distancia.toFixed(2)}</span>
+              </li>
+          `;
+      });
+      
+      distanciasHTML += "</ul><small>(Distancia Euclidiana - 0 es idéntico)</small>";
+      
+      // 5. Inserta el HTML en el contenedor
+      this.distanciasContainer.innerHTML = distanciasHTML;
   }
 
 }

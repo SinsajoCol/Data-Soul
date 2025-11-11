@@ -87,14 +87,40 @@ export class ComparacionController {
 
             } else if (grupos[this.id]) {
                 // --- CASO GRUPO ---
-                 const grupo = grupos[this.id];
+                const grupo = grupos[this.id];
                 console.log(`Renderizando dashboard para GRUPO: ${this.id}`);
+                console.log("Datos del grupo.",grupo)
 
                 // a) Calcula la distribución de porcentajes
                 const comparacion = this.procesadorComparacion.compararGrupo(grupo, modelosLLM);
+                console.log("Comparacion del grupo", comparacion)
                 
-                // b) Llama al render GRUPAL
-                this.view.renderGrupo(comparacion);
+                // b) Preparar datos de LLM para la vista (igual que en el caso individual)
+                const plantillaRasgos = this.view.rasgos;
+                const llmsDataForView = {};
+                modelosLLM.forEach(modelo => {
+                    const llmScoresOrdenados = plantillaRasgos.map(nombreRasgoESP => {
+                    const stat = modelo.estadisticas.find(s => s.nombre === nombreRasgoESP);
+                    const media = stat ? stat.media : 0;
+                    return parseFloat(media.toFixed(2));
+                });
+                llmsDataForView[modelo.nombre] = llmScoresOrdenados;
+                });
+                // c) Calcular el array de promedios para el GRUPO
+                
+                // 1. Obtén todas las estadísticas del grupo DE UNA VEZ (eficiente)
+                const grupoStats = grupo.obtenerEstadisticasGrupales();
+                console.log("medias",grupoStats)
+
+                // 2. Mapea la plantilla, usando la MISMA lógica que usaste para los LLMs
+                const groupDataForView = plantillaRasgos.map(nombreRasgoESP => {
+                    // Busca el rasgo en los stats del grupo
+                    const stat = grupoStats.find(s => s.nombre === nombreRasgoESP);
+                    const media = stat ? stat.media : 0; 
+                    return parseFloat(media.toFixed(2));
+                });
+
+                this.view.renderGrupo(groupDataForView, llmsDataForView, comparacion);
         } else {
                  throw new Error(`No se encontraron datos para el ID: "${this.id}"`);
         }
