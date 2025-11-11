@@ -28,5 +28,15 @@
     "Maquiavelismo": {"alto": 180, "bajo": 820},
     "Narcisismo": {"alto": 111, "bajo": 889},
     "Psicopatía": {"alto": 32, "bajo": 968}
+  },
+  "DeepSeek-r1": {
+    "Apertura": {"alto": 541, "bajo": 459},
+    "Responsabilidad": {"alto": 795, "bajo": 205},
+    "Extraversión": {"alto": 343, "bajo": 657},
+    "Amabilidad": {"alto": 757, "bajo": 243},
+    "Neuroticismo": {"alto": 328, "bajo": 672},
+    "Maquiavelismo": {"alto": 222, "bajo": 778},
+    "Narcisismo": {"alto": 135, "bajo": 865},
+    "Psicopatía": {"alto": 15, "bajo": 984}
   }
 }

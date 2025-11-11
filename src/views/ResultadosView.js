@@ -27,7 +27,7 @@ export class ResultadosView {
       "ChatGPT": "src/assets/img/images.png",
       "Mistral-7b": "src/assets/img/Logo_mistral.png",
       "Llama-3.1": "src/assets/img/Logo_llama.png",
-      "DeepSeek": "src/assets/img/Logo_deepseek.png",
+      "DeepSeek-r1": "src/assets/img/Logo_deepseek.png",
       "Gemma-3": "src/assets/img/Logo_gemini.png"
     };
   }
