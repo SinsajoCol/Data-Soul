@@ -1,0 +1,12 @@
+{
+  "Mistral-7b": {
+    "Openness": {"alto": 554, "bajo": 446},
+    "Conscientiousness": {"alto": 771, "bajo": 229},
+    "Extraversion": {"alto": 360, "bajo": 640},
+    "Agreeableness": {"alto": 732, "bajo": 268},
+    "Neuroticism": {"alto": 420, "bajo": 580},
+    "Machiavellianism": {"alto": 180, "bajo": 820},
+    "Narcissism": {"alto": 111, "bajo": 889},
+    "Psychopathy": {"alto": 32, "bajo": 968}
+  }
+}
