@@ -1,0 +1,107 @@
+:root,
+[data-peppercorn-typography-scale-mode="mode-1"] {
+  --accent-color: #ffa64d;
+  --black: #010101;
+  --white: #f7f7f7;
+  --brand-primary: #11296e;
+  --brand-secondary: #cbb2fe;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  background-color: var(--white);
+  color: var(--black);
+  margin: 0;
+  padding: 0;
+  line-height: 1.7;
+}
+
+/* ======== CONTENIDO PRINCIPAL ======== */
+.contenido-Terminos {
+  max-width: 850px;
+  margin: 40px auto;
+  padding: 0 20px;
+  animation: fadeIn 1s ease;
+}
+
+/* ======== TÍTULO PRINCIPAL ======== */
+.titulo {
+  font-size: 1.9rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--brand-primary);
+  letter-spacing: 0.3px;
+  position: relative;
+}
+
+.titulo::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--accent-color);
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+/* ======== SECCIONES ======== */
+.contenido-Terminos h2 {
+  font-size: 1.2rem;
+  color: var(--brand-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+}
+
+.contenido-Terminos p, li {
+  font-size: 0.95rem;
+  color: #1b1b1b;
+}
+
+.contenido-Terminos ul {
+  list-style: none;
+  padding-left: 1.2rem;
+}
+
+.contenido-Terminos ul li::before {
+  content: "•";
+  color: var(--accent-color);
+  font-weight: bold;
+  display: inline-block;
+  width: 1rem;
+  margin-left: -1rem;
+}
+
+/* Separadores visuales sutiles */
+.contenido-Terminos section + section {
+  border-top: 1px solid #e5e5e5;
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+}
+
+.contenido-Terminos .fecha {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 2rem;
+  text-align: right;
+}
+
+/* ======== ANIMACIONES ======== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ======== RESPONSIVO ======== */
+@media (max-width: 768px) {
+  .contenido-Terminos titulo {
+    font-size: 1.6rem;
+  }
+  .contenido-Terminos h2 {
+    font-size: 1.05rem;
+  }
+  .contenido-Terminos {
+    margin: 40px auto;
+  }
+}

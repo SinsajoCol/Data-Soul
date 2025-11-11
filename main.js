@@ -3,6 +3,7 @@ import { PaginaInicio } from "./src/assets/js/PaginaInicio.js";
 import { PaginaCuestionario } from "./src/assets/js/PaginaCuestionario.js";
 import { PaginaPruebaGrupal } from "./src/assets/js/PaginaPruebaGrupal.js";
 import { PaginaResultados } from "/src/assets/js/PaginaResultados.js";
+import { PaginaTerminos } from "./src/assets/js/PaginaTerminos.js";
 
 const app = document.getElementById("app");
 
@@ -27,9 +28,11 @@ async function cargarPagina(nombre, parametro) {
       pagina = new PaginaResultados(parametro);
       console.log("Página de resultados cargada");
       break;
+    case "terminos":
+      pagina = new PaginaTerminos();
+      console.log("Página de términos cargada");
+      break;
     default:
-      // ¡IMPORTANTE! Asegúrate de que tu PaginaTemplate implemente
-      // mostrarPagina() o cambia esto a PaginaInicio()
       pagina = new PaginaInicio(); 
       break;
   }
