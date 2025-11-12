@@ -9,20 +9,21 @@
 
 <div class="section-result">
   <div class="resultado-card">
-    <div class="section-header">
-      <div class="card">
-        <img class="images-2" src="/src/assets/img/imagesGpt.png" alt="ChatGPT"/>
+      <div class="section-header">
+        <div class="card">
+          <img class="images-2" src="/src/assets/img/imagesGpt.png" alt="ChatGPT"/>
+        </div>
+        <div class="text-cont">
+          <!-- Dejar ChatGPT como tarjeta vacía en espera de datos en el JSON -->
+          <div class="ChatGPT">ChatGPT</div>
+        </div>
       </div>
-      <div class="text-cont">
-        <div class="Gemma 3.4B">ChatGPT</div>
-      </div>
-    </div>
 
     <div class="descripcion">
       <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
     </div>
 
-    <canvas id="chartGemma 3.4B" width="60" height="50"></canvas>
+  <canvas id="chartChatGPT" width="60" height="50"></canvas>
 
     <div class="cont-result">
       <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
@@ -99,7 +100,7 @@
       </div>
       <!--Cuando se agreguen los modelos faltantes, cambiar el .Gemma 3.4B por el nombre del modelo en Resultado_unificado-->
       <div class="text-cont">
-        <div class="Gemma 3.4B">Deepseek</div>
+        <div class="DeepSeek">DeepSeek</div>
       </div>
     </div>
 
@@ -107,7 +108,7 @@
       <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
     </div>
 
-    <canvas id="chartGemma 3.4B" width="60" height="50"></canvas>
+  <canvas id="chartDeepSeek" width="60" height="50"></canvas>
 
     <div class="cont-result">
       <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
@@ -128,7 +129,8 @@
       </div>
       <!--Cuando se agreguen los modelos faltantes, cambiar el .Mistral7B por el nombre del modelo en Resultado_unificado-->
       <div class="text-cont">
-        <div class="Mistral7B">Gemini</div>
+        <!-- Aquí mostramos Gemma (desde llm_raw.json) en lugar de Gemini -->
+        <div class="Gemma">Gemma</div>
       </div>
     </div>
 
@@ -136,7 +138,7 @@
       <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
     </div>
 
-    <canvas id="chartMistral7B" width="60" height="50"></canvas>
+  <canvas id="chartGemma" width="60" height="50"></canvas>
 
     <div class="cont-result">
       <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>

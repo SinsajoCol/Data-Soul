@@ -1,6 +1,6 @@
 // controllers/GestorModelosController.js
 import { GestorModelosLLM } from '../models/GestorModelosLLM.js';
-//import { GestorModelosLLM } from './GestorModelosLLM.js';
+
 
 /**
  * Controlador para la gestión y presentación de los datos de Modelos LLM.
@@ -34,32 +34,29 @@ export class ControladorModelos {
     /**
      * Prepara los datos para ser renderizados por la vista.
      * Transforma la información de los modelos a un formato simple y plano.
-     * * @returns {Array<Object>} Un array de objetos listos para la vista.
+     * @returns {Object} Un objeto con los modelos y sus estadísticas listos para la vista.
      */
     obtenerDatosParaVista() {
         if (this.gestor.modelos.length === 0) {
-            return [];
+            return {};
         }
 
-        const datosVista = [];
+        const datosVista = {};
         
-        // El primer modelo se usa para obtener la lista de rasgos (columnas)
-        const primerModelo = this.gestor.modelos[0];
-        const nombresRasgos = primerModelo.rasgos.listaRasgos.map(r => r.nombre);
-
-        // Prepara los datos para cada modelo
+        // Itera sobre los modelos (ahora son objetos con nombre y estadisticas)
         this.gestor.modelos.forEach(modelo => {
-            const modeloData = {
-                nombre: modelo.nombre, // Nombre del modelo
-            };
+            datosVista[modelo.nombre] = {};
             
-            // Añade cada rasgo como una propiedad del objeto
-            nombresRasgos.forEach(rasgoNombre => {
-                const valor = modelo.rasgos.obtenerValor(rasgoNombre);
-                modeloData[rasgoNombre] = valor !== null ? valor.toFixed(1) : 'N/A';
-            });
-            
-            datosVista.push(modeloData);
+            // Transforma el array de estadisticas a un objeto clave-valor
+            if (Array.isArray(modelo.estadisticas)) {
+                modelo.estadisticas.forEach(estadistica => {
+                    datosVista[modelo.nombre][estadistica.nombre] = {
+                        media: parseFloat(estadistica.media.toFixed(1)),
+                        alto: estadistica.alto || 0,
+                        bajo: estadistica.bajo || 0
+                    };
+                });
+            }
         });
 
         return datosVista;
@@ -73,8 +70,12 @@ export class ControladorModelos {
         if (this.gestor.modelos.length === 0) {
             return [];
         }
-        // Asumiendo que todos los modelos tienen el mismo conjunto de rasgos
-        return this.gestor.modelos[0].rasgos.listaRasgos.map(r => r.nombre);
+        // Obtiene los nombres de rasgos del primer modelo
+        const primerModelo = this.gestor.modelos[0];
+        if (Array.isArray(primerModelo.estadisticas)) {
+            return primerModelo.estadisticas.map(e => e.nombre);
+        }
+        return [];
     }
 }
 

@@ -2,93 +2,124 @@ import { GestorModelosLLM } from '../models/GestorModelosLLM.js';
 import { ControladorModelos } from '../controllers/ControladorModelos.js';
 
 export class RasgosLLM {
-  //Cambiar el nombre de Deepseek y Gemini cuando se agreguen los modelos faltantes
+  // Mapeo de nombres de modelos LLM a IDs HTML
   nombreToId = {
-    "Gemma 3.4B": "ChatGPT", //Corregir nombre, este es de prueba
-    "Llama3.1": "Llama",
-    "Mistral7B": "Mistral",
-    "Deepseek": "Deepseek",
-    "Gemini": "Gemini",
+    "Gemma-3": "Gemma",
+    "Llama-3.1": "Llama",
+    "Mistral-7b": "Mistral",
+    "DeepSeek-r1": "DeepSeek",
   };
+
+  // Orden de rasgos esperado
+  rasgosOrden = ['Apertura', 'Responsabilidad', 'Extraversión', 'Amabilidad', 'Neuroticismo', 'Maquiavelismo', 'Narcisismo', 'Psicopatía'];
 
   constructor() {
     this.gestor = new GestorModelosLLM();
-    this.controlador = new ControladorModelos(this.gestor, '/src/data/ResultadosModelos_unificado.json');
+    this.controlador = new ControladorModelos(this.gestor, '/src/data/llm_raw.json');
   }
 
   async inicializar() {
     try {
       await this.controlador.inicializar();
       const datos = this.controlador.obtenerDatosParaVista();
+      console.log('✓ Datos llm_raw.json cargados:', datos);
       this.actualizarVista(datos);
     } catch (error) {
-      console.error('Error inicializando RasgosLLM:', error);
+      console.error('✗ Error inicializando RasgosLLM:', error);
     }
   }
 
   actualizarVista(datos) {
-    datos.forEach(modelo => {
-      const { nombre, ...rasgos } = modelo;
-      const modeloLimpio = nombre.replace(/\s+/g, '').replace(/[^\w-]/g, ''); // ID limpio
+    // Ahora datos es un objeto: { "Gemma-3": { "Apertura": {media, alto, bajo}, ... }, ... }
+    const aliasRasgos = {
+      'Extroversión': 'Extraversión', // HTML usa "Extroversión", JSON tiene "Extraversión"
+      'Narcicismo': 'Narcisismo',     // HTML typo con 'c' -> JSON usa 's'
+    };
 
-      // Actualiza los valores numéricos visibles
-      const contenedor = this.buscarPorNombre(nombre);
+    // Función para eliminar tildes y normalizar
+    const strip = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+    Object.entries(datos).forEach(([nombreModelo, rasgosData]) => {
+      const contenedor = this.buscarPorNombre(nombreModelo);
       if (!contenedor) {
-        console.warn(`No se encontró contenedor para ${nombre}`);
+        console.warn(`⚠️ No se encontró contenedor para ${nombreModelo}`);
         return;
       }
 
-      const mapaRasgos = {
-        "Openness": "Apertura",
-        "Conscientiousness": "Responsabilidad",
-        "Extraversion": "Extroversión",
-        "Agreeableness": "Amabilidad",
-        "Neuroticism": "Neuroticismo",
-        "Narcissism": "Narcicismo",
-        "Psychopathy": "Psicopatía",
-        "Machiavellianism": "Maquiavelismo"
-      };
-
-
+      // Actualiza los valores numéricos en las tarjetas
       const resultados = contenedor.querySelectorAll('.result');
-      const nombresRasgos = Object.keys(rasgos);
-      const valores = Object.values(rasgos);
 
       resultados.forEach(res => {
         const rasgoHTML = res.querySelector('.rasgos').textContent.trim();
-        const claveJSON = Object.keys(mapaRasgos).find(k => mapaRasgos[k] === rasgoHTML);
 
-        const valor = claveJSON ? rasgos[claveJSON] : 'N/A';
-        res.querySelector('.puntaje').textContent = valor;
+        // Determina la clave en el objeto rasgosData: alias directo, luego búsqueda por normalización
+        let clave = aliasRasgos[rasgoHTML] || rasgoHTML;
+        if (!rasgosData.hasOwnProperty(clave)) {
+          const target = strip(rasgoHTML);
+          const encontrado = Object.keys(rasgosData).find(k => strip(k) === target);
+          if (encontrado) clave = encontrado;
+        }
+
+        const estadistica = rasgosData[clave];
+        const valor = estadistica ? estadistica.media : 'N/A';
+
+        const elemPuntaje = res.querySelector('.puntaje');
+        if (elemPuntaje) elemPuntaje.textContent = valor;
       });
-
-      const nombreTraducido = nombresRasgos.map(key => mapaRasgos[key] || key);
 
       // Renderiza la gráfica
       const canvas = contenedor.querySelector('canvas');
       if (canvas) {
-        this.crearGrafica(canvas, nombre, nombreTraducido, valores);
+        const labels = this.rasgosOrden;
+        const valores = labels.map(rasgo => {
+          const est = rasgosData[rasgo];
+          return est ? est.media : 0;
+        });
+        this.crearGrafica(canvas, nombreModelo, labels, valores);
       }
     });
   }
 
   buscarPorNombre(nombre) {
-    const nombreHTML = this.nombreToId?.[nombre] || nombre;
     const cards = document.querySelectorAll('.resultado-card');
 
+    // Genera variantes a buscar (nombre original, mapeo y versiones simplificadas)
+    const candidatos = new Set();
+    candidatos.add(nombre);
+    const mapped = this.nombreToId?.[nombre];
+    if (mapped) candidatos.add(mapped);
+
+    const normalize = s => (s || '').toString().replace(/[^a-z0-9]/gi, '').toLowerCase();
+    const candidatosNorm = Array.from(candidatos).map(normalize);
+
     for (const card of cards) {
-      // Busca el texto existente en .text-cont div en el HTML de RasgosLLM
-      const tituloElemento = card.querySelector('.text-cont div')
+      // Intenta varias fuentes dentro de la tarjeta: título visible, alt de la imagen, id del canvas
+      const tituloElem = card.querySelector('.text-cont div');
+      const img = card.querySelector('img');
+      const canvas = card.querySelector('canvas');
 
-      if (!tituloElemento) continue;
+      const fuentes = [];
+      if (tituloElem) fuentes.push(tituloElem.textContent.trim());
+      if (img && img.alt) fuentes.push(img.alt.trim());
+      if (img && img.src) {
+        // Extrae nombre de archivo
+        try {
+          const parts = img.src.split('/');
+          fuentes.push(parts[parts.length - 1]);
+        } catch (e) {}
+      }
+      if (canvas && canvas.id) fuentes.push(canvas.id);
 
-      const titulo = tituloElemento.textContent.trim();
-      if (titulo && nombreHTML && titulo.toLowerCase() === nombreHTML.toLowerCase()) {
+      // Normaliza y compara
+      const fuentesNorm = fuentes.map(normalize);
+      const match = candidatosNorm.some(c => fuentesNorm.some(f => f === c || f.includes(c) || c.includes(f)));
+      if (match) {
+        console.log(`✓ Tarjeta encontrada para: ${nombre} (fuentes: ${fuentes.join('|')})`);
         return card;
       }
     }
 
-    console.warn(`⚠️ No se encontró tarjeta visual para "${nombre}" (HTML esperado: "${nombreHTML}")`);
+    console.warn(`⚠️ No se encontró tarjeta visual para "${nombre}". Intentados: ${Array.from(candidatos).join(', ')}`);
     return null;
   }
 
@@ -102,11 +133,10 @@ export class RasgosLLM {
     }
 
     const colores = {
-      "Gemma 3.4B": { borde: '#11296E', fondo: 'rgba(17, 41, 110, 0.44)' },
-      "Llama3.1": { borde: '#884FFD', fondo: 'rgba(203, 178, 254, 0.43)' },
-      "Mistral7B": { borde: '#FFA64D', fondo: 'rgba(255, 166, 77, 0.39)' },
-      "Deepseek": { borde: '#5403FA', fondo: 'rgba(101, 134, 231, 0.40)' },
-      "Gemini": { borde: '#C60', fondo: 'rgba(255, 196, 138, 0.54)' }
+      "Gemma-3": { borde: '#11296E', fondo: 'rgba(17, 41, 110, 0.44)' },
+      "Llama-3.1": { borde: '#884FFD', fondo: 'rgba(203, 178, 254, 0.43)' },
+      "Mistral-7b": { borde: '#FFA64D', fondo: 'rgba(255, 166, 77, 0.39)' },
+      "DeepSeek-r1": { borde: '#5403FA', fondo: 'rgba(101, 134, 231, 0.40)' }
     };
 
     const color = colores[nombreModelo] || { borde: '#884FFD', fondo: 'rgba(203, 178, 254, 0.43)' };
@@ -134,8 +164,8 @@ export class RasgosLLM {
         scales: {
           r: {
             beginAtZero: true,
-            max: 100,
-            ticks: { stepSize: 20, showLabelBackdrop: false },
+            max: 5,
+            ticks: { stepSize: 1, showLabelBackdrop: false },
             backgroundColor: '#F0F0F0',
             grid: { color: '#A6A6A6' },
             angleLines: { color: '#A6A6A6' },
