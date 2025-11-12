@@ -163,9 +163,10 @@ export class RasgosLLM {
       options: {
         scales: {
           r: {
-            beginAtZero: true,
-            max: 5,
-            ticks: { stepSize: 1, showLabelBackdrop: false },
+            beginAtZero: false,
+            min: 1.5,
+            max: 4,
+            ticks: { stepSize: 0.5, showLabelBackdrop: false },
             backgroundColor: '#F0F0F0',
             grid: { color: '#A6A6A6' },
             angleLines: { color: '#A6A6A6' },
