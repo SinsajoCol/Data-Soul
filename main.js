@@ -4,6 +4,7 @@ import { PaginaCuestionario } from "./src/assets/js/PaginaCuestionario.js";
 import { PaginaPruebaGrupal } from "./src/assets/js/PaginaPruebaGrupal.js";
 import { PaginaResultados } from "/src/assets/js/PaginaResultados.js";
 import { PaginaTerminos } from "./src/assets/js/PaginaTerminos.js";
+import { PaginaPrivacidad } from "./src/assets/js/PaginaPrivacidad.js";
 
 const app = document.getElementById("app");
 
@@ -31,6 +32,10 @@ async function cargarPagina(nombre, parametro) {
     case "terminos":
       pagina = new PaginaTerminos();
       console.log("Página de términos cargada");
+      break;
+    case "privacidad":
+      pagina = new PaginaPrivacidad();
+      console.log("Página de privacidad cargada");
       break;
     default:
       pagina = new PaginaInicio(); 

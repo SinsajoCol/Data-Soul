@@ -20,7 +20,7 @@ export class Footer {
               <a href="#" id="btnRealizarFooter">Realizar Prueba</a> •
               <a href="#" data-page="rasgos">Rasgos LLM</a> •
               <a href="#" data-page="terminos">Términos del servicio</a> •
-              <a href="#" data-page="politicas">Políticas de privacidad</a>
+              <a href="#" data-page="privacidad">Políticas de privacidad</a>
             </div>
             
             <div class="footer-info">
