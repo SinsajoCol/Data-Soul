@@ -15,7 +15,7 @@ export class ModeloLLM {
     toJSON() {
         return {
             nombre: this.nombre, // Incluye el nombre del modelo
-            rasgos: this.rasgos.toJSON() // Usa el método toJSON de Rasgos
+            estadisticas: this.estadisticas // Array de estadísticas
         };
     }
 

@@ -55,10 +55,18 @@ export class PaginaTemplate {
     const btnCerrar = document.querySelector('.close');
     const btnIndividual = document.getElementById('btnIndividual');
     const btnGrupal = document.getElementById('btnGrupal');
+    const btnRasgos = document.getElementById('btnRasgos');
 
     const modalConsent = document.querySelector('.modalConsentimiento');
     const btnRechazar = modalConsent?.querySelector('.frame-72');
     const btnAceptar = modalConsent?.querySelector('.frame-75');
+
+    if (btnRasgos) {
+      btnRasgos.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.hash = 'llm';
+      });
+    }
 
     if (btnAbrirHeader) {
     btnAbrirHeader.addEventListener('click', (e) => {
