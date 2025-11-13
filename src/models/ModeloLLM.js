@@ -11,7 +11,6 @@ export class ModeloLLM {
     validar() {
         return this.estadisticas.length > 0;
     }
-
     // Serializa el modelo a un formato JSON
     toJSON() {
         return {

@@ -1,52 +1,54 @@
-import { Rasgo } from "./Rasgo.js";
-import { Rasgos } from "./Rasgos.js";
+// Importa la clase 'Rasgos' que sabe cómo manejar 'Rasgo'
+import { Rasgos } from './Rasgos.js';
 
-/**
- * Clase encargada de procesar los puntajes del cuestionario
- * y calcular los rasgos individuales o grupales.
- */
-export class ProcesadorPsicometrico {
-  
-  /**
-   * Calcula los rasgos individuales a partir de un cuestionario.
-   * @param {Cuestionario} cuestionario - Objeto que contiene las preguntas y respuestas.
-   * @returns {Rasgos} Objeto con los rasgos calculados.
-   */
-  calcularRasgos(cuestionario) {
-    const mapaRasgos = new Map();
+export default class ProcesadorPsicometrico {
 
-    for (const pregunta of cuestionario) {
-      if (pregunta.respuesta == null) continue;
+    /**
+     * Calcula los puntajes de los rasgos a partir de las preguntas y sus respuestas.
+     *
+     * @param {Array<Pregunta>} preguntas - La lista completa de objetos Pregunta
+     * @param {Object} respuestas - El mapa de respuestas del usuario (ej: {1: 5, 2: 3, ...})
+     * @returns {Rasgos} - Una nueva instancia de la clase Rasgos con los puntajes calculados.
+     */
+    calcularRasgos(preguntas, respuestas) {
+        
+        // 1. Usamos un objeto simple para acumular los puntajes temporalmente.
+        const puntajesTemporales = {};
+        const conteoTemporales = {}; // Para contar cuántas preguntas contribuyen a cada rasgo
 
-      // Si la pregunta es invertida: 5 -> 1, 4 -> 2, 3 -> 3, etc.
-      let valor = pregunta.invertida ? 6 - pregunta.respuesta : pregunta.respuesta;
-      let rasgoActual = mapaRasgos.get(pregunta.dimension) || [];
+        // 2. Iteramos sobre cada pregunta (del modelo)
+        for (const pregunta of preguntas) {
+            const rasgoNombre = pregunta.rasgoAsociado; // Ej: "Extraversion"
+            const valorRespuesta = respuestas[pregunta.id]; // Ej: 5
 
-      rasgoActual.push(valor);
-      mapaRasgos.set(pregunta.dimension, rasgoActual);
+            // 3. Obtenemos el puntaje. La clase 'Pregunta' maneja la lógica de inversión (ej: 6 - respuesta).
+            const puntaje = pregunta.obtenerValorAjustado(Number(valorRespuesta));
+
+            // 4. Acumulamos el puntaje para ese rasgo.
+            if (puntajesTemporales[rasgoNombre]) {
+                puntajesTemporales[rasgoNombre] += puntaje; // Suma el puntaje
+                conteoTemporales[rasgoNombre]++; // Incrementa el conteo de preguntas para este rasgo
+            } else {
+                puntajesTemporales[rasgoNombre] = puntaje;
+                conteoTemporales[rasgoNombre] = 1;
+            }
+        }
+        
+        // 5. creamos el objeto de 'Rasgos'
+        const rasgosResultado = new Rasgos();
+
+        for (const nombreRasgo in puntajesTemporales) {
+            const sumaTotal = puntajesTemporales[nombreRasgo];
+            const numPreguntas = conteoTemporales[nombreRasgo];
+
+            // Calcula el promedio (Suma / Cantidad)
+            const valorPromedio = sumaTotal / numPreguntas;
+            
+            // Guarda el promedio (ej: 3.25) en lugar de la suma (ej: 26)
+            rasgosResultado.agregarRasgo(nombreRasgo, valorPromedio);
+        }
+
+        // 6. Devolvemos la instancia final de 'Rasgos'
+        return rasgosResultado;
     }
-
-    // Calcular promedio de cada rasgo
-    const listaRasgos = [];
-    for (const [dimension, valores] of mapaRasgos.entries()) {
-      const promedio = valores.reduce((a, b) => a + b, 0) / valores.length;
-      listaRasgos.push(new Rasgo(dimension, promedio));
-    }
-
-    return new Rasgos(listaRasgos);
-  }
-
-  /**
-   * Procesa múltiples cuestionarios para obtener rasgos poblacionales.
-   * @param {Cuestionario[]} cuestionarios - Lista de cuestionarios (por usuario).
-   * @returns {Rasgos[]} Lista de resultados por usuario.
-   */
-  calcularRasgosMasivos(cuestionarios) {
-    const resultados = [];
-    for (const cuestionario of cuestionarios) {
-      const rasgos = this.calcularRasgos(cuestionario);
-      resultados.push(rasgos);
-    }
-    return resultados;
-  }
 }

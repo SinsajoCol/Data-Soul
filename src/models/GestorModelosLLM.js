@@ -8,6 +8,8 @@ export class GestorModelosLLM {
         this.PUNTAJE_ALTO = 4.2;
         this.PUNTAJE_BAJO = 1.8;
         this.Z_CRITICO_95 = 1.96; // Para el IC 95%
+        this.modelos = []; // Arreglo de instancias de ModeloLLM
+
     }
 
     // Carga modelos desde una ruta (e.g., archivo JSON)
@@ -70,7 +72,6 @@ export class GestorModelosLLM {
             }
             
             this.modelos = modelosCalculados;
-            console.log('GestorModelosLLM: modelos cargados ->', this.modelos.map(m => m.nombre));
 
         } catch (error) {
             console.error('Error al cargar y procesar modelos LLM:', error);
@@ -94,6 +95,9 @@ export class GestorModelosLLM {
             // Itera sobre los rasgos en el JSON (ej: "Apertura", "Responsabilidad")
             for (const nombreRasgoESP in datosCrudosDelModelo) {
                 
+                // Traduce al inglés (ej: "Apertura" -> "Openness")
+                const nombreRasgoLLM = TRAIT_MAP[nombreRasgoESP] || nombreRasgoESP;
+                
                 // Obtiene el objeto {"alto": 519, "bajo": 481}
                 const datosRasgo = datosCrudosDelModelo[nombreRasgoESP]; 
 
@@ -102,18 +106,18 @@ export class GestorModelosLLM {
                 const media = datosRasgo.alto / 10; // 519 -> 51.9
 
                 estadisticasProcesadas.push({
-                    nombre: nombreRasgoESP, // "Apertura"
+                    nombre: nombreRasgoLLM, // "Openness"
                     media: parseFloat(media.toFixed(1)),
                     // Opcional: guarda los valores crudos si los necesitas
-                    alto: datosRasgo.alto,
-                    bajo: datosRasgo.bajo
+                    // alto: datosRasgo.alto,
+                    // bajo: datosRasgo.bajo
                 });
             }
 
             // Añade el modelo procesado al array
             modelosProcesados.push({
                 nombre: nombreModelo, // "Gemma-3"
-                estadisticas: estadisticasProcesadas // [{nombre: "Apertura", media: 51.9}, ...]
+                estadisticas: estadisticasProcesadas // [{nombre: "Openness", media: 51.9}, ...]
             });
         }
 

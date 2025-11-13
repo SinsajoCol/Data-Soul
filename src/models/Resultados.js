@@ -1,9 +1,14 @@
-class Resultados {
+import AlmacenamientoLocal from '../models/AlmacenamientoLocal.js';
+import { DatosIndividuales } from "./DatosIndividuales.js";
+import { DatosPoblacion } from "./DatosPoblacion.js";
+
+export default class Resultados {
     static instance = null;
 
     constructor() {
         this.individuales = {}; // { usuarioId: DatosIndividuales }
         this.poblaciones = {};  // { grupoId: DatosPoblacion }
+        this.cargarDeLocalStorage();
     }
 
     static getInstance() {
@@ -14,11 +19,14 @@ class Resultados {
     }
 
     agregarResultadoIndividual(individuo) {
+        console.log("Agregando resultado individual para usuarioId:", individuo.usuarioId);
         this.individuales[individuo.usuarioId] = individuo;
+        this.guardarEnLocalStorage();
     }
 
     agregarResultadosPoblacion(grupo) {
         this.poblaciones[grupo.nombreGrupo] = grupo;
+        this.guardarEnLocalStorage();
     }
 
     obtenerResultadosIndividuales() {
@@ -59,5 +67,11 @@ class Resultados {
         this.individuales = {};
         this.poblaciones = {};
         AlmacenamientoLocal.eliminar("resultados");
+    }
+
+    limpiarResultadosPoblacion() {
+        console.log("Borrando resultados grupales antiguos...");
+        this.poblaciones = {}; // Resetea solo las poblaciones
+        this.guardarEnLocalStorage(); // Guarda los cambios
     }
 }

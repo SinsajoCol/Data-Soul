@@ -1,0 +1,12 @@
+{
+  "Gemma-3": {
+    "Openness": {"alto": 519, "bajo": 481},
+    "Conscientiousness": {"alto": 860, "bajo": 140},
+    "Extraversion": {"alto": 248, "bajo": 752},
+    "Agreeableness": {"alto": 784, "bajo": 216},
+    "Neuroticism": {"alto": 381, "bajo": 619},
+    "Machiavellianism": {"alto": 227, "bajo": 773},
+    "Narcissism": {"alto": 103, "bajo": 897},
+    "Psychopathy": {"alto": 21, "bajo": 979}
+  }
+}

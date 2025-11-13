@@ -36,7 +36,7 @@ html, body {
 }
 
 .navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -56,7 +56,7 @@ nav a {
   color: #F7F7F7;
   margin: 0 10px;
   text-decoration: none;
-  font-family: var(--peppercorn-typography-scale-h1-font-family);
+  font-family: var(--H1-font-family, Poppins);
   font-size: 15px;
   font-weight: 600;
 }
@@ -197,10 +197,11 @@ main.contenido {
   color: #11296E;
   padding: 20px 30px;
   border-radius: 12px;
-  max-width: 400px;
-  width: 90%;
+  max-width: 35%;
+  max-height: 90vh;
   text-align: justify;
   position: relative;
+  overflow-y: auto;
 }
 
 .modalText h2 {
@@ -248,7 +249,8 @@ main.contenido {
   backdrop-filter: blur(4px);
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow-y: hidden;
+  padding: 40px 0;
 }
 
 .consentimiento-informado, .consentimiento-informado * {
@@ -258,7 +260,7 @@ main.contenido {
 .consentimiento-informado {
   background: linear-gradient(180deg, rgba(17, 41, 110, 1) 0%, rgba(136, 79, 253, 1) 58.65384340286255%, rgba(175, 145, 236, 1) 99.98999834060669%);
   border-radius: 60px;
-  width: 35%;
+  width: 45%;
   max-width: 900px;
   max-height: 90vh;
   padding: 40px 50px;
@@ -267,7 +269,7 @@ main.contenido {
   justify-content: space-between;
   align-items: stretch;
   color: var(--white);
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.3s ease;
 }
@@ -317,8 +319,7 @@ main.contenido {
   color: var(--white);
   text-align: center;
   font-family: var(--peppercorn-typography-scale-h3-font-family);
-  font-size: var(--peppercorn-typography-scale-h3-font-size);
-  line-height: var(--peppercorn-typography-scale-h3-line-height);
+  font-size: 1rem;
   font-weight: var(--peppercorn-typography-scale-h3-font-weight);
   position: relative;
   align-self: stretch;
@@ -333,13 +334,19 @@ main.contenido {
   padding: 30px;
   overflow-y: auto;
   max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.frame-110 >div {
+  margin-bottom: 0;
 }
 
 .frame-110, #app {
   max-width: 100%;
   overflow-x: hidden;
 }
-
 
 .frame-111 {
   background: #ffffff;
@@ -374,14 +381,6 @@ main.contenido {
   font-weight: var(--peppercorn-typography-scale-body-font-weight);
 }
 
-.secret {
-  color: var(--brand-primary);
-  text-align: left;
-  position: relative;
-  align-self: stretch;
-  height: 317px;
-}
-
 .secret h4 {
   color: var(--brand-primary);
   font-family: var(--peppercorn-typography-scale-h4-font-family);
@@ -390,20 +389,12 @@ main.contenido {
   font-weight: var(--peppercorn-typography-scale-h4-font-weight, 600);
 }
 
-.secret p{
-  color: var(--brand-primary);
-  font-family: var(--peppercorn-typography-scale-body-font-family);
-  font-size: 15px;
-  line-height: 28px;
-  font-weight: var(--peppercorn-typography-scale-body-font-weight);
-}
-
-.accept {
+.secret, .accept, .infoAccept {
   color: var(--brand-primary, #11296e);
   text-align: left;
   position: relative;
   align-self: stretch;
-  height: 129px;
+  margin-bottom: 15px;
 }
 
 .accept h4{
@@ -414,20 +405,12 @@ main.contenido {
   font-weight: var(--peppercorn-typography-scale-h4-font-weight, 600);
 }
 
-.accept p{
+.secret, .accept p, .infoAccept p{
   color: var(--brand-primary);
   font-family: var(--peppercorn-typography-scale-body-font-family);
   font-size: 15px;
-  line-height: 28px;
+  line-height: 1.6;
   font-weight: var(--peppercorn-typography-scale-body-font-weight);
-}
-
-.infoAccept {
-  color: var(--brand-primary, #11296e);
-  text-align: left;
-  position: relative;
-  align-self: stretch;
-  height: 115px;
 }
 
 .infoAccept h4{
@@ -436,14 +419,6 @@ main.contenido {
   font-size: var(--peppercorn-typography-scale-h4-font-size);
   line-height: var(--peppercorn-typography-scale-h4-line-height);
   font-weight: var(--peppercorn-typography-scale-h4-font-weight, 600);
-}
-
-.infoAccept p {
-  color: var(--brand-primary);
-  font-family: var(--peppercorn-typography-scale-body-font-family);
-  font-size: 15px;
-  line-height: 28px;
-  font-weight: var(--peppercorn-typography-scale-body-font-weight);
 }
 
 .btnsCons {
@@ -487,33 +462,22 @@ main.contenido {
   height: 24px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1090px) {
   .modalText {
-    max-width: 90%;
-    padding: 20px;
+    max-width: 40%;
+    padding: 25px;
+    max-height: 85vh;
+    overflow-y: auto;
   }
 
-  .modalText h2 {
-    font-size: 1.3rem;
-  }
-
-  .modalBtn {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    width: 50%;
-    margin: 30px auto 0 auto;        
-  }
-
-  .modalBtn button {
-    width: 100%;
+  .modalConsentimiento {
+    padding: 20px 0;
+    align-items: flex-start;
   }
 
   .consentimiento-informado {
-    width: 90%;
-    padding: 25px 20px;
+    width: 60%;
+    padding: 25px 50px;
     border-radius: 30px;
     max-height: 90vh;
   }
@@ -546,8 +510,7 @@ main.contenido {
 
   .frame-110 {
     padding: 20px;
-    border-radius: 20px;
-    max-height: 45vh;
+    gap: 20px;
   }
 
   .frame-110 h4 {
@@ -557,6 +520,10 @@ main.contenido {
   .frame-110 p {
     font-size: 0.9rem;
     line-height: 1.4rem;
+  }
+
+  .accept, .infoAccept {
+    height: auto;
   }
 
   .btnsCons {
@@ -582,23 +549,162 @@ main.contenido {
   }
 }
 
-@media (max-width: 480px) {
-  .frame-100 h2 {
+@media (max-width: 768px) {
+  .modalText {
+    max-width: 60%;
+    padding: 20px;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .modalText h2 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .modalText h3 {
     font-size: 1rem;
+    margin-top: 10px;
+  }
+
+  .modalText p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .modalConsentimiento {
+    padding: 20px 0;
+    align-items: flex-start;
+  }
+
+  .consentimiento-informado {
+    width: 60%;
+    padding: 25px 30px;
+    border-radius: 30px;
+    max-height: 90vh;
+  }
+
+  .titleConsentimientoI {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .frame-100 {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .lucideImg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .frame-100 h2 {
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    text-align: center;
   }
 
   .titleConsentimientoI h3 {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    line-height: 1.3rem;
   }
 
   .frame-110 {
-    padding: 15px;
-    max-height: 50vh;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .frame-110 h4 {
+    font-size: 0.95rem;
+  }
+
+  .frame-110 p {
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+  }
+
+  .accept, .infoAccept {
+    height: auto;
+  }
+
+  .btnsCons {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
   }
 
   .frame-72, .frame-75 {
-    height: 45px;
+    width: 70%;
+    max-width: 300px;
+    height: 48px;
+    font-size: 0.9rem;
+  }
+
+  .lucideIX, .lucidICheck {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .consentimiento-informado{
+    width: 80%;
+  }
+}
+
+@media (max-width: 540px) {
+  .modalText {
+    max-width: 85%;
+    padding: 15px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modalText h2 {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .modalText h3 {
+    font-size: 0.9rem;
+  }
+
+  .modalText p {
     font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .modalBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    width: 100%;
+  }
+
+  .modalBtn button {
+    width: 100%;
+    max-width: 280px;
+    padding: 14px 0;
+    text-align: center;
+  }
+
+  .modalBtn button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
   }
 }
 
@@ -654,9 +760,9 @@ main.contenido {
 }
 
 .footer-info {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.4;
-  margin-bottom: 10px;
+  margin-bottom: 1px;
   opacity: 0.9;
 }
 
@@ -668,7 +774,7 @@ main.contenido {
 
 .footer-right {
   flex: 6;
-  text-align: center; /* centra el contenido */
+  text-align: center; /* centra el contenido */
 }
 
 @media (max-width: 600px) {
