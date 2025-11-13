@@ -23,6 +23,7 @@ h1 {
   text-align: center;
   color: #11296E;
   font-family: "Poppins", sans-serif;
+  margin-bottom: 20px;  
 }
 
 .progress-bar {
@@ -30,7 +31,6 @@ h1 {
   height: 12px;
   background-color: #DEDEDE;
   border-radius: 8px;
-  margin: 20px 0;
   overflow: hidden;
 }
 
@@ -209,37 +209,183 @@ button:disabled {
 
 .grado_afirmacion {
   display: flex;
-  flex-direction: row;       /* Los tres elementos (p - círculos - p) en una fila */
-  align-items: center;       /* Alinea verticalmente el texto con los círculos */
-  justify-content: center;   /* Centra todo el grupo */
-  gap: 40px;                 /* Espacio entre texto y los círculos */
-  flex-wrap: wrap;       /* si no caben, bajan de línea */
+  flex-direction: column; /* primero los círculos, luego los textos */
+  align-items: center;
+  gap: 10px;
   width: 100%;
-  box-sizing: border-box;
 }
-.grado_afirmacion p {
-  width: 100px;              /* Mantiene ancho similar para los textos */
-  text-align: center;
-  word-wrap: break-word; /* permite partir palabras largas si es necesario */
-  margin: 0;
-}
+
 .eleccion_grado {
   display: flex;
-  flex-direction: row;
-  gap: 20px;                 /* Espacio entre los círculos */
-  justify-content: center;   /* Centra los círculos */
-  align-items: center;
-  flex-wrap: nowrap;
-  flex: 1;               /* se ajusta automáticamente entre los textos */
-  min-width: 0;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 20px;
+  
 }
+
+.etiquetas_grado {
+  display: flex;
+  justify-content: space-between;
+  width: 90%; /* puedes ajustar este ancho según tu diseño */
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.etiquetas_grado p {
+  margin: 0;
+}
+
+.etiquetas_grado .izquierda {
+  text-align: left;
+}
+
+.etiquetas_grado .derecha {
+  text-align: right;
+} 
 
 .ellipse-8,
 .ellipse-9,
 .ellipse-10,
 .ellipse-11,
 .ellipse-12 {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
+  display: flex;               /* <-- centra el texto */
+  align-items: center;         /* centra verticalmente */
+  justify-content: center;     /* centra horizontalmente */
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+
+/* === RESPONSIVE DESIGN === */
+/* === TABLET Y MÓVIL PEQUEÑO (menos de 700px) === */
+@media (max-width: 700px) {
+  .Prueba_container {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .opciones {
+    gap: 25px; /* reduce un poco el espacio entre los botones */
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .opcion button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .opcion button.selected::after {
+    width: 26px;
+    height: 26px;
+  }
+
+  .eleccion_grado {
+    gap: 25px; /* espacio entre los círculos de grado */
+  }
+
+  .ellipse-8,
+  .ellipse-9,
+  .ellipse-10,
+  .ellipse-11,
+  .ellipse-12 {
+    width: 42px;
+    height: 42px;
+    font-size: 13px;
+  }
+
+  .etiquetas_grado {
+    width: 90%;
+    font-size: 13px;
+  }
+
+  .preguntas h4 {
+    font-size: 15px;
+  }
+}
+
+/* === AJUSTE ADICIONAL para pantallas menores de 540px (donde se te dañaba) === */
+@media (max-width: 540px) {
+  .opciones {
+    gap: 18px;
+  }
+
+  .opcion button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .opcion button.selected::after {
+    width: 22px;
+    height: 22px;
+  }
+
+  .eleccion_grado {
+    gap: 18px;
+  }
+
+  .ellipse-8,
+  .ellipse-9,
+  .ellipse-10,
+  .ellipse-11,
+  .ellipse-12 {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .etiquetas_grado {
+    width: 95%;
+    font-size: 12px;
+  }
+
+  .preguntas h4 {
+    font-size: 14px;
+  }
+}
+
+/* === EXTRA SMALL (menos de 420px) === */
+@media (max-width: 420px) {
+  .Prueba_container {
+    width: 100%;
+    margin-top: 40px;
+  }
+
+  .opciones {
+    gap: 12px;
+  }
+
+  .opcion button {
+    width: 35px;
+    height: 35px;
+  }
+
+  .opcion button.selected::after {
+    width: 18px;
+    height: 18px;
+  }
+
+  .eleccion_grado {
+    gap: 12px;
+  }
+
+  .ellipse-8,
+  .ellipse-9,
+  .ellipse-10,
+  .ellipse-11,
+  .ellipse-12 {
+    width: 35px;
+    height: 35px;
+    font-size: 11px;
+  }
+
+  .etiquetas_grado {
+    font-size: 11px;
+  }
 }
