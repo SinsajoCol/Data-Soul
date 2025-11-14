@@ -8,6 +8,8 @@ export class GestorModelosLLM {
         this.PUNTAJE_ALTO = 4.2;
         this.PUNTAJE_BAJO = 1.8;
         this.Z_CRITICO_95 = 1.96; // Para el IC 95%
+        this.modelos = []; // Arreglo de instancias de ModeloLLM
+
     }
 
     // Carga modelos desde una ruta (e.g., archivo JSON)

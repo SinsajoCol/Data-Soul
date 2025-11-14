@@ -17,7 +17,7 @@ export class Header {
           <div class="menu">
             <a href="#" data-page="inicio">Inicio</a>
             <a href="#" id="btnRealizar">Realizar Prueba</a>
-            <a href="#" data-page="">Rasgos LLM</a>
+            <a href="#" id="btnRasgos">Rasgos LLM</a>
           </div>
       </nav>
 

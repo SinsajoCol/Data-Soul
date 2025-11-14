@@ -1,10 +1,11 @@
 // main.js
 import { PaginaInicio } from "./src/assets/js/PaginaInicio.js";
 import { PaginaCuestionario } from "./src/assets/js/PaginaCuestionario.js";
-import { PaginaPruebaGrupal } from "./src/assets/js/PaginaPruebaGrupal.js";
+import { PaginaPruebaGrupal } from "../src/assets/js/PaginaPruebaGrupal.js";
 import { PaginaResultados } from "/src/assets/js/PaginaResultados.js";
-import { PaginaTerminos } from "./src/assets/js/PaginaTerminos.js";
+import { PaginaTerminos } from "../src/assets/js/PaginaTerminos.js";
 import { PaginaPrivacidad } from "./src/assets/js/PaginaPrivacidad.js";
+import { PaginaLLM } from "./src/assets/js/PaginaLLM.js";
 
 const app = document.getElementById("app");
 
@@ -36,6 +37,10 @@ async function cargarPagina(nombre, parametro) {
     case "privacidad":
       pagina = new PaginaPrivacidad();
       console.log("Página de privacidad cargada");
+      break;
+    case "llm":
+      pagina = new PaginaLLM();
+      console.log("Página de LLM cargada");
       break;
     default:
       pagina = new PaginaInicio(); 
