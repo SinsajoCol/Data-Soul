@@ -513,39 +513,56 @@ export class ResultadosView {
     this.barChartDark.update();
   }
 
-  generarTablaDistancias() {
-      // 1. Verifica si el contenedor existe y si tenemos datos
-      if (!this.distanciasContainer || !this.llms || !this.usuario) {
-          return;
-      }
+    generarTablaDistancias() {
+      if (!this.distanciasContainer || !this.llms || !this.usuario) return;
 
-      // 2. Calcula las distancias (misma lógica que 'calcularLLMMasSimilar')
       const distancias = Object.entries(this.llms).map(([nombre, valores]) => {
-          const distancia = Math.sqrt(
-              valores.reduce((acc, val, i) => acc + Math.pow(val - this.usuario[i], 2), 0)
-          );
-          return { nombre, distancia };
+        const distancia = Math.sqrt(
+          valores.reduce((acc, val, i) => acc + Math.pow(val - this.usuario[i], 2), 0)
+        );
+        return { nombre, distancia };
       });
 
-      // 3. Ordena la lista de más similar (menor distancia) a menos similar
       distancias.sort((a, b) => a.distancia - b.distancia);
 
-      // 4. Genera el HTML para la lista
-      let distanciasHTML = "<h3>Ranking de Similitud</h3><ul>";
-      
-      distancias.forEach(item => {
-          distanciasHTML += `
-              <li>
-                  <span class="nombre-llm">${item.nombre}</span>
-                  <span class="distancia-valor">${item.distancia.toFixed(2)}</span>
-              </li>
-          `;
+      const top3 = distancias.slice(0, 3);
+      const resto = distancias.slice(3);
+
+      let html = `<h3>Ranking de Similitud</h3>`;
+
+      // 🔹 Podio con círculos y base
+      html += `<div class="top3-container">`;
+      const clases = ["first", "second", "third"];
+      top3.forEach((item, i) => {
+        html += `
+          <div class="badge-rank ${clases[i]}">
+            <div class="badge-circle" data-rank="#${i + 1}"></div>
+            <div class="badge-base">${item.nombre}</div>
+            <div class="badge-distance">${item.distancia.toFixed(2)}</div>
+          </div>
+        `;
       });
-      
-      distanciasHTML += "</ul><small>(Distancia Euclidiana - 0 es idéntico)</small>";
-      
-      // 5. Inserta el HTML en el contenedor
-      this.distanciasContainer.innerHTML = distanciasHTML;
-  }
+      html += `</div>`;
+
+      // 🔹 Lista inferior
+      if (resto.length > 0) {
+        html += `<ul>`;
+        resto.forEach((item, index) => {
+          html += `
+            <li>
+              <span class="nombre-llm">${index + 4}. ${item.nombre}</span>
+              <span class="distancia-valor">${item.distancia.toFixed(2)}</span>
+            </li>
+          `;
+        });
+        html += `</ul>`;
+      }
+
+      html += `<small>(Distancia Euclidiana — 0 indica mayor similitud)</small>`;
+
+      this.distanciasContainer.innerHTML = html;
+    }
+
+
 
 }
