@@ -38,6 +38,53 @@ export class PaginaLLM extends PaginaTemplate {
 
   despuesDeCargar() {
     this.iniciarCarrusel();
+
+    const cards = document.querySelectorAll('.resultado-card');
+    const modal = document.getElementById('modal');
+    const modalBody = modal.querySelector('.modal-body');
+    const closeBtn = modal.querySelector('.close');
+
+    if (!this.vistaRasgos) {
+      this.vistaRasgos = new RasgosLLM();
+    }
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const content = card.querySelector('.modal-content-template').innerHTML;
+        modalBody.innerHTML = content;
+
+        modal.style.display = 'block';
+
+        // Buscar el canvas dentro de la tarjeta original
+        const canvasOriginal = card.querySelector('canvas');
+        const canvasModal = modalBody.querySelector('canvas');
+
+        if (canvasOriginal && canvasModal) {
+          // Copiar el contexto de la gráfica original al nuevo canvas
+          const chartOriginal = canvasOriginal.chart;
+          if (chartOriginal) {
+            const data = JSON.parse(JSON.stringify(chartOriginal.data));
+            const options = JSON.parse(JSON.stringify(chartOriginal.options));
+
+            new Chart(canvasModal.getContext('2d'), {
+              type: chartOriginal.config.type,
+              data,
+              options
+            });
+          }
+        }
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
   }
 
   iniciarCarrusel() {

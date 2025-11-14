@@ -8,147 +8,143 @@
 </div>
 
 <div class="section-result">
-  <div class="resultado-card">
-      <div class="section-header">
-        <div class="card">
-          <img class="images-2" src="/src/assets/img/imagesGpt.png" alt="ChatGPT"/>
-        </div>
-        <div class="text-cont">
-          <!-- Dejar ChatGPT como tarjeta vacía en espera de datos en el JSON -->
-          <div class="ChatGPT">ChatGPT</div>
-        </div>
-      </div>
 
+  <!-- ChatGPT -->
+  <div class="resultado-card">
+    <div class="section-header">
+      <div class="card">
+        <img class="images-2" src="/src/assets/img/imagesGpt.png" alt="ChatGPT"/>
+      </div>
+      <div class="text-cont">ChatGPT</div>
+    </div>
     <div class="descripcion">
       <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
     </div>
-
-  <canvas id="chartChatGPT" width="60" height="50"></canvas>
-
-    <div class="cont-result">
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Extroversión</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Amabilidad</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Neuroticismo</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Narcicismo</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Psicopatía</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Maquiavelismo</div></div>
+    <div class="modal-content-template" style="display:none;">
+      <canvas id="chartChatGPT" width="60" height="50"></canvas>
+      <div class="cont-result">
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Extroversión</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Amabilidad</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Neuroticismo</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Narcicismo</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Psicopatía</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Maquiavelismo</div></div>
+      </div>
     </div>
   </div>
 
+  <!-- Mistral -->
   <div class="resultado-card">
     <div class="section-header">
       <div class="card">
         <img class="images-2" src="/src/assets/img/imagesMistral.png" alt="Mistral"/>
       </div>
-      <div class="text-cont">
-        <div class="Mistral7B">Mistral</div>
-      </div>
+      <div class="text-cont">Mistral</div>
     </div>
-
     <div class="descripcion">
       <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
     </div>
-
-    <canvas id="chartMistral7B" width="60" height="50"></canvas>
-
-    <div class="cont-result">
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Extroversión</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Amabilidad</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Neuroticismo</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Narcicismo</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Psicopatía</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Maquiavelismo</div></div>
+    <div class="modal-content-template" style="display:none;">
+      <canvas id="chartMistral7B" width="60" height="50"></canvas>
+      <div class="cont-result">
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Extroversión</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Amabilidad</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Neuroticismo</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Narcicismo</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Psicopatía</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Maquiavelismo</div></div>
+      </div>
     </div>
   </div>
 
+  <!-- Llama -->
   <div class="resultado-card">
     <div class="section-header">
       <div class="card">
         <img class="images-2" src="/src/assets/img/imagesLlama.png" alt="Llama"/>
       </div>
-      <div class="text-cont">
-        <div class="Llama3.1">Llama</div>
-      </div>
+      <div class="text-cont">Llama</div>
     </div>
-
     <div class="descripcion">
       <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
     </div>
-
-    <canvas id="chartLlama3.1" width="60" height="50"></canvas>
-
-    <div class="cont-result">
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Extroversión</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Amabilidad</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Neuroticismo</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Narcicismo</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Psicopatía</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Maquiavelismo</div></div>
+    <div class="modal-content-template" style="display:none;">
+      <canvas id="chartLlama3.1" width="60" height="50"></canvas>
+      <div class="cont-result">
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Extroversión</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Amabilidad</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Neuroticismo</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Narcicismo</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Psicopatía</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Maquiavelismo</div></div>
+      </div>
     </div>
   </div>
 
-    <div class="resultado-card">
+  <!-- DeepSeek -->
+  <div class="resultado-card">
     <div class="section-header">
       <div class="card">
-        <img class="images-2" src="/src/assets/img/imagesDeep.png" alt="Deepseek"/>
+        <img class="images-2" src="/src/assets/img/imagesDeep.png" alt="DeepSeek"/>
       </div>
-      <!--Cuando se agreguen los modelos faltantes, cambiar el .Gemma 3.4B por el nombre del modelo en Resultado_unificado-->
-      <div class="text-cont">
-        <div class="DeepSeek">DeepSeek</div>
-      </div>
+      <div class="text-cont">DeepSeek</div>
     </div>
-
     <div class="descripcion">
       <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
     </div>
-
-  <canvas id="chartDeepSeek" width="60" height="50"></canvas>
-
-    <div class="cont-result">
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Extroversión</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Amabilidad</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Neuroticismo</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Narcicismo</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Psicopatía</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Maquiavelismo</div></div>
+    <div class="modal-content-template" style="display:none;">
+      <canvas id="chartDeepSeek" width="60" height="50"></canvas>
+      <div class="cont-result">
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Extroversión</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Amabilidad</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Neuroticismo</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Narcicismo</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Psicopatía</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Maquiavelismo</div></div>
+      </div>
     </div>
   </div>
 
-    <div class="resultado-card">
+  <!-- Gemma -->
+  <div class="resultado-card">
     <div class="section-header">
       <div class="card">
-        <img class="images-2" src="/src/assets/img/imagesGemini.png" alt="Gemini"/>
+        <img class="images-2" src="/src/assets/img/ImageGemma.png" alt="Gemma"/>
       </div>
-      <!--Cuando se agreguen los modelos faltantes, cambiar el .Mistral7B por el nombre del modelo en Resultado_unificado-->
-      <div class="text-cont">
-        <!-- Aquí mostramos Gemma (desde llm_raw.json) en lugar de Gemini -->
-        <div class="Gemma">Gemma</div>
-      </div>
+      <div class="text-cont">Gemma</div>
     </div>
-
     <div class="descripcion">
       <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
     </div>
-
-  <canvas id="chartGemma" width="60" height="50"></canvas>
-
-    <div class="cont-result">
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Extroversión</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Amabilidad</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Neuroticismo</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Narcicismo</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Psicopatía</div></div>
-      <div class="result"><div class="puntaje"></div><div class="rasgos">Maquiavelismo</div></div>
+    <div class="modal-content-template" style="display:none;">
+      <canvas id="chartGemma" width="60" height="50"></canvas>
+      <div class="cont-result">
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Extroversión</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Amabilidad</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Neuroticismo</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Narcicismo</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Psicopatía</div></div>
+        <div class="result"><div class="puntaje"></div><div class="rasgos">Maquiavelismo</div></div>
+      </div>
     </div>
+  </div>
+
+</div>
+
+<!-- Modal genérico -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-body"></div>
   </div>
 </div>
