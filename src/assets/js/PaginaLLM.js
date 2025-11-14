@@ -50,17 +50,29 @@ export class PaginaLLM extends PaginaTemplate {
 
     cards.forEach(card => {
       card.addEventListener('click', () => {
+
+        const img = card.querySelector(".images-2").cloneNode(true);
+        const nombre = card.querySelector(".text-cont").cloneNode(true);
+
         const content = card.querySelector('.modal-content-template').innerHTML;
-        modalBody.innerHTML = content;
+
+        modalBody.innerHTML = "";
+
+        const header = document.createElement("div");
+        header.classList.add("modal-header-extra");
+        header.appendChild(img);
+        header.appendChild(nombre);
+
+        modalBody.appendChild(header);
+
+        modalBody.innerHTML += content;
 
         modal.style.display = 'block';
 
-        // Buscar el canvas dentro de la tarjeta original
         const canvasOriginal = card.querySelector('canvas');
         const canvasModal = modalBody.querySelector('canvas');
 
         if (canvasOriginal && canvasModal) {
-          // Copiar el contexto de la gráfica original al nuevo canvas
           const chartOriginal = canvasOriginal.chart;
           if (chartOriginal) {
             const data = JSON.parse(JSON.stringify(chartOriginal.data));

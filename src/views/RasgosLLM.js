@@ -163,14 +163,28 @@ export class RasgosLLM {
       options: {
         scales: {
           r: {
+            padding: 0,
             beginAtZero: false,
             min: 1.5,
             max: 4,
-            ticks: { stepSize: 0.5, showLabelBackdrop: false },
+            ticks: { stepSize: 0.5, showLabelBackdrop: false,
+              font:{
+                size: 13
+              },
+            },
+            pointLabels:{
+              font: {
+                size: 13
+              },
+              color: '#333',
+            },
             backgroundColor: '#F0F0F0',
             grid: { color: '#A6A6A6' },
             angleLines: { color: '#A6A6A6' },
           },
+        },
+        layout:{
+          padding: 0,
         },
         plugins: {
           legend: { display: false },
