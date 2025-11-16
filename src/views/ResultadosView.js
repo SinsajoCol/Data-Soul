@@ -556,7 +556,4 @@ export class ResultadosView {
 
       this.distanciasContainer.innerHTML = html;
     }
-
-
-
 }
