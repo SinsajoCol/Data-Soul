@@ -167,16 +167,21 @@ export class RasgosLLM {
             beginAtZero: false,
             min: 1.5,
             max: 4,
-            ticks: { stepSize: 0.5, showLabelBackdrop: false,
+            ticks: { 
+              backdropPadding: 0,
+              stepSize: 0.5, 
+              showLabelBackdrop: false,
               font:{
                 size: 13
               },
+              color: '#303030ff',
             },
             pointLabels:{
+              padding: 0,
               font: {
                 size: 13
               },
-              color: '#333',
+              color: '#303030ff',
             },
             backgroundColor: '#F0F0F0',
             grid: { color: '#A6A6A6' },

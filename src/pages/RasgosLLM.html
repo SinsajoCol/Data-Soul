@@ -7,6 +7,16 @@
   </div>
 </div>
 
+<section class="introRasgos">
+  <p>En la siguiente sección podrá encontrar los rasgos psicométricos evaluados en cinco (5) grandes modelos
+    de lenguaje, en donde se reflejan los aspectos socioemocionales extraídos de las prueba TRAIT para conocer
+    los patrones de respuesta a los que tienden los modelos: GPT-oss, Mistral-7b, Llama-3.1, DeepSeek-r1 y Gemma-3.
+
+    <br><br>Los valores presentados a continuación  representan los patrones que predominan en sus respuestas, en qué tono lo hacen y sobre todo
+    conocer su manera de procesar información para la toma de decisiones frente a estimulos contextuales.
+  </p>
+</section>
+
 <div class="section-result">
 
   <!-- ChatGPT -->
@@ -19,9 +29,11 @@
     </div>
     <div class="descripcion">
       <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
+      <p class="pointer">Ver más<img src="/src/assets/img/mouse-pointer-1.png"></p>
     </div>
     <div class="modal-content-template" style="display:none;">
-      <canvas id="chartChatGPT"></canvas>
+      <div class="chartBox"><canvas id="chartChatGPT"></canvas></div>
+      <p class="resultText">Se presentan los siguientes rasgos calculados del LLM</p>
       <div class="cont-result">
         <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
         <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
@@ -44,10 +56,13 @@
       <div class="text-cont">Mistral</div>
     </div>
     <div class="descripcion">
-      <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
+      <p>Los rasgos psicométricos de Mistral:7B reflejan una tendencia a responder de 
+        manera organizada y coherente con un estilo de respuestas reservadas y consideradas.</p>
+      <p class="pointer">Ver más<img src="/src/assets/img/mouse-pointer-1.png"></p>
     </div>
     <div class="modal-content-template" style="display:none;">
-      <canvas id="chartMistral7B"></canvas>
+      <div class="chartBox"><canvas id="chartMistral7B"></canvas></div>
+      <p class="resultText">Se presentan los siguientes rasgos calculados del LLM</p>
       <div class="cont-result">
         <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
         <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
@@ -70,10 +85,14 @@
       <div class="text-cont">Llama</div>
     </div>
     <div class="descripcion">
-      <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
+      <p>Llama tiende a ser un modelo preciso acompañado de un tono empático en sus 
+        respuestas, resaltando sus patrones acordes a un modelo alineado, por el hecho de presentar niveles 
+        bajos en rasgos psicópatas.</p>
+      <p class="pointer">Ver más<img src="/src/assets/img/mouse-pointer-1.png"></p>
     </div>
     <div class="modal-content-template" style="display:none;">
-      <canvas id="chartLlama3.1"></canvas>
+      <div class="chartBox"><canvas id="chartLlama3.1"></canvas></div>
+      <p class="resultText">Se presentan los siguientes rasgos calculados del LLM</p>
       <div class="cont-result">
         <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
         <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
@@ -96,10 +115,13 @@
       <div class="text-cont">DeepSeek</div>
     </div>
     <div class="descripcion">
-      <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
+      <p>El perfil del modelo indica que DeepSeek-r1 es coherente y cooperativo, 
+        en donde también se halla una mínima presencia de tendencias hacia la psicopatía.</p>
+      <p class="pointer">Ver más<img src="/src/assets/img/mouse-pointer-1.png"></p>
     </div>
     <div class="modal-content-template" style="display:none;">
-      <canvas id="chartDeepSeek"></canvas>
+      <div class="chartBox"><canvas id="chartDeepSeek"></canvas></div>
+      <p class="resultText">Se presentan los siguientes rasgos calculados del LLM</p>
       <div class="cont-result">
         <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
         <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
@@ -122,10 +144,13 @@
       <div class="text-cont">Gemma</div>
     </div>
     <div class="descripcion">
-      <p>Descripción breve de la personalidad que reflejan sus patrones de respuesta.</p>
+      <p>Este modelo demuestra tendencias hacia respuestas directas y organizadas en donde evita 
+        errores, indicando a su vez una orientación a manipular escenarios.</p>
+      <p class="pointer">Ver más<img src="/src/assets/img/mouse-pointer-1.png"></p>
     </div>
     <div class="modal-content-template" style="display:none;">
-      <canvas id="chartGemma"></canvas>
+      <div class="chartBox"><canvas id="chartGemma"></canvas></div>
+      <p class="resultText">Se presentan los siguientes rasgos calculados del LLM</p>
       <div class="cont-result">
         <div class="result"><div class="puntaje"></div><div class="rasgos">Apertura</div></div>
         <div class="result"><div class="puntaje"></div><div class="rasgos">Responsabilidad</div></div>
@@ -142,7 +167,7 @@
 </div>
 
 <!-- Modal genérico -->
-<div id="modal" class="modal">
+<div id="modalRasgos" class="modalRasgos">
   <div class="modal-content">
     <span class="close">&times;</span>
     <div class="modal-body"></div>

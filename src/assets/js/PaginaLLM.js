@@ -40,7 +40,7 @@ export class PaginaLLM extends PaginaTemplate {
     this.iniciarCarrusel();
 
     const cards = document.querySelectorAll('.resultado-card');
-    const modal = document.getElementById('modal');
+    const modal = document.getElementById('modalRasgos');
     const modalBody = modal.querySelector('.modal-body');
     const closeBtn = modal.querySelector('.close');
 
@@ -67,7 +67,19 @@ export class PaginaLLM extends PaginaTemplate {
 
         modalBody.innerHTML += content;
 
+        modalBody.scrollTop = 0;
+        requestAnimationFrame(() => {
+          modalBody.scrollTop = 0;
+          setTimeout(() => {
+            modalBody.scrollTop = 0;
+          }, 50);
+        });
+
         modal.style.display = 'block';
+
+        setTimeout(() => {
+          modalBody.scrollTop = 0;
+        }, 20);
 
         const canvasOriginal = card.querySelector('canvas');
         const canvasModal = modalBody.querySelector('canvas');
