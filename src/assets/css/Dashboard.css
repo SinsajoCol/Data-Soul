@@ -244,6 +244,7 @@ canvas {
   position: relative;
   animation: animatetop 0.35s ease;
 }
+
 /* Animación para que aparezca suavemente */
 
 @keyframes animatetop {
@@ -505,6 +506,32 @@ canvas {
   width: 22px;
   height: 22px;
 }
+
+.cell-grupo-lista {
+  vertical-align: middle; 
+  padding: 8px 4px;
+}
+
+.stat-single {
+  display: grid; 
+  grid-template-columns: 40px auto;
+  gap: 8px; 
+  align-items: baseline;
+  margin-bottom: 3px; 
+}
+
+.stat-value {
+  text-align: right; 
+  font-weight: bold;
+}
+.stat-label {
+  text-align: left;
+  font-size: 0.9em;
+  color: #555;     
+}
+
+
+
 
 /* --- Pantallas medianas (tablets y laptops pequeñas) --- */
 @media (max-width: 992px) {
