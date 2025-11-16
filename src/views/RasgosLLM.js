@@ -71,11 +71,15 @@ export class RasgosLLM {
       const canvas = contenedor.querySelector('canvas');
       if (canvas) {
         const labels = this.rasgosOrden;
+        const etiquetasVisuales = labels.map(r =>
+          r === "Extraversión"? "Extroversión" : r
+        );
+
         const valores = labels.map(rasgo => {
           const est = rasgosData[rasgo];
           return est ? est.media : 0;
         });
-        this.crearGrafica(canvas, nombreModelo, labels, valores);
+        this.crearGrafica(canvas, nombreModelo, etiquetasVisuales, valores);
       }
     });
   }
