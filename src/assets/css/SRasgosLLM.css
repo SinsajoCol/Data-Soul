@@ -379,6 +379,10 @@ canvas {
 }
 
 @media (max-width: 768px) {
+  .slider-container {
+    margin-top: 70px;
+  }
+  
   .introRasgos {
     margin: 25px 15px;
     padding: 18px 22px;

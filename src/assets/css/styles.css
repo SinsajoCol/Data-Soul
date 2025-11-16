@@ -128,7 +128,7 @@ nav a {
     color: #F7F7F7;
     margin: 0;
     position: fixed;
-    top: 10px;
+    top: 15px;
     left: 80px;
     z-index: 2000;
   }
@@ -305,7 +305,7 @@ main.contenido {
   aspect-ratio: 1;
 }
 
-.frame-100 h2 {
+.consentimiento-informado h2 {
   color: var(--white);
   text-align: center;
   margin: 0;
@@ -316,7 +316,7 @@ main.contenido {
   position: relative;
 }
 
-.titleConsentimientoI h3{
+.consentimiento-informado h3 {
   color: var(--white);
   text-align: center;
   font-family: var(--peppercorn-typography-scale-h3-font-family);
@@ -324,6 +324,22 @@ main.contenido {
   font-weight: var(--peppercorn-typography-scale-h3-font-weight);
   position: relative;
   align-self: stretch;
+}
+
+.consentimiento-informado h4 {
+  color: var(--brand-primary);
+  font-family: var(--peppercorn-typography-scale-h4-font-family);
+  font-size: var(--peppercorn-typography-scale-h4-font-size);
+  line-height: var(--peppercorn-typography-scale-h4-line-height);
+  font-weight: var(--peppercorn-typography-scale-h4-font-weight, 600);
+}
+
+.consentimiento-informado p {
+  color: var(--brand-primary);
+  font-family: var(--peppercorn-typography-scale-body-font-family);
+  font-size: 15px;
+  line-height: 28px;
+  font-weight: var(--peppercorn-typography-scale-body-font-weight);
 }
 
 .frame-110 {
@@ -338,6 +354,8 @@ main.contenido {
   display: flex;
   flex-direction: column;
   gap: 30px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-color) var(--white);
 }
 
 .frame-110 >div {
@@ -366,30 +384,6 @@ main.contenido {
   align-self: stretch;
 }
 
-.proposito h4 {
-  color: var(--brand-primary);
-  font-family: var(--peppercorn-typography-scale-h4-font-family);
-  font-size: var(--peppercorn-typography-scale-h4-font-size);
-  line-height: var(--peppercorn-typography-scale-h4-line-height);
-  font-weight: var(--peppercorn-typography-scale-h4-font-weight, 600);
-}
-
-.frame-110 .proposito p {
-  color: var(--brand-primary);
-  font-family: var(--peppercorn-typography-scale-body-font-family);
-  font-size: 15px;
-  line-height: 28px;
-  font-weight: var(--peppercorn-typography-scale-body-font-weight);
-}
-
-.secret h4 {
-  color: var(--brand-primary);
-  font-family: var(--peppercorn-typography-scale-h4-font-family);
-  font-size: var(--peppercorn-typography-scale-h4-font-size);
-  line-height: var(--peppercorn-typography-scale-h4-line-height);
-  font-weight: var(--peppercorn-typography-scale-h4-font-weight, 600);
-}
-
 .secret, .accept, .infoAccept {
   color: var(--brand-primary, #11296e);
   text-align: left;
@@ -398,35 +392,18 @@ main.contenido {
   margin-bottom: 15px;
 }
 
-.accept h4{
-  color: var(--brand-primary);
-  font-family: var(--peppercorn-typography-scale-h4-font-family);
-  font-size: var(--peppercorn-typography-scale-h4-font-size);
-  line-height: var(--peppercorn-typography-scale-h4-line-height);
-  font-weight: var(--peppercorn-typography-scale-h4-font-weight, 600);
-}
-
-.secret, .accept p, .infoAccept p{
-  color: var(--brand-primary);
-  font-family: var(--peppercorn-typography-scale-body-font-family);
-  font-size: 15px;
-  line-height: 1.6;
-  font-weight: var(--peppercorn-typography-scale-body-font-weight);
-}
-
-.infoAccept h4{
-  color: var(--brand-primary);
-  font-family: var(--peppercorn-typography-scale-h4-font-family);
-  font-size: var(--peppercorn-typography-scale-h4-font-size);
-  line-height: var(--peppercorn-typography-scale-h4-line-height);
-  font-weight: var(--peppercorn-typography-scale-h4-font-weight, 600);
-}
-
 .btnsCons {
   display: flex;
   gap: 30px;
   margin-top: 20px;
   justify-content: center;
+}
+
+.frame-72 h5, .frame-75 h5 {
+  margin: 0;
+  font-family: var(--peppercorn-typography-scale-h5-font-family);
+  font-size: 15px;
+  font-weight: var(--peppercorn-typography-scale-h5-font-weight);
 }
 
 .frame-72, .frame-75 {
@@ -449,13 +426,6 @@ main.contenido {
 .frame-75 {
   background: var(--brand-primary);
   color: var(--white);
-}
-
-.frame-72 h5, .frame-75 h5 {
-  font-family: var(--peppercorn-typography-scale-h5-font-family);
-  font-size: 15px;
-  font-weight: var(--peppercorn-typography-scale-h5-font-weight);
-  margin: 0;
 }
 
 .lucideIX, .lucidICheck {
@@ -706,6 +676,329 @@ main.contenido {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+  }
+}
+
+.modal-consent-grupal {
+  display: none;
+  position: fixed;
+  z-index: 3000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 40px 0;
+}
+
+.consent-grupal-container, .consent-grupal-container * {
+  box-sizing: border-box;
+}
+
+.consent-grupal-container {
+  background: linear-gradient(180deg, rgba(17, 41, 110, 1) 0%, rgba(136, 79, 253, 1) 58.6%, rgba(175, 145, 236, 1) 100%);
+  border-radius: 60px;
+  width: 45%;
+  max-width: 900px;
+  max-height: 90vh;
+  padding: 40px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: var(--white);
+  overflow: visible;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+.consent-grupal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.consent-grupal-icon-title {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.consent-grupal-icon {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+
+.consent-grupal-icon-title h2 {
+  color: var(--white);
+  text-align: center;
+  margin: 0;
+  font-family: var(--peppercorn-typography-scale-h2-font-family);
+  font-size: var(--peppercorn-typography-scale-h2-font-size);
+  line-height: var(--peppercorn-typography-scale-h2-line-height);
+  font-weight: var(--peppercorn-typography-scale-h2-font-weight);
+  position: relative;
+}
+
+.consent-grupal-header h3 {
+  color: var(--white);
+  text-align: center;
+  font-family: var(--peppercorn-typography-scale-h3-font-family);
+  font-size: 1rem;
+  font-weight: var(--peppercorn-typography-scale-h3-font-weight);
+  position: relative;
+  align-self: stretch;
+}
+
+.consent-grupal-content {
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--brand-primary);
+  background-color: white;
+  border-radius: 30px;
+  padding: 30px;
+  overflow-y: auto;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-color) var(--white);
+}
+
+.consent-grupal-section h4 {
+  color: var(--brand-primary);
+  font-family: var(--peppercorn-typography-scale-h4-font-family);
+  font-size: var(--peppercorn-typography-scale-h4-font-size);
+  line-height: var(--peppercorn-typography-scale-h4-line-height);
+  font-weight: var(--peppercorn-typography-scale-h4-font-weight, 600);
+}
+
+.consent-grupal-section p {
+  color: var(--brand-primary);
+  font-family: var(--peppercorn-typography-scale-body-font-family);
+  font-size: 15px;
+  line-height: 28px;
+  font-weight: var(--peppercorn-typography-scale-body-font-weight);
+}
+
+.consent-grupal-buttons {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-consent-cancel, .btn-consent-accept {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  border-radius: 12px;
+  height: 52px;
+  width: 250px;
+  cursor: pointer;
+}
+
+.btn-consent-cancel {
+  background: var(--accent-color);
+  color: var(--brand-primary);
+}
+
+.btn-consent-accept {
+  background: var(--brand-primary);
+  color: var(--white);
+}
+
+.btn-consent-cancel h5, .btn-consent-accept h5 {
+  margin: 0;
+  font-family: var(--peppercorn-typography-scale-h5-font-family);
+  font-size: 15px;
+  font-weight: var(--peppercorn-typography-scale-h5-font-weight);
+}
+
+.icon-x, .icon-check {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 1090px) {
+
+  .modal-consent-grupal {
+    padding: 20px 0;
+    align-items: flex-start;
+  }
+
+  .consent-grupal-container {
+    width: 60%;
+    padding: 25px 50px;
+    border-radius: 30px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .consent-grupal-header {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .consent-grupal-icon-title {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .consent-grupal-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .consent-grupal-icon-title h2 {
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    text-align: center;
+  }
+
+  .consent-grupal-header h3 {
+    font-size: 1rem;
+    line-height: 1.3rem;
+  }
+
+  .consent-grupal-content {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .consent-grupal-section h4 {
+    font-size: 0.95rem;
+  }
+
+  .consent-grupal-section p {
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+  }
+
+  .consent-grupal-buttons {
+    flex-direction: column;
+    gap: 15px;
+    width: 50%;
+    margin: 30px auto 0 auto;
+  }
+
+  .btn-consent-cancel,
+  .btn-consent-accept {
+    width: 100%;
+    height: 48px;
+    font-size: 0.9rem;
+    gap: 8px;
+  }
+
+  .btn-consent-cancel img,
+  .btn-consent-accept img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .consent-grupal-container {
+    width: 60%;
+    padding: 25px 30px;
+  }
+
+  .consent-grupal-header h3 {
+    font-size: 1rem;
+    line-height: 1.3rem;
+  }
+
+  .consent-grupal-content {
+    padding: 20px;
+  }
+
+  .consent-grupal-section h4 {
+    font-size: 0.95rem;
+  }
+
+  .consent-grupal-section p {
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+  }
+
+  .consent-grupal-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .btn-consent-cancel, .btn-consent-accept {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .consent-grupal-container {
+    width: 80%;
+  }
+}
+
+@media (max-width: 540px) {
+
+  .consent-grupal-container {
+    padding: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .consent-grupal-header h2 {
+    font-size: 1rem;
+  }
+
+  .consent-grupal-header h3 {
+    font-size: 0.9rem;
+  }
+
+  .consent-grupal-section h4 {
+    font-size: 0.9rem;
+  }
+
+  .consent-grupal-section p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .consent-grupal-buttons {
+    width: 100%;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .btn-consent-cancel,
+  .btn-consent-accept {
+    width: 100%;
+    max-width: 280px;
+    padding: 14px 0;
   }
 }
 
