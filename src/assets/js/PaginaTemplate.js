@@ -61,6 +61,10 @@ export class PaginaTemplate {
     const btnRechazar = modalConsent?.querySelector('.frame-72');
     const btnAceptar = modalConsent?.querySelector('.frame-75');
 
+    const modalGrupal = document.querySelector('.modal-consent-grupal');
+    const btnAceptarGrupal = modalGrupal?.querySelector('.btn-consent-accept');
+    const btnRechazarGrupal = modalGrupal?.querySelector('.btn-consent-cancel');
+
     if (btnRasgos) {
       btnRasgos.addEventListener('click', (e) => {
         e.preventDefault();
@@ -91,6 +95,7 @@ export class PaginaTemplate {
     window.addEventListener('click', (e) => {
       if (e.target === modalSelect) modalSelect.style.display = 'none';
       if (e.target === modalConsent) modalConsent.style.display = 'none';
+      if (e.target === modalGrupal) modalGrupal.style.display = 'none';
     });
 
     if (btnIndividual) {
@@ -120,10 +125,24 @@ export class PaginaTemplate {
     if (btnGrupal) {
       btnGrupal.addEventListener('click', () => {
           modalSelect.style.display = 'none';
+          modalGrupal.style.display = 'flex';
+      });
+    }
 
-          // --- ¡CORRECCIÓN! ---
+    if(btnAceptarGrupal) {
+      btnAceptarGrupal.addEventListener('click', () => {
+        modalGrupal.style.display = 'none';
+
+        // --- ¡CORRECCIÓN! ---
           // En lugar de: this.cargarPagina('grupal');
-          window.location.hash = 'PruebaGrupal'; // (o la página que corresponda)
+        window.location.hash = 'PruebaGrupal';
+      });
+    }
+
+    if (btnRechazarGrupal) {
+      btnRechazarGrupal.addEventListener('click', () => {
+        modalGrupal.style.display = 'none';
+        modalSelect.style.display = 'flex';
       });
     }
   }
