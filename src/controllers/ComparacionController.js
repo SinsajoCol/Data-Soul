@@ -19,12 +19,15 @@ export class ComparacionController {
 
     /**
      * @param {ResultadosView} view La instancia de la vista
+     * @param {string} id El ID del usuario o grupo
+     * @param {GestorModelosLLM} gestorLLM El gestor de modelos ya instanciado
+     * @param {Resultados} resultados El singleton de resultados
      */
-    constructor(view,id) {
+    constructor(view,id,gestorLLM, resultados) {
         this.view = view;
         this.id = id;
-        this.r = Resultados.getInstance();
-        this.gestorLLM = new GestorModelosLLM();
+        this.r = resultados;
+        this.gestorLLM = gestorLLM;
         this.procesadorComparacion = new ProcesadorComparacion();
     }
 
@@ -36,9 +39,12 @@ export class ComparacionController {
 
             console.log("Controlador cargado. Iniciando carga de datos...");
             this.view.conectarDOM();
-            await this.gestorLLM.cargarModelos(rutaLLM);
+            
             
             const modelosLLM = this.gestorLLM.modelos;
+            if (modelosLLM.length === 0) {
+                throw new Error("El GestorLLM no tiene modelos cargados. ¿Se llamó a cargarModelos() en PaginaResultados?");
+            }
             console.log("Modelos Cargados",modelosLLM)
 
             // Obtiene los datos humanos del Singleton (esto es sync)
@@ -64,8 +70,8 @@ export class ComparacionController {
                     return parseFloat(valor.toFixed(2));
                 }); //arreglo con los valores de los usuarios organizados. 
 
+                // Formatea datos de LLMs para la vista
                 const llmsDataForView = {};
-                
                 modelosLLM.forEach(modelo => {
                     const llmScoresOrdenados = plantillaRasgos.map(nombreRasgoESP => {
                         const stat = modelo.estadisticas.find(s => s.nombre === nombreRasgoESP);
@@ -78,6 +84,7 @@ export class ComparacionController {
                 console.log("datausuario",humanDataForView)
                 console.log("Datos",modelosLLM)
                 console.log("datallm",llmsDataForView)
+
                 // c) Llama al render INDIVIDUAL (el dashboard)
                 this.view.render(
                     humanDataForView,
@@ -103,18 +110,13 @@ export class ComparacionController {
                     const stat = modelo.estadisticas.find(s => s.nombre === nombreRasgoESP);
                     const media = stat ? stat.media : 0;
                     return parseFloat(media.toFixed(2));
+                    });
+                    llmsDataForView[modelo.nombre] = llmScoresOrdenados;
                 });
-                llmsDataForView[modelo.nombre] = llmScoresOrdenados;
-                });
-                // c) Calcular el array de promedios para el GRUPO
-                
-                // 1. Obtén todas las estadísticas del grupo DE UNA VEZ (eficiente)
-                const grupoStats = grupo.obtenerEstadisticasGrupales();
-                console.log("medias",grupoStats)
 
-                // 2. Mapea la plantilla, usando la MISMA lógica que usaste para los LLMs
+                // c) Calcular promedios para el GRUPO
+                const grupoStats = grupo.obtenerEstadisticasGrupales();
                 const groupDataForView = plantillaRasgos.map(nombreRasgoESP => {
-                    // Busca el rasgo en los stats del grupo
                     const stat = grupoStats.find(s => s.nombre === nombreRasgoESP);
                     const media = stat ? stat.media : 0; 
                     return parseFloat(media.toFixed(2));
