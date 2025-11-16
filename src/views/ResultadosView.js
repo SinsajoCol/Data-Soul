@@ -222,7 +222,7 @@ export class ResultadosView {
     thead.appendChild(headRow);
     tabla.appendChild(thead);
 
-    // 2. CREAR CUERPO DE TABLA (nueva lógica)
+    // 2. CREAR CUERPO DE TABLA
     const tbody = document.createElement("tbody");
     const resultados = this.datosComparacion.resultadosPorModelo;
 
@@ -246,37 +246,31 @@ export class ResultadosView {
             const stat = statsDelLLM.find(s => s.rasgo === nombreRasgo);
 
             if (stat) {
-                // --- INICIO DE LA NUEVA LÓGICA ---
 
-                // 1. Convertir valores a números
+                // 1. Convertir valores a números (esto se mantiene igual)
                 const porDebajo = parseFloat(stat.porcentaje.porDebajo);
                 const dentro = parseFloat(stat.porcentaje.dentro);
                 const porArriba = parseFloat(stat.porcentaje.porArriba);
 
-                // 2. Encontrar el valor máximo y su etiqueta
-                let valorMaximo = porDebajo;
-                let labelMaximo = "Debajo";
-
-                if (dentro > valorMaximo) {
-                    valorMaximo = dentro;
-                    labelMaximo = "Dentro";
-                }
-                
-                if (porArriba > valorMaximo) {
-                    valorMaximo = porArriba;
-                    labelMaximo = "Arriba";
-                }
-
-                // 3. Formatear el HTML de la celda
+                //    Creamos el HTML con los tres valores, uno debajo del otro.
+                //    Reutilizamos las clases 'stat-single' para mantener el estilo.
                 td.innerHTML = `
                     <div class="stat-single">
-                        <span class="stat-value strong">${valorMaximo.toFixed(1)}%</span>
-                        <span class="stat-label">${labelMaximo}</span>
+                        <span class="stat-value strong">${porDebajo.toFixed(1)}%</span>
+                        <span class="stat-label">Debajo</span>
+                    </div>
+                    <div class="stat-single">
+                        <span class="stat-value strong">${dentro.toFixed(1)}%</span>
+                        <span class="stat-label">Dentro</span>
+                    </div>
+                    <div class="stat-single">
+                        <span class="stat-value strong">${porArriba.toFixed(1)}%</span>
+                        <span class="stat-label">Arriba</span>
                     </div>
                 `;
                 td.classList.add("cell-grupo-single"); // Nueva clase para estilizar
 
-                // --- FIN DE LA NUEVA LÓGICA ---
+                
             } else {
                 td.textContent = "N/A";
             }
