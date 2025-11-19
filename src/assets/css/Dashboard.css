@@ -559,85 +559,148 @@ canvas {
   }
 }
 
+@media (max-width: 780px) {
+  .dashboard {
+    margin-top: 70px;
+  }
+}
+
 /* --- Pantallas pequeñas (celulares) --- */
 @media (max-width: 600px) {
+  .dashboard {
+    padding: 2px;
+  }
+
   body {
     font-size: 0.95rem;
   }
 
-  .dashboard {
-    padding: 10px;
-  }
-
-  /* Título principal */
   .most-similar-container {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
 
-  /* Cards: una por fila */
   .summary-cards {
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .card {
-    flex: 1 1 100%;
-    max-width: 100%;
+  .summary-cards .card {
+    width: 100%;;
+    max-width: none;
   }
 
-  /* Gráficos apilados */
   .charts {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
   .chart-container {
+    width: 100%;
     flex: 1 1 100%;
-    padding: 15px;
+    padding: 12px;
   }
 
-  /* Tabla: desplazable horizontalmente */
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 320px;
+  }
+
   .comparative-table {
     overflow-x: auto;
   }
 
   .comparative-table table {
-    min-width: 600px;
+    width: 100%;
+    min-width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
   }
 
-  /* Tarjetas LLM: centradas y pequeñas */
   .llm-cards {
     justify-content: center;
   }
 
   .llm-card {
-    width: 100px;
-    padding: 10px;
+    width: 90px;
+    padding: 8px;
   }
 
   .llm-card img {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
   }
 
   .llm-card span {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
-  /* Botones de exportación centrados y apilados */
   .export-buttons {
-    flex-direction: column;
+    display: flex;
+    justify-content: center;
     gap: 15px;
+    flex-wrap: wrap;
   }
 
   .export-buttons button {
-    width: 80%;
+    width: 60%;
     justify-content: center;
+  }
+}
+
+@media (max-width: 390px) {
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    width: 100%;
+  }
+
+  .summary-cards .card {
+    padding: 10px;
+    width: 100%;
+    max-width: none;
+  }
+
+  .summary-cards .card h3 {
+    font-size: 0.9rem;
+  }
+
+  .summary-cards .card p {
+    font-size: 0.8rem;
+  }
+
+  .chart-container {
+    padding: 10px;
+  }
+
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 250px;
+  }
+
+  .llm-card {
+    width: 80px;
+    padding: 8px;
+  }
+
+  .llm-card img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .llm-card span {
+    font-size: 0.75rem;
   }
 
   .export-title h2 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+  }
+
+  .export-buttons button {
+    width: 65%;
   }
 }
