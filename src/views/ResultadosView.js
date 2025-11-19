@@ -85,6 +85,7 @@ export class ResultadosView {
     }
 
     this.generarLLMCards();
+    this.generarCardsResumen();
     this.generarTabla("llm"); 
 
     this.inicializarGraficos();
