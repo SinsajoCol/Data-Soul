@@ -388,3 +388,17 @@ canvas {
     padding: 18px 22px;
   }
 }
+
+@media (max-width: 500px) {
+  .chartBox {
+    max-width: 330px;
+    aspect-ratio: 1/1;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .chartBox canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+}

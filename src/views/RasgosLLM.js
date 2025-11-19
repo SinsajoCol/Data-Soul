@@ -129,6 +129,11 @@ export class RasgosLLM {
 
   crearGrafica(canvas, nombreModelo, etiquetas, valores) {
     if (!canvas) return;
+    const smallScreen = window.innerWidth <= 500;
+
+    const fontSize = smallScreen ? 10 : 13;
+    const pointPadding = smallScreen ? -5 : 0;
+
     const ctx = canvas.getContext('2d');
 
     // Destruir gráfica anterior si existe
@@ -165,6 +170,7 @@ export class RasgosLLM {
         ],
       },
       options: {
+        maintainAspectRatio: false,
         scales: {
           r: {
             padding: 0,
@@ -181,9 +187,9 @@ export class RasgosLLM {
               color: '#303030ff',
             },
             pointLabels:{
-              padding: 0,
+              padding: pointPadding,
               font: {
-                size: 13
+                size: fontSize
               },
               color: '#303030ff',
             },
