@@ -4,10 +4,11 @@ import { ControladorModelos } from '../controllers/ControladorModelos.js';
 export class RasgosLLM {
   // Mapeo de nombres de modelos LLM a IDs HTML
   nombreToId = {
-    "Gemma-3": "Gemma",
+    "ChatGPT": "ChatGPT",
     "Llama-3.1": "Llama",
     "Mistral-7b": "Mistral",
     "DeepSeek-r1": "DeepSeek",
+    "Gemma-3": "Gemma",
   };
 
   // Orden de rasgos esperado
@@ -145,7 +146,8 @@ export class RasgosLLM {
       "Gemma-3": { borde: '#11296E', fondo: 'rgba(17, 41, 110, 0.44)' },
       "Llama-3.1": { borde: '#884FFD', fondo: 'rgba(203, 178, 254, 0.43)' },
       "Mistral-7b": { borde: '#FFA64D', fondo: 'rgba(255, 166, 77, 0.39)' },
-      "DeepSeek-r1": { borde: '#5403FA', fondo: 'rgba(101, 134, 231, 0.40)' }
+      "DeepSeek-r1": { borde: '#5403FA', fondo: 'rgba(101, 134, 231, 0.40)' },
+      "ChatGPT": { borde: '#10A37F', fondo: 'rgba(16, 163, 127, 0.39)' }
     };
 
     const color = colores[nombreModelo] || { borde: '#884FFD', fondo: 'rgba(203, 178, 254, 0.43)' };

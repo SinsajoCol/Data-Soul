@@ -9,6 +9,16 @@
     "Narcisismo": {"alto": 103, "bajo": 897},
     "Psicopatía": {"alto": 21, "bajo": 979}
   },
+  "ChatGPT": {
+    "Apertura": {"alto": 518, "bajo": 482},
+    "Responsabilidad": {"alto": 854, "bajo": 146},
+    "Extraversión": {"alto": 401, "bajo": 998},
+    "Amabilidad": {"alto": 1154, "bajo": 245},
+    "Neuroticismo": {"alto": 435, "bajo": 994},
+    "Maquiavelismo": {"alto": 263, "bajo": 1376},
+    "Narcisismo": {"alto": 132, "bajo": 868},
+    "Psicopatía": {"alto": 3, "bajo": 696}
+  },
   "Llama-3.1": {
     "Apertura": {"alto": 563, "bajo": 437},
     "Responsabilidad": {"alto": 888, "bajo": 112},
