@@ -51,7 +51,7 @@ export class ControladorModelos {
             if (Array.isArray(modelo.estadisticas)) {
                 modelo.estadisticas.forEach(estadistica => {
                     datosVista[modelo.nombre][estadistica.nombre] = {
-                        media: parseFloat(estadistica.media.toFixed(1)),
+                        media: parseFloat(estadistica.media.toFixed(2)),
                         alto: estadistica.alto || 0,
                         bajo: estadistica.bajo || 0
                     };
