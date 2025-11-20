@@ -5,9 +5,11 @@ import os
 # ==========================================================
 # === CONFIGURACIÓN ===
 # ==========================================================
-input_filename = "resultsGemma3_4b.json"
-output_filename = "ResultadosModelos.json"
-model_name = "Gemma-3"
+input_filename = r"c:/Users/crist/Desktop/Data Soul/Data-Soul/LLM-Evaluate-TRAIT/gpt-oss/all_results_gpt-oss.json"
+
+output_filename = r"c:/Users/crist/Desktop/Data Soul/Data-Soul/LLM-Evaluate-TRAIT/gpt-oss/ResultadosModelos.json"
+
+model_name = "gpt-oss"
 
 # ==========================================================
 # === LECTURA DEL ARCHIVO DE ENTRADA ===
