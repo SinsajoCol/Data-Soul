@@ -87,6 +87,7 @@ export class ResultadosView {
     this.generarLLMCards();
     this.generarCardsResumen();
     this.generarTabla("llm"); 
+    this.generarTablaDistancias();
 
     this.inicializarGraficos();
     this.configurarEventos();
