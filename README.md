@@ -9,12 +9,12 @@ icon: hand-wave
     Este [repositorio ](https://github.com/SinsajoCol/Data-Soul)contiene el desarrollo del **aplicativo web para la evaluación de rasgos no cognitivos** mediante pruebas psicométricas y su comparación con modelos de lenguaje (LLM).
 2. 👥 Equipo de Desarrollo
 
-* `Catalina Estrada` – **Lider / Frontend /Planificación**
-* `Juan Sebastian Obando` – **Encargado Control de versiones / Ejecución / Full Stack**
-* `Erika Muñoz` – **Planeadora / Frontend**
-* `Arley David` – **Monitoreo / Tester**
-* `Cristian Cifuentes` – **Cierre / Backend**
-* `Felipe Valdez` – **Inicio / Backend**
+- `Catalina Estrada` – **Lider / Frontend /Planificación**
+- `Juan Sebastian Obando` – **Encargado Control de versiones / Ejecución / Full Stack** 
+- `Erika Muñoz` – **Planeadora / Frontend**
+- `Arley David` – **Cierre / Tester**
+- `Cristian Cifuentes` – **Monitoreo / Backend**
+- `Felipe Valdez` – **Inicio / Backend**
 
 3. 🛠️ Tecnologías y Herramientas
 

@@ -1,0 +1,52 @@
+{
+  "deepseek-r1": {
+    "Openness": {"alto": 541, "bajo": 459},
+    "Conscientiousness": {"alto": 795, "bajo": 205},
+    "Agreeableness": {"alto": 757, "bajo": 243},
+    "Neuroticism": {"alto": 328, "bajo": 672},
+    "Machiavellianism": {"alto": 222, "bajo": 778},
+    "Narcissism": {"alto": 135, "bajo": 865},
+    "Psychopathy": {"alto": 15, "bajo": 984},
+    "Extraversion": {"alto": 343, "bajo": 657}
+  },
+  "Gemma-3": {
+    "Openness": {"alto": 519, "bajo": 481},
+    "Conscientiousness": {"alto": 860, "bajo": 140},
+    "Extraversion": {"alto": 248, "bajo": 752},
+    "Agreeableness": {"alto": 784, "bajo": 216},
+    "Neuroticism": {"alto": 381, "bajo": 619},
+    "Machiavellianism": {"alto": 227, "bajo": 773},
+    "Narcissism": {"alto": 103, "bajo": 897},
+    "Psychopathy": {"alto": 21, "bajo": 979}
+  },
+  "gpt-oss": {
+    "Openness": {"alto": 518, "bajo": 482},
+    "Conscientiousness": {"alto": 854, "bajo": 146},
+    "Extraversion": {"alto": 401, "bajo": 998},
+    "Agreeableness": {"alto": 1154, "bajo": 245},
+    "Neuroticism": {"alto": 435, "bajo": 994},
+    "Machiavellianism": {"alto": 263, "bajo": 1376},
+    "Narcissism": {"alto": 132, "bajo": 868},
+    "Psychopathy": {"alto": 3, "bajo": 696}
+  },
+  "Llama-3.1": {
+    "Openness": {"alto": 563, "bajo": 437},
+    "Conscientiousness": {"alto": 888, "bajo": 112},
+    "Extraversion": {"alto": 333, "bajo": 667},
+    "Agreeableness": {"alto": 705, "bajo": 295},
+    "Neuroticism": {"alto": 304, "bajo": 696},
+    "Machiavellianism": {"alto": 154, "bajo": 846},
+    "Narcissism": {"alto": 91, "bajo": 908},
+    "Psychopathy": {"alto": 9, "bajo": 895}
+  },
+  "Mistral-7b": {
+    "Openness": {"alto": 554, "bajo": 446},
+    "Conscientiousness": {"alto": 771, "bajo": 229},
+    "Extraversion": {"alto": 360, "bajo": 640},
+    "Agreeableness": {"alto": 732, "bajo": 268},
+    "Neuroticism": {"alto": 420, "bajo": 580},
+    "Machiavellianism": {"alto": 180, "bajo": 820},
+    "Narcissism": {"alto": 111, "bajo": 889},
+    "Psychopathy": {"alto": 32, "bajo": 968}
+  }
+}

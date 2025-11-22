@@ -1,0 +1,84 @@
+<div class="dashboard">
+  <h1>Dashboard Psicométrico</h1>
+
+  <!-- 🔹 Cards resumen de rasgos -->
+  <section class="sumary-traits">
+    <div class="most-similar-container">
+      <h2>El LLM con los rasgos más similares es: </h2>
+      <h3 class="most-similar-llm"></h3>
+    </div>
+    <!-- Aquí se generan dinámicamente las tarjetas de cada rasgo -->
+     <div class="summary-cards">
+     </div>
+  </section>
+
+  <!-- 🔹 Selección de LLMs (cards se generan dinámicamente desde JS) -->
+  <section class="llm-selection">
+    <h2>Selecciona los LLMs a comparar</h2>
+    <div class="llm-cards"></div>
+  </section>
+
+  <!-- 🔹 Gráficos -->
+  <section class="charts">
+    <div class="chart-container">
+      <h2>Radar: Usuario vs LLM</h2>
+      <canvas id="radarChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <h2>Comparación Rasgos Dark Triad</h2>
+      <canvas id="barChartDark"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <h2>Comparación Rasgos Big Five</h2>
+      <canvas id="barChartBigFive"></canvas>
+    </div>
+  </section>
+
+  <!-- 🔹 Tabla comparativa -->
+  <section class="comparative-table">
+    <h2>Tabla Comparativa</h2>
+    <table id="comparison">
+     <!-- JS realiza la tabla -->
+    </table>
+  </section>
+
+    <!-- Sección de Descargas -->
+  <section class="export-section">
+    <div class="export-title">
+      <hr class="line-top">
+      <h2>Descarga</h2>
+      <hr class="line-bottom">
+    </div>
+
+    <div class="export-buttons">
+      <button id="downloadUserPDF">
+        <img src="/src/assets/img/DescargaUser_icon.png" alt="Icono Usuario" class="button-icon">
+        Reporte Individual
+      </button>
+      <button id="downloadComparativePDF">
+        <img src="/src/assets/img/Descarga_icon.png" alt="Icono Vista Completa" class="button-icon">
+        Reporte Vista Completa
+      </button>
+    </div>
+  </section>
+
+
+</div>
+
+<!-- 🔹 Modal de detalles de rasgo -->
+<div id="rasgoModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h2 id="modalRasgoTitulo"></h2>
+    <div class="modal-scores">
+      <p>Usuario: <span id="modalUsuarioScore"></span></p>
+      <p>LLM: <span id="modalLLMScore"></span></p>
+    </div>
+    <hr>
+    <p id="modalDescripcion"></p>
+  </div>
+</div>
+
+
