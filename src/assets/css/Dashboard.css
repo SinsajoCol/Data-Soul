@@ -235,7 +235,7 @@ canvas {
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background: linear-gradient(275deg, #9AAFEF 0%, #C6D2F6 100%);;
   padding: 30px;
   width: 80%;
   max-width: 500px;
