@@ -1,3 +1,21 @@
+:root, [data-peppercorn-typography-scale-mode="mode-1"] {
+  --accent-color: #ffa64d;
+  --black: #010101;
+  --white: #f7f7f7;
+  --brand-primary: #11296e;
+  --brand-secondary: #cbb2fe;
+  --peppercorn-typography-scale-h2-font-family: Poppins, sans-serif;
+  --peppercorn-typography-scale-h2-font-size: 39px;
+  --peppercorn-typography-scale-h2-line-height: 59px;
+  --peppercorn-typography-scale-h2-font-weight: 700;
+  --peppercorn-typography-scale-h2-font-style: normal;
+  --peppercorn-typography-scale-body-font-family: OpenSans, sans-serif;
+  --peppercorn-typography-scale-body-font-size: 20px;
+  --peppercorn-typography-scale-body-line-height: 30px;
+  --peppercorn-typography-scale-body-font-weight: 400;
+  --peppercorn-typography-scale-body-font-style: normal;
+}
+
 /* Reset básico */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -235,7 +253,7 @@ canvas {
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background: linear-gradient(275deg, #9AAFEF 0%, #C6D2F6 100%);;
   padding: 30px;
   width: 80%;
   max-width: 500px;
@@ -438,9 +456,6 @@ canvas {
   font-size: 0.85rem;
 }
 
-
-
-
 /* Contenedor general de la sección de descarga */
 .export-section {
   text-align: center;
@@ -506,6 +521,101 @@ canvas {
   width: 22px;
   height: 22px;
 }
+
+/* Contenedor general de la sección para la encuesta */
+.encuesta-section {
+  text-align: center;
+  margin: 50px 0;
+  background: linear-gradient(180deg, #6585e791, #CBB2FE);
+  padding: 25px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* Título descarga entre lineas */
+.encuesta-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 30px;
+  font-family: "Poppins", sans-serif;
+}
+
+.encuesta-title hr {
+  width: 100%;
+  height: 2.5px;
+  background-color: #000; /* Puedes cambiarlo a #FFA64D si prefieres */
+  border: none;
+  margin: 0;
+}
+
+.encuesta-title h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+}
+
+.encuestaText {
+  display: flex;
+  justify-content: center;
+  margin: 25px auto;
+}
+
+.encuestaText p {
+  text-align: center;
+  padding: 0 80px;
+  color: var(--black);
+  font-family: var(--peppercorn-typography-scale-body-font-family);
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: var(--peppercorn-typography-scale-body-line-height);
+}
+
+/* Contenedor de botones */
+.encuesta-button {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Estilo de botones */
+.encuesta-button button {
+  background-color: var(--brand-primary);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.encuesta-button button:hover {
+  background-color: var(--accent-color);
+  color: var(--black);
+  transform: translateY(-3px);
+}
+
+.iconButton {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1);
+  transition: filter .25s ease;
+}
+
+.encuesta-button button:hover .iconButton,
+#encuestaFinal:hover .iconButton {
+  filter: brightness(0) invert(0);
+}
+
 
 .cell-grupo-lista {
   vertical-align: middle; 
