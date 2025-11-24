@@ -139,58 +139,72 @@ export class PdfService {
     }
 
     /**
-     * Dibuja la tabla comparativa simple.
+     * Dibuja la tabla comparativa simple con manejo automático de paginación.
      * @param {jsPDF} doc 
      * @param {number} startY 
      * @param {Array} rows - Array de objetos { rasgo, user, llm, diff }
+     * @param {string} pageHeaderTitle - Título para redibujar en nuevas páginas (opcional)
+     * @param {string} pageHeaderSubtitle - Subtítulo para redibujar en nuevas páginas (opcional)
      */
-    drawComparisonTable(doc, startY, rows) {
+    drawComparisonTable(doc, startY, rows, pageHeaderTitle, pageHeaderSubtitle) {
         const pageWidth = doc.internal.pageSize.getWidth();
         const margin = 14;
         const tableWidth = pageWidth - (margin * 2);
         const colWidth = tableWidth / 4;
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const headerHeight = 10;
+        const rowHeight = 8;
 
         let y = startY;
 
-        // Header
-        doc.setFillColor(this.colors.primary);
-        doc.rect(margin, y, tableWidth, 10, 'F');
+        const drawHeaderRow = (yPos) => {
+            doc.setFillColor(this.colors.primary);
+            doc.rect(margin, yPos, tableWidth, headerHeight, 'F');
+            doc.setTextColor(this.colors.white);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(10);
+            doc.text("Rasgo", margin + 5, yPos + 7);
+            doc.text("Usuario", margin + colWidth + 5, yPos + 7);
+            doc.text("LLM", margin + (colWidth * 2) + 5, yPos + 7);
+            doc.text("Diferencia", margin + (colWidth * 3) + 5, yPos + 7);
+        };
 
-        doc.setTextColor(this.colors.white);
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(10);
-
-        doc.text("Rasgo", margin + 5, y + 7);
-        doc.text("Usuario", margin + colWidth + 5, y + 7);
-        doc.text("LLM", margin + (colWidth * 2) + 5, y + 7);
-        doc.text("Diferencia", margin + (colWidth * 3) + 5, y + 7);
-
-        y += 10;
-
-        // Rows
+        drawHeaderRow(y);
+        y += headerHeight;
         doc.setTextColor(this.colors.text);
         doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
 
         rows.forEach((row, index) => {
-            // Alternar color de fondo
-            if (index % 2 === 0) {
-                doc.setFillColor(245, 247, 250); // Gris muy claro
-                doc.rect(margin, y, tableWidth, 8, 'F');
+            if (y + rowHeight + margin > pageHeight) {
+                doc.addPage();
+                if (pageHeaderTitle) {
+                    this.drawHeader(doc, pageHeaderTitle, pageHeaderSubtitle || "");
+                    y = 60;
+                } else {
+                    y = margin;
+                }
+                drawHeaderRow(y);
+                y += headerHeight;
             }
 
+            if (index % 2 === 0) {
+                doc.setFillColor(245, 247, 250);
+                doc.rect(margin, y, tableWidth, rowHeight, 'F');
+            }
+
+            doc.setTextColor(this.colors.text);
             doc.text(row.rasgo, margin + 5, y + 6);
             doc.text(String(row.user), margin + colWidth + 5, y + 6);
             doc.text(String(row.llm), margin + (colWidth * 2) + 5, y + 6);
 
-            // Color diferencia
-            if (row.diff > 0) doc.setTextColor(0, 150, 0); // Verde
-            else if (row.diff < 0) doc.setTextColor(200, 0, 0); // Rojo
+            if (row.diff > 0) doc.setTextColor(0, 150, 0);
+            else if (row.diff < 0) doc.setTextColor(200, 0, 0);
             else doc.setTextColor(this.colors.text);
 
             doc.text(String(row.diff), margin + (colWidth * 3) + 5, y + 6);
-
-            doc.setTextColor(this.colors.text); // Reset
-            y += 8;
+            doc.setTextColor(this.colors.text);
+            y += rowHeight;
         });
     }
 }

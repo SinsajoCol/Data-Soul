@@ -106,7 +106,13 @@ export class ComparativoLLMStrategy {
         doc.setTextColor(this.pdfService.colors.primary);
         doc.text("Tabla Comparativa", pageWidth / 2, y, { align: "center" });
 
-        this.pdfService.drawComparisonTable(doc, y + 5, tableRows);
+        this.pdfService.drawComparisonTable(
+            doc,
+            y + 5,
+            tableRows,
+            "Reporte Psicométrico Comparativo",
+            "Tabla Comparativa"
+        );
 
         // --- PÁGINA 2 (Gráficas Globales) ---
         doc.addPage();
@@ -197,7 +203,10 @@ export class ComparativoLLMStrategy {
         });
 
         // Tabla
-        y = y + (4 * (cardHeight + 5)) + 10;
+        // --- PÁGINA 2: Tabla Comparativa (Promedios) ---
+        doc.addPage();
+        this.pdfService.drawHeader(doc, "Reporte Psicométrico Comparativo", "Tabla Comparativa (Promedios)");
+
         const tableRows = plantilla.map((rasgo, i) => ({
             rasgo,
             user: groupData[i],
@@ -207,10 +216,16 @@ export class ComparativoLLMStrategy {
 
         doc.setFontSize(14);
         doc.setTextColor(this.pdfService.colors.primary);
-        doc.text("Tabla Comparativa (Promedios)", pageWidth / 2, y, { align: "center" });
-        this.pdfService.drawComparisonTable(doc, y + 5, tableRows);
+        doc.text("Tabla Comparativa (Promedios)", pageWidth / 2, 60, { align: "center" });
+        this.pdfService.drawComparisonTable(
+            doc,
+            65,
+            tableRows,
+            "Reporte Psicométrico Comparativo",
+            "Tabla Comparativa (Promedios)"
+        );
 
-        // --- PÁGINA 2 ---
+        // --- PÁGINA 3: Gráficas Globales ---
         doc.addPage();
         this.pdfService.drawHeader(doc, "Reporte Psicométrico", "Comparación Global (Grupo vs LLMs)");
 
