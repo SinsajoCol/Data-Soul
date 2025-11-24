@@ -1,6 +1,7 @@
 import ProcesadorPsicometrico from "../models/ProcesadorPsicometrico.js";
 import { DatosIndividuales } from "../models/DatosIndividuales.js";
 import Resultados from "../models/Resultados.js"; // El Singleton
+import AlmacenamientoLocal from "../models/AlmacenamientoLocal.js";
 
 export default class ProcesamientoController {
     constructor() {
@@ -25,7 +26,9 @@ export default class ProcesamientoController {
         // 3. Guarda el objeto 'DatosIndividuales' en el Singleton 'Resultados'.
         // (La clase Resultados se encargará internamente de persistirlo en localStorage).
         this.resultados.agregarResultadoIndividual(individuo);
+        AlmacenamientoLocal.eliminar("respuestas"); 
         
+        console.log("Respuestas procesadas y temporales eliminadas.");
         // 4. Devuelve el objeto Rasgos
         // (Esto permite a PaginaCuestionario decidir si lo usa o simplemente navega)
         return rasgosObjeto;
