@@ -94,6 +94,14 @@ body {
   margin-bottom: 15px;
 }
 
+.descripcion-rasgo {
+  font-size: 0.65rem;        /* más pequeño que antes */
+  color: #646363;               /* gris medio-suave */
+  line-height: 1rem;         /* compacto pero legible */
+  margin-top: 6px;
+  opacity: 0.85;             /* ligeramente atenuado */
+}
+
 canvas {
   max-width: 100%;
   height: 400px;
