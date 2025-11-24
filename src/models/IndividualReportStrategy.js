@@ -2,13 +2,16 @@ const { jsPDF } = window.jspdf;
 
 /**
  * Estrategia para generar el reporte "Individual".
- * (Según el diagrama: "PDF con 2 gráficas fijas del usuario")
+ * Diseño:
+ * Pág 1: Header, Grid de Cards (Descripción + Score), Bar Chart.
+ * Pág 2: Header, Radar Chart.
  */
 export class IndividualReportStrategy {
-    
-    constructor({ chartBuilder, graficoExporter }) {
+
+    constructor({ chartBuilder, graficoExporter, pdfService }) {
         this.chartBuilder = chartBuilder;
         this.graficoExporter = graficoExporter;
+        this.pdfService = pdfService;
     }
 
     /**
@@ -23,61 +26,86 @@ export class IndividualReportStrategy {
         }
 
         const doc = new jsPDF();
-
-        // --- Títulos ---
-        doc.setFontSize(18);
-        doc.text("Reporte de Rasgos Individual", 14, 22);
-        doc.setFontSize(11);
-        doc.text(`Usuario: ${metadata.usuarioId}`, 14, 30);
-        doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 36);
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const margin = 14;
 
         // --- 1. Preparar Datos ---
         const plantilla = metadata.rasgosOrdenados; // ["Apertura", ...]
-        const bigFiveLabels = plantilla.slice(0, 5);
-        const darkLabels = plantilla.slice(5, 8);
+        const descripciones = metadata.descripciones;
 
-        // Extrae los puntajes del usuario en el orden de la plantilla
+        // Extrae los puntajes del usuario
         const userData = plantilla.map(nombreRasgo => {
             const rasgo = datosUsuario.rasgos.listaRasgos.find(r => r.nombre === nombreRasgo);
             return rasgo ? parseFloat(rasgo.valor.toFixed(2)) : 0;
         });
-        
-        const userDataBigFive = userData.slice(0, 5);
-        const userDataDark = userData.slice(5, 8);
 
-        // --- 2. Construir Configs de Gráficas (SOLO USUARIO) ---
+        // --- 2. Generar Gráficas (Imágenes) ---
+
+        // Config Bar Chart (Todos los rasgos)
+        const barConfig = this.chartBuilder.buildBar(
+            plantilla,
+            userData,
+            null, null,
+            "" // Sin título en la gráfica, lo ponemos en el PDF
+        );
+        // Ajustar colores para que coincida con el diseño (Azul)
+        barConfig.data.datasets[0].backgroundColor = "rgba(22, 52, 140, 0.8)"; // #16348C
+
+        // Config Radar Chart
         const radarConfig = this.chartBuilder.buildRadar(
-            plantilla, 
+            plantilla,
             userData
         );
-        const barBigFiveConfig = this.chartBuilder.buildBar(
-            bigFiveLabels, 
-            userDataBigFive, 
-            null, null, 
-            "Big Five (Usuario)"
-        );
-        const barDarkConfig = this.chartBuilder.buildBar(
-            darkLabels, 
-            userDataDark, 
-            null, null, 
-            "Dark Triad (Usuario)"
-        );
+        radarConfig.data.datasets[0].borderColor = "#16348C";
+        radarConfig.data.datasets[0].backgroundColor = "rgba(22, 52, 140, 0.2)";
 
-        // --- 3. Generar Imágenes ---
-        const imgRadar = await this.graficoExporter.generarImagen(radarConfig, 1000, 500);
-        const imgBigFive = await this.graficoExporter.generarImagen(barBigFiveConfig, 1000, 500);
-        const imgDark = await this.graficoExporter.generarImagen(barDarkConfig, 600, 500);
+        const imgBar = await this.graficoExporter.generarImagen(barConfig, 1000, 500);
+        const imgRadar = await this.graficoExporter.generarImagen(radarConfig, 1000, 800);
 
-        // --- 4. Maquetar PDF ---
-        doc.addImage(imgRadar, 'PNG', 14, 45, 180, 90);
-        
+        // --- PÁGINA 1 ---
+
+        // Header
+        this.pdfService.drawHeader(doc, "Reporte Psicométrico Personal", "Descripción de sus resultados psicométricos");
+
+        // Grid de Cards
+        let y = 60;
+        const cardHeight = 35;
+        const cardWidth = (pageWidth - (margin * 3)) / 2; // 2 columnas con espacio en medio
+
+        plantilla.forEach((rasgo, index) => {
+            const col = index % 2; // 0 o 1
+            const row = Math.floor(index / 2);
+
+            const xPos = margin + (col * (cardWidth + margin));
+            const yPos = y + (row * (cardHeight + 5)); // 5mm gap vertical
+
+            this.pdfService.drawTraitCard(doc, xPos, yPos, cardWidth, cardHeight, {
+                nombre: rasgo,
+                scoreUser: userData[index],
+                descripcion: descripciones[rasgo]
+            });
+        });
+
+        // Título Gráfica Barras
+        y = y + (4 * (cardHeight + 5)) + 10; // Debajo de las cards
+        doc.setFontSize(14);
+        doc.setTextColor(this.pdfService.colors.primary);
+        doc.text("Diagrama de Barras: Rasgos Psicométricos Personales", pageWidth / 2, y, { align: "center" });
+
+        // Imagen Gráfica Barras
+        doc.addImage(imgBar, 'PNG', margin, y + 5, pageWidth - (margin * 2), 80);
+
+        // --- PÁGINA 2 ---
         doc.addPage();
-        doc.setFontSize(16);
-        doc.text("Desglose de Rasgos", 14, 22);
-        doc.addImage(imgBigFive, 'PNG', 14, 30, 180, 90);
-        doc.addImage(imgDark, 'PNG', 14, 130, 180, 90);
+        this.pdfService.drawHeader(doc, "Reporte Psicométrico Personal");
 
-        // (Aquí podrías añadir las descripciones de texto)
+        // Título Radar
+        doc.setFontSize(14);
+        doc.setTextColor(this.pdfService.colors.primary);
+        doc.text("Gráfico de Radar: Rasgos Psicométricos Personales", pageWidth / 2, 60, { align: "center" });
+
+        // Imagen Radar
+        doc.addImage(imgRadar, 'PNG', margin + 20, 70, pageWidth - (margin * 2) - 40, 120);
 
         return doc.output('blob');
     }

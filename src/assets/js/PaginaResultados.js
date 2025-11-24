@@ -8,7 +8,6 @@ import { ResultadosView } from "../../views/ResultadosView.js";
 // 3. Importa los Modelos/Stores (Singletons y Gestores)
 import Resultados from "../../models/Resultados.js";
 import { GestorModelosLLM } from "../../models/GestorModelosLLM.js";
-// (Asumimos que ComparisonStore no se usa por ahora, según ComparacionController)
 
 // 4. Importa TODO el sistema de REPORTES
 import { ReporteController } from "../../controllers/ReporteController.js";
@@ -17,16 +16,18 @@ import { ChartBuilder } from "../../models/ChartBuilder.js";
 import { GraficoExporter } from "../../models/GraficoExporter.js";
 import { IndividualReportStrategy } from "../../models/IndividualReportStrategy.js";
 import { ComparativoLLMStrategy } from "../../models/ComparativoLLMStrategy.js";
+import { PdfService } from "../../models/PdfService.js";
 
 // Constante de la ruta de datos
 const rutaLLM = "src/data/llm_raw.json";
+const rutaLogo = "src/assets/img/LogoBrand.png";
 
 export class PaginaResultados extends PaginaTemplate {
     constructor(id) {
         super();
         this.cargarCSS("/src/assets/css/Dashboard.css");
         this.id = id;
-        
+
         // --- Instanciación Centralizada ---
 
         // 1. Vista
@@ -38,29 +39,31 @@ export class PaginaResultados extends PaginaTemplate {
 
         // 3. Controlador de la Página Web
         this.controller = new ComparacionController(
-            this.view, 
+            this.view,
             this.id,
             this.gestorLLM,        // <- Inyecta el gestor
             this.resultadosStore   // <- Inyecta el store
         );
 
-        // 4. Servicios de Reportes (como en tu diagrama)
+        // 4. Servicios de Reportes
         const chartBuilder = new ChartBuilder();
         const graficoExporter = new GraficoExporter();
+        this.pdfService = new PdfService();
 
         // 5. Factory de Reportes (e inyectamos dependencias)
-        this.strategyFactory = new ReportStrategyFactory({ 
-            chartBuilder, 
-            graficoExporter 
+        this.strategyFactory = new ReportStrategyFactory({
+            chartBuilder,
+            graficoExporter,
+            pdfService: this.pdfService
         });
 
         // 6. Registramos las estrategias que la factory puede crear
         this.strategyFactory.register(
-            'individual', 
+            'individual',
             (deps) => new IndividualReportStrategy(deps)
         );
         this.strategyFactory.register(
-            'comparativo', 
+            'comparativo',
             (deps) => new ComparativoLLMStrategy(deps)
         );
 
@@ -86,8 +89,13 @@ export class PaginaResultados extends PaginaTemplate {
     /**
      * Llama al Controlador para que "encienda" la página
      */
-   async despuesDeCargar() {
+    async despuesDeCargar() {
         try {
+            // 0. Cargar Logo para PDF (Async)
+            this.pdfService.loadLogo(rutaLogo).then(() => {
+                console.log("Logo cargado para PDF");
+            }).catch(e => console.warn("No se pudo cargar el logo", e));
+
             // 1. Cargamos los datos de LLMs UNA SOLA VEZ
             console.log("PaginaResultados: Cargando modelos LLM...");
             await this.gestorLLM.cargarModelos(rutaLLM);
@@ -96,7 +104,7 @@ export class PaginaResultados extends PaginaTemplate {
             // 2. Iniciamos el controlador de la vista
             // (Usará los modelos ya cargados)
             await this.controller.iniciar();
-            
+
             // 3. Conectamos los botones de PDF
             this.conectarBotonesPDF();
             this.conectarBotonEncuesta();
@@ -111,12 +119,12 @@ export class PaginaResultados extends PaginaTemplate {
     conectarBotonesPDF() {
         const btnIndividual = document.getElementById("downloadUserPDF");
         const btnComparativo = document.getElementById("downloadComparativePDF");
-        
+
         const feedbackHandler = async (button, tipo) => {
             const originalHtml = button.innerHTML;
-            button.innerHTML = `Generando... <span class="spinner"></span>`; // (Asumiendo que tienes CSS para .spinner)
+            button.innerHTML = `Generando... <span class="spinner"></span>`;
             button.disabled = true;
-            
+
             try {
                 // El ID es el mismo, el controlador y la estrategia saben qué hacer
                 await this.reporteController.generarReporte(tipo, { usuarioId: this.id });
@@ -135,11 +143,11 @@ export class PaginaResultados extends PaginaTemplate {
                 feedbackHandler(btnIndividual, 'individual');
             });
         }
-        
+
         if (btnComparativo) {
-             btnComparativo.addEventListener("click", () => {
+            btnComparativo.addEventListener("click", () => {
                 feedbackHandler(btnComparativo, 'comparativo');
-             });
+            });
         }
     }
 

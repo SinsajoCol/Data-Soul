@@ -1,455 +1,296 @@
 const { jsPDF } = window.jspdf;
-/**
- * Estrategia para generar el reporte "Comparativo".
- * (Según el diagrama: "PDF con 2 gráficas fijas: usuario vs modelo")
- *
- * Esta estrategia decide si es un reporte GRUPAL o INDIVIDUAL
- * basado en el contexto.
- */
-const PDF_USER_COLOR = '#16348C';
-// Paleta de colores para los LLMs en el PDF
-const LLM_PALETTE = ['#6586E7', '#884FFD', '#B18BFD', '#FFA64D', '#FF8000', '#FFC300', '#E76565'];
 
-// Función helper para colores (copiada de ChartBuilder)
-const hexToRgba = (hex, alpha) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
 /**
  * Estrategia para generar el reporte "Comparativo".
- *
- * Esta estrategia decide si es un reporte GRUPAL o INDIVIDUAL
- * basado en el contexto.
+ * Diseño:
+ * Pág 1: Header, Subtítulo (Más similar), Grid Cards (User vs LLM), Tabla.
+ * Pág 2: Header, Gráficas Globales (Barra + Radar).
  */
 export class ComparativoLLMStrategy {
-    
-    constructor({ chartBuilder, graficoExporter }) {
+
+    constructor({ chartBuilder, graficoExporter, pdfService }) {
         this.chartBuilder = chartBuilder;
         this.graficoExporter = graficoExporter;
+        this.pdfService = pdfService;
     }
 
-    /**
-     * Punto de entrada: Decide qué tipo de PDF generar.
-     */
     async generarPDF(context) {
         if (context.esIndividual) {
-            // Caso 1: Es un individuo
             return this.generarPDFIndividual(context);
         } else if (context.esGrupo) {
-            // Caso 2: Es un grupo
             return this.generarPDFGrupo(context);
         } else {
-            throw new Error("Contexto de reporte no válido. No es ni individual ni grupal.");
+            throw new Error("Contexto de reporte no válido.");
         }
     }
 
-    /**
-     * Genera el PDF para un INDIVIDUO vs. TODOS los LLMs.
-     */
     async generarPDFIndividual(context) {
         const { datosUsuario, datosModelos, metadata } = context;
         const doc = new jsPDF();
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const margin = 14;
 
-        // --- 1. Preparar Datos (Plantillas) ---
+        // --- 1. Preparar Datos ---
         const plantilla = metadata.rasgosOrdenados;
-        const bigFiveLabels = plantilla.slice(0, 5);
-        const darkLabels = plantilla.slice(5, 8);
+        const descripciones = metadata.descripciones;
 
-        // --- 2. Preparar Datos de Usuario ---
+        // Datos Usuario
         const userData = plantilla.map(nombreRasgo => {
             const rasgo = datosUsuario.rasgos.listaRasgos.find(r => r.nombre === nombreRasgo);
             return rasgo ? parseFloat(rasgo.valor.toFixed(2)) : 0;
         });
 
-        // --- 3. Preparar Datos de TODOS los LLMs ---
-        const llmDatasets = datosModelos.map((modelo, index) => {
-            // Extraer los datos (scores)
-            const llmData = plantilla.map(nombreRasgo => {
-                const stat = modelo.estadisticas.find(s => s.nombre === nombreRasgo);
-                const media = (stat && typeof stat.media === 'number') ? stat.media : 0;
-                return parseFloat(media.toFixed(2));
+        // Encontrar LLM más similar
+        const { bestMatchName, bestMatchData } = this._findBestMatch(userData, datosModelos, plantilla);
+
+        // --- PÁGINA 1 ---
+        this.pdfService.drawHeader(doc, "Reporte Psicométrico Comparativo", `El LLM con los rasgos más similares es: ${bestMatchName}`);
+
+        // Grid de Cards (User vs Best LLM)
+        let y = 60;
+        const cardHeight = 35;
+        const cardWidth = (pageWidth - (margin * 3)) / 2;
+
+        plantilla.forEach((rasgo, index) => {
+            const col = index % 2;
+            const row = Math.floor(index / 2);
+            const xPos = margin + (col * (cardWidth + margin));
+            const yPos = y + (row * (cardHeight + 5));
+
+            this.pdfService.drawTraitCard(doc, xPos, yPos, cardWidth, cardHeight, {
+                nombre: rasgo,
+                scoreUser: userData[index],
+                scoreLLM: bestMatchData[index],
+                descripcion: descripciones[rasgo]
             });
-            
-            // Asignar color de la paleta
-            const color = LLM_PALETTE[index % LLM_PALETTE.length];
-            
-            return {
-                label: modelo.nombre,
-                data: llmData,
-                // Colores para Radar
-                backgroundColor: hexToRgba(color, 0.2),
-                borderColor: color,
-                borderWidth: 2,
-                // Colores para Barras
-                backgroundColorBar: hexToRgba(color, 0.8)
-            };
         });
 
-        // --- 4. Construir Configs (Usuario vs. TODOS los LLMs) ---
-        // (Bypass ChartBuilder, ya que no soporta múltiples datasets)
+        // Tabla Comparativa
+        y = y + (4 * (cardHeight + 5)) + 10;
 
-        // Configuración del Radar
-        const radarConfig = {
-            type: 'radar',
-            data: {
-                labels: plantilla,
-                datasets: [
-                    {
-                        label: 'Usuario',
-                        data: userData,
-                        backgroundColor: hexToRgba(PDF_USER_COLOR, 0.2),
-                        borderColor: PDF_USER_COLOR,
-                        borderWidth: 2
-                    },
-                    // Añadir todos los LLMs
-                    ...llmDatasets.map(ds => ({
-                        label: ds.label,
-                        data: ds.data,
-                        backgroundColor: ds.backgroundColor,
-                        borderColor: ds.borderColor,
-                        borderWidth: ds.borderWidth
-                    }))
-                ]
-            },
-            options: {
-                responsive: false, animation: false,
-                scales: { r: { beginAtZero: true, min: 0, max: 5 } }
-            }
-        };
+        // Preparar datos tabla
+        const tableRows = plantilla.map((rasgo, i) => ({
+            rasgo,
+            user: userData[i],
+            llm: bestMatchData[i],
+            diff: parseFloat((userData[i] - bestMatchData[i]).toFixed(2))
+        }));
 
-        // Configuración de Bar Big Five
-        const barBigFiveConfig = {
-            type: 'bar',
-            data: {
-                labels: bigFiveLabels,
-                datasets: [
-                    {
-                        label: 'Usuario',
-                        data: userData.slice(0, 5), // Solo 5 rasgos
-                        backgroundColor: hexToRgba(PDF_USER_COLOR, 0.8)
-                    },
-                    ...llmDatasets.map(ds => ({
-                        label: ds.label,
-                        data: ds.data.slice(0, 5), // Solo 5 rasgos
-                        backgroundColor: ds.backgroundColorBar
-                    }))
-                ]
-            },
-            options: {
-                responsive: false, animation: false,
-                plugins: { title: { display: true, text: "Big Five (Usuario vs. LLMs)" } },
-                scales: { y: { beginAtZero: true, max: 5 } }
-            }
-        };
+        doc.setFontSize(14);
+        doc.setTextColor(this.pdfService.colors.primary);
+        doc.text("Tabla Comparativa", pageWidth / 2, y, { align: "center" });
 
-        // Configuración de Bar Dark Triad
-        const barDarkConfig = {
-            type: 'bar',
-            data: {
-                labels: darkLabels,
-                datasets: [
-                    {
-                        label: 'Usuario',
-                        data: userData.slice(5, 8), // Solo 3 rasgos
-                        backgroundColor: hexToRgba(PDF_USER_COLOR, 0.8)
-                    },
-                    ...llmDatasets.map(ds => ({
-                        label: ds.label,
-                        data: ds.data.slice(5, 8), // Solo 3 rasgos
-                        backgroundColor: ds.backgroundColorBar
-                    }))
-                ]
-            },
-            options: {
-                responsive: false, animation: false,
-                plugins: { title: { display: true, text: "Dark Triad (Usuario vs. LLMs)" } },
-                scales: { y: { beginAtZero: true, max: 5 } }
-            }
-        };
+        this.pdfService.drawComparisonTable(doc, y + 5, tableRows);
 
-        // --- 5. Generar Imágenes ---
-        const imgRadar = await this.graficoExporter.generarImagen(radarConfig, 1000, 600); // Radar más alto
-        const imgBigFive = await this.graficoExporter.generarImagen(barBigFiveConfig, 1000, 500);
-        const imgDark = await this.graficoExporter.generarImagen(barDarkConfig, 1000, 500);
-
-        
-        // --- 6. Maquetar PDF ---
-        doc.setFontSize(18);
-        doc.text("Reporte Comparativo (Vista Completa)", 14, 22);
-        doc.setFontSize(11);
-        doc.text(`Usuario: ${metadata.usuarioId}`, 14, 30);
-        doc.text(`Comparado contra: Todos los Modelos LLM`, 14, 36);
-
-        doc.addImage(imgRadar, 'PNG', 14, 45, 180, 108); // Radar más alto
-        
+        // --- PÁGINA 2 (Gráficas Globales) ---
         doc.addPage();
-        doc.setFontSize(16);
-        doc.text("Desglose de Rasgos Comparativo", 14, 22);
-        doc.addImage(imgBigFive, 'PNG', 14, 30, 180, 90);
-        doc.addImage(imgDark, 'PNG', 14, 130, 180, 90);
-        
-        // (Aquí también iría la tabla de distancias, si la quieres mantener)
+        this.pdfService.drawHeader(doc, "Reporte Psicométrico", "Comparación Global de los Resultados");
+
+        // Generar Gráficas con TODOS los LLMs
+        const imgBar = await this._generateMultiBarChart(plantilla, userData, datosModelos);
+        const imgRadar = await this._generateMultiRadarChart(plantilla, userData, datosModelos);
+
+        y = 60;
+        doc.setFontSize(14);
+        doc.setTextColor(this.pdfService.colors.primary);
+        doc.text("Diagrama de Barras: Rasgos Psicométricos", pageWidth / 2, y, { align: "center" });
+        doc.addImage(imgBar, 'PNG', margin, y + 5, pageWidth - (margin * 2), 90);
+
+        y = 165;
+        doc.text("Gráfico de Radar: Rasgos Psicométricos", pageWidth / 2, y, { align: "center" });
+        doc.addImage(imgRadar, 'PNG', margin + 20, y + 5, pageWidth - (margin * 2) - 40, 110);
 
         return doc.output('blob');
     }
 
-    /**
-     * Genera el PDF para un GRUPO vs. TODOS los LLMs (en gráficas)
-     * Y luego las tablas de percentiles.
-     */
     async generarPDFGrupo(context) {
-        const { datosGrupo, datosModelos, metadata, procesador } = context;
+        // Lógica similar pero usando promedios de grupo
+        const { datosGrupo, datosModelos, metadata } = context;
         const doc = new jsPDF();
-        
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const margin = 14;
+
         const plantilla = metadata.rasgosOrdenados;
-        const bigFiveLabels = plantilla.slice(0, 5);
-        const darkLabels = plantilla.slice(5, 8);
+        const descripciones = metadata.descripciones;
 
-        doc.setFontSize(18);
-        doc.text(`Reporte Comparativo de Grupo: ${datosGrupo.nombreGrupo}`, 14, 22);
-        doc.setFontSize(11);
-        doc.text(`Comparado contra: Todos los Modelos LLM`, 14, 30);
-
-        // --- 1. Obtener los promedios del grupo ---
+        // Promedios Grupo
         const statsGrupales = datosGrupo.obtenerEstadisticasGrupales();
-        const groupAvgData = plantilla.map(nombreRasgo => {
+        const groupData = plantilla.map(nombreRasgo => {
             const stat = statsGrupales.find(s => s.nombre === nombreRasgo);
-            const media = (stat && typeof stat.media === 'number') ? stat.media : 0;
-            return parseFloat(media.toFixed(2));
+            return stat ? parseFloat(stat.media.toFixed(2)) : 0;
         });
 
-        // --- 2. Preparar Datos de TODOS los LLMs (igual que en individual) ---
-        const llmDatasets = datosModelos.map((modelo, index) => {
-            const llmData = plantilla.map(nombreRasgo => {
-                const stat = modelo.estadisticas.find(s => s.nombre === nombreRasgo);
-                const media = (stat && typeof stat.media === 'number') ? stat.media : 0;
-                return parseFloat(media.toFixed(2));
+        const { bestMatchName, bestMatchData } = this._findBestMatch(groupData, datosModelos, plantilla);
+
+        // --- PÁGINA 1 ---
+        this.pdfService.drawHeader(doc, "Reporte Psicométrico Comparativo", `El LLM más similar al PROMEDIO DEL GRUPO es: ${bestMatchName}`);
+
+        // Grid Cards
+        let y = 60;
+        const cardHeight = 35;
+        const cardWidth = (pageWidth - (margin * 3)) / 2;
+
+        plantilla.forEach((rasgo, index) => {
+            const col = index % 2;
+            const row = Math.floor(index / 2);
+            const xPos = margin + (col * (cardWidth + margin));
+            const yPos = y + (row * (cardHeight + 5));
+
+            this.pdfService.drawTraitCard(doc, xPos, yPos, cardWidth, cardHeight, {
+                nombre: rasgo,
+                scoreUser: groupData[index], // "Usuario" label will be used, maybe change logic in PdfService if needed, but "Usuario" (as Group) is acceptable or I can change PdfService to accept label.
+                scoreLLM: bestMatchData[index],
+                descripcion: descripciones[rasgo]
             });
-            const color = LLM_PALETTE[index % LLM_PALETTE.length];
-            return {
-                label: modelo.nombre,
-                data: llmData,
-                backgroundColor: hexToRgba(color, 0.2),
-                borderColor: color,
-                borderWidth: 2,
-                backgroundColorBar: hexToRgba(color, 0.8)
-            };
         });
 
-        // --- 3. Construir Configs (Grupo vs. TODOS los LLMs) ---
-        
-        // Configuración del Radar
-        const radarConfig = {
-            type: 'radar',
-            data: {
-                labels: plantilla,
-                datasets: [
-                    {
-                        label: 'Promedio Grupo', // Etiqueta cambiada
-                        data: groupAvgData,
-                        backgroundColor: hexToRgba(PDF_USER_COLOR, 0.2),
-                        borderColor: PDF_USER_COLOR,
-                        borderWidth: 2
-                    },
-                    ...llmDatasets.map(ds => ({
-                        label: ds.label,
-                        data: ds.data,
-                        backgroundColor: ds.backgroundColor,
-                        borderColor: ds.borderColor,
-                        borderWidth: ds.borderWidth
-                    }))
-                ]
-            },
-            options: {
-                responsive: false, animation: false,
-                scales: { r: { beginAtZero: true, min: 0, max: 5 } }
-            }
-        };
+        // Tabla
+        y = y + (4 * (cardHeight + 5)) + 10;
+        const tableRows = plantilla.map((rasgo, i) => ({
+            rasgo,
+            user: groupData[i],
+            llm: bestMatchData[i],
+            diff: parseFloat((groupData[i] - bestMatchData[i]).toFixed(2))
+        }));
 
-        // Configuración de Bar Big Five
-        const barBigFiveConfig = {
-            type: 'bar',
-            data: {
-                labels: bigFiveLabels,
-                datasets: [
-                    {
-                        label: 'Promedio Grupo', // Etiqueta cambiada
-                        data: groupAvgData.slice(0, 5),
-                        backgroundColor: hexToRgba(PDF_USER_COLOR, 0.8)
-                    },
-                    ...llmDatasets.map(ds => ({
-                        label: ds.label,
-                        data: ds.data.slice(0, 5),
-                        backgroundColor: ds.backgroundColorBar
-                    }))
-                ]
-            },
-            options: {
-                responsive: false, animation: false,
-                plugins: { title: { display: true, text: "Big Five (Grupo vs. LLMs)" } },
-                scales: { y: { beginAtZero: true, max: 5 } }
-            }
-        };
+        doc.setFontSize(14);
+        doc.setTextColor(this.pdfService.colors.primary);
+        doc.text("Tabla Comparativa (Promedios)", pageWidth / 2, y, { align: "center" });
+        this.pdfService.drawComparisonTable(doc, y + 5, tableRows);
 
-        // Configuración de Bar Dark Triad
-        const barDarkConfig = {
-            type: 'bar',
-            data: {
-                labels: darkLabels,
-                datasets: [
-                    {
-                        label: 'Promedio Grupo', // Etiqueta cambiada
-                        data: groupAvgData.slice(5, 8),
-                        backgroundColor: hexToRgba(PDF_USER_COLOR, 0.8)
-                    },
-                    ...llmDatasets.map(ds => ({
-                        label: ds.label,
-                        data: ds.data.slice(5, 8),
-                        backgroundColor: ds.backgroundColorBar
-                    }))
-                ]
-            },
-            options: {
-                responsive: false, animation: false,
-                plugins: { title: { display: true, text: "Dark Triad (Grupo vs. LLMs)" } },
-                scales: { y: { beginAtZero: true, max: 5 } }
-            }
-        };
-
-        // --- 4. Generar Imágenes ---
-        const imgRadar = await this.graficoExporter.generarImagen(radarConfig, 1000, 600);
-        const imgBigFive = await this.graficoExporter.generarImagen(barBigFiveConfig, 1000, 500);
-        const imgDark = await this.graficoExporter.generarImagen(barDarkConfig, 1000, 500);
-
-        // --- 5. Maquetar Gráficas en PDF ---
-        doc.addImage(imgRadar, 'PNG', 14, 45, 180, 108);
-        
+        // --- PÁGINA 2 ---
         doc.addPage();
-        doc.setFontSize(16);
-        doc.text("Desglose de Rasgos Comparativo (Promedios)", 14, 22);
-        doc.addImage(imgBigFive, 'PNG', 14, 30, 180, 90);
-        doc.addImage(imgDark, 'PNG', 14, 130, 180, 90);
+        this.pdfService.drawHeader(doc, "Reporte Psicométrico", "Comparación Global (Grupo vs LLMs)");
 
-        // --- 6. Añadir Tabla de Percentiles (en página siguiente) ---
-        // (Modificado para mostrar UNA tabla consolidada)
-        doc.addPage();
-        doc.setFontSize(18);
-        doc.text("Análisis de Distribución de Percentiles (Consolidado)", 14, 22);
+        const imgBar = await this._generateMultiBarChart(plantilla, groupData, datosModelos);
+        const imgRadar = await this._generateMultiRadarChart(plantilla, groupData, datosModelos);
 
-        // Lógica de Negocio: Procesar el grupo (para la tabla)
-        const comparacionGrupo = procesador.compararGrupo(datosGrupo, datosModelos);
+        y = 60;
+        doc.text("Diagrama de Barras", pageWidth / 2, y, { align: "center" });
+        doc.addImage(imgBar, 'PNG', margin, y + 5, pageWidth - (margin * 2), 90);
 
-        // --- Definir Columnas (Ajustadas para A4 Portrait) ---
-        // Col 0: LLM (Ancho 35)
-        // Col 1-8: Rasgos (Ancho ~19 cada uno)
-        const colWidths = [35, 19, 19, 19, 19, 19, 19, 19, 19];
-        const colStarts = [14];
-        for (let i = 1; i < colWidths.length; i++) {
-            colStarts[i] = colStarts[i - 1] + colWidths[i - 1];
-        }
+        y = 165;
+        doc.text("Gráfico de Radar", pageWidth / 2, y, { align: "center" });
+        doc.addImage(imgRadar, 'PNG', margin + 20, y + 5, pageWidth - (margin * 2) - 40, 110);
 
-        let y = 35; // Posición 'y' inicial
-
-        // --- Imprimir Encabezados ---
-        doc.setFontSize(8); // Fuente pequeña para que quepa
-        doc.setFont(undefined, 'bold');
-        
-        // Header 1: "LLM"
-        doc.text("LLM", colStarts[0], y);
-        
-        // Headers 2-9: Rasgos (con nombres cortos)
-        plantilla.forEach((rasgo, i) => {
-            let shortName = rasgo;
-            if (rasgo === "Responsabilidad") shortName = "Resp.";
-            if (rasgo === "Extraversión") shortName = "Extra.";
-            if (rasgo === "Amabilidad") shortName = "Amab.";
-            if (rasgo === "Neuroticismo") shortName = "Neuro.";
-            if (rasgo === "Maquiavelismo") shortName = "Maquia.";
-            if (rasgo === "Narcisismo") shortName = "Narcis.";
-            if (rasgo === "Psicopatía") shortName = "Psico.";
-            
-            doc.text(shortName, colStarts[i + 1], y);
-        });
-
-        y += 7;
-        doc.setLineWidth(0.5);
-        doc.line(14, y - 3, 200, y - 3); // 200mm (casi el borde de A4)
-        doc.setFont(undefined, 'normal');
-
-        // --- Imprimir Filas (una por LLM) ---
-        for (const modelo of datosModelos) {
-            
-            // Definir alturas de fila y espaciado
-            const lineSpacing = 4; // Espacio entre líneas (mm)
-            const rowHeight = lineSpacing * 3; // 3 líneas
-            const rowMargin = 4; // Margen *después* de la fila
-            let cellStartY = y; // Y-start para esta fila
-
-            if (y > 270) { // Salto de página
-                 doc.addPage();
-                 y = 20;
-                 cellStartY = y; // Resetear Y-start
-                 
-                 // (Opcional: re-imprimir headers)
-                 doc.setFontSize(18);
-                 doc.text("Análisis de Distribución (Continuación)", 14, y);
-                 y += 15;
-                 cellStartY = y;
-            }
-
-            // Imprimir el nombre del LLM, centrado verticalmente
-            doc.setFontSize(8);
-            doc.setFont(undefined, 'bold');
-            doc.text(modelo.nombre, colStarts[0], cellStartY + lineSpacing); // Centrado en la 2da línea
-            doc.setFont(undefined, 'normal');
-            
-            const resultadosModelo = comparacionGrupo.resultadosPorModelo[modelo.nombre];
-
-            if (resultadosModelo) {
-                plantilla.forEach((nombreRasgo, i) => {
-                    const stat = resultadosModelo.find(s => s.rasgo === nombreRasgo);
-                    let colX = colStarts[i + 1]; // Posición X de la columna
-
-                    if (stat) {
-                        // Formato: XX.X% Etiqueta (como en la imagen)
-                        const pD_val = `${parseFloat(stat.porcentaje.porDebajo).toFixed(1)}%`;
-                        const pI_val = `${parseFloat(stat.porcentaje.dentro).toFixed(1)}%`;
-                        const pA_val = `${parseFloat(stat.porcentaje.porArriba).toFixed(1)}%`;
-                        
-                        doc.setFontSize(6); // Fuente muy pequeña
-                        
-                        // Valor (Bold)
-                        doc.setFont(undefined, 'bold');
-                        doc.text(pD_val, colX, cellStartY);
-                        doc.text(pI_val, colX, cellStartY + lineSpacing);
-                        doc.text(pA_val, colX, cellStartY + (2 * lineSpacing));
-
-                        // Etiqueta (Normal)
-                        doc.setFont(undefined, 'normal');
-                        let labelX = colX + 8; // Ajustar X para la etiqueta
-                        doc.text("Debajo", labelX, cellStartY);
-                        doc.text("Dentro", labelX, cellStartY + lineSpacing);
-                        doc.text("Arriba", labelX, cellStartY + (2 * lineSpacing));
-                    } else {
-                        doc.setFontSize(7);
-                        doc.text("N/A", colX, cellStartY + lineSpacing); // Centrar "N/A"
-                    }
-                });
-            }
-            
-            // Incrementar Y para la siguiente fila
-            y += rowHeight + rowMargin; 
-            doc.setLineWidth(0.2);
-            doc.line(14, y - (rowMargin / 2), 200, y - (rowMargin / 2)); // Línea separadora
-        }
-        
-        // --- Añadir Leyenda ---
-        y += 10;
-        doc.setFontSize(8);
-        doc.text("Valores: % de participantes del grupo (Debajo, Dentro, Arriba) del rango del LLM.", 14, y);
-        
         return doc.output('blob');
+    }
+
+    // --- Helpers ---
+
+    _findBestMatch(targetData, modelos, plantilla) {
+        let minDistance = Infinity;
+        let bestMatchName = "";
+        let bestMatchData = [];
+
+        modelos.forEach(modelo => {
+            const modelData = plantilla.map(r => {
+                const stat = modelo.estadisticas.find(s => s.nombre === r);
+                return stat ? stat.media : 0;
+            });
+
+            const dist = Math.sqrt(
+                targetData.reduce((acc, val, i) => acc + Math.pow(val - modelData[i], 2), 0)
+            );
+
+            if (dist < minDistance) {
+                minDistance = dist;
+                bestMatchName = modelo.nombre;
+                bestMatchData = modelData;
+            }
+        });
+
+        return { bestMatchName, bestMatchData: bestMatchData.map(v => parseFloat(v.toFixed(2))) };
+    }
+
+    async _generateMultiBarChart(labels, userData, modelos) {
+        // Colores
+        const USER_COLOR = '#16348C';
+        const LLM_PALETTE = ['#6586E7', '#884FFD', '#B18BFD', '#FFA64D', '#FF8000'];
+        const hexToRgba = (hex, alpha) => {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        };
+
+        const datasets = [
+            {
+                label: 'Usuario/Grupo',
+                data: userData,
+                backgroundColor: hexToRgba(USER_COLOR, 0.8)
+            },
+            ...modelos.map((m, i) => {
+                const color = LLM_PALETTE[i % LLM_PALETTE.length];
+                const data = labels.map(r => {
+                    const s = m.estadisticas.find(stat => stat.nombre === r);
+                    return s ? s.media : 0;
+                });
+                return {
+                    label: m.nombre,
+                    data: data,
+                    backgroundColor: hexToRgba(color, 0.8)
+                };
+            })
+        ];
+
+        const config = {
+            type: 'bar',
+            data: { labels, datasets },
+            options: {
+                responsive: false, animation: false,
+                scales: { y: { beginAtZero: true, max: 5 } },
+                plugins: { legend: { display: true } }
+            }
+        };
+
+        return await this.graficoExporter.generarImagen(config, 1000, 500);
+    }
+
+    async _generateMultiRadarChart(labels, userData, modelos) {
+        const USER_COLOR = '#16348C';
+        const LLM_PALETTE = ['#6586E7', '#884FFD', '#B18BFD', '#FFA64D', '#FF8000'];
+        const hexToRgba = (hex, alpha) => {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        };
+
+        const datasets = [
+            {
+                label: 'Usuario/Grupo',
+                data: userData,
+                backgroundColor: hexToRgba(USER_COLOR, 0.2),
+                borderColor: USER_COLOR,
+                borderWidth: 2
+            },
+            ...modelos.map((m, i) => {
+                const color = LLM_PALETTE[i % LLM_PALETTE.length];
+                const data = labels.map(r => {
+                    const s = m.estadisticas.find(stat => stat.nombre === r);
+                    return s ? s.media : 0;
+                });
+                return {
+                    label: m.nombre,
+                    data: data,
+                    backgroundColor: hexToRgba(color, 0.2),
+                    borderColor: color,
+                    borderWidth: 2
+                };
+            })
+        ];
+
+        const config = {
+            type: 'radar',
+            data: { labels, datasets },
+            options: {
+                responsive: false, animation: false,
+                scales: { r: { beginAtZero: true, min: 0, max: 5 } },
+                plugins: { legend: { display: true } }
+            }
+        };
+
+        return await this.graficoExporter.generarImagen(config, 1000, 800);
     }
 }

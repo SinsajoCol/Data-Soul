@@ -8,7 +8,7 @@ import { Rasgos } from '../models/Rasgos.js';
  * No renderiza la vista web, solo coordina la creación de PDFs.
  */
 export class ReporteController {
-    
+
     /**
      * @param {Object} deps - Dependencias
      * @param {ResultadosView} deps.view - La vista (para metadata, si es necesario)
@@ -31,7 +31,7 @@ export class ReporteController {
      */
     async generarReporte(tipo, opciones = {}) {
         console.log(`ReporteController: Iniciando generación de reporte: ${tipo}`);
-        
+
         const strategy = this.factory.create(tipo);
         if (!strategy) {
             console.error(`Estrategia de reporte no encontrada: ${tipo}`);
@@ -40,8 +40,8 @@ export class ReporteController {
 
         try {
             // Obtenemos el MAPA completo de individuos (plural)
-            const todosLosIndividuos = this.resultados.obtenerResultadosIndividuales(); 
-            const todasLasPoblaciones = this.resultados.obtenerResultadosPoblacion(); 
+            const todosLosIndividuos = this.resultados.obtenerResultadosIndividuales();
+            const todasLasPoblaciones = this.resultados.obtenerResultadosPoblacion();
             const modelos = this.gestorModelos.modelos;
 
 
@@ -51,7 +51,7 @@ export class ReporteController {
 
             if (tipo === 'individual') {
                 // El usuario quiere un "Reporte Individual".
-                
+
                 if (todosLosIndividuos[id]) {
                     // Caso 1: Es un individuo real. Fácil.
                     console.log("Generando reporte para individuo real.");
@@ -61,7 +61,7 @@ export class ReporteController {
                     // Caso 2: Es un grupo, pero quieren el reporte "individual" (promedios).
                     console.log("Generando reporte 'Individual' para promedios de grupo.");
                     const grupo = todasLasPoblaciones[id];
-                    
+
                     // Creamos un 'Individuo' ficticio usando los promedios del grupo.
                     individuoParaReporte = this._crearIndividuoDesdePromedioGrupo(grupo);
                 }
@@ -83,9 +83,9 @@ export class ReporteController {
                 individuoParaReporte,  // Puede ser null si es un grupo
                 grupoParaReporte,      // Puede ser null si es un individuo
                 modelos,    // Todos los modelos LLM
-                { 
+                {
                     usuarioId: id,
-                    rasgosOrdenados: this.view.rasgos, 
+                    rasgosOrdenados: this.view.rasgos,
                     descripciones: this.view.descripciones
                 },
                 this.procesador // Pasamos el procesador para que las estrategias lo usen
@@ -115,18 +115,18 @@ export class ReporteController {
     _crearIndividuoDesdePromedioGrupo(grupo) {
         // 1. Obtenemos las estadísticas (ej. [{nombre: 'Apertura', media: 3.85}, ...])
         const statsGrupales = grupo.obtenerEstadisticasGrupales();
-        
+
         // 2. Creamos una instancia de Rasgos
         const rasgosFicticios = new Rasgos();
-        
+
         // 3. Llenamos la instancia de Rasgos usando su propio método
         statsGrupales.forEach(stat => {
             // Asegurarnos de que el valor sea numérico
             const valorMedia = (typeof stat.media === 'number' && !isNaN(stat.media)) ? stat.media : 1;
-            
+
             // Aseguramos que esté en el rango [1, 5] que espera el constructor de Rasgo
             const valorValido = Math.max(1, Math.min(5, valorMedia));
-            
+
             // Usamos el método 'agregarRasgo' que llama a 'new Rasgo' internamente
             rasgosFicticios.agregarRasgo(stat.nombre, valorValido);
         });
