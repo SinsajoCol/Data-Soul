@@ -7,15 +7,74 @@ export class ResultadosView {
     ];
 
     this.descripciones = {
-    "Apertura": "La apertura a la experiencia (Openness) es el grado en que una persona es imaginativa, curiosa, creativa y abierta a nuevas ideas, experiencias y perspectivas no convencionales.",
-    "Responsabilidad": "La responsabilidad (Conscientiousness) se refiere a la autodisciplina, la planificación, la fiabilidad y la orientación a objetivos. Las personas responsables son organizadas y diligentes.",
-    "Extraversión": "La extraversión (Extraversion) se caracteriza por la sociabilidad, la asertividad, la energía y la tendencia a buscar estimulación y compañía de otros.",
-    "Amabilidad": "La amabilidad (Agreeableness) se relaciona con ser cooperativo, compasivo, empático y considerado. Las personas amables tienden a evitar conflictos.",
-    "Neuroticismo": "El neuroticismo (Neuroticism) describe la tendencia a experimentar emociones negativas como ansiedad, tristeza, irritabilidad y a tener inestabilidad emocional",
-    "Maquiavelismo": "El Maquiavelismo es un rasgo de personalidad que se enfoca en la manipulación y la explotación interpersonal, el cinismo y la falta de moralidad para lograr objetivos personales.",
-    "Narcisismo": "El Narcisismo se caracteriza por la grandiosidad, el derecho a un trato especial, la necesidad de admiración y una baja empatía hacia los demás.",
-    "Psicopatía": "La Psicopatía se define por la impulsividad, la búsqueda de emociones fuertes, la falta de remordimiento y una marcada incapacidad para sentir miedo o empatía."
+      "Apertura": 
+        "La apertura refleja la inclinación hacia la curiosidad, la imaginación y el interés por ideas o experiencias nuevas.",
+      "Responsabilidad": 
+        "La responsabilidad describe la tendencia a planificar, organizarse y mantener constancia en las actividades y compromisos.",
+      "Extraversión": 
+        "La extraversión se relaciona con la energía social, la expresión interpersonal y la motivación por interactuar con otros.",
+      "Amabilidad": 
+        "La amabilidad se vincula con la cooperación, la empatía y la preferencia por relaciones basadas en consideración y apoyo mutuo.",
+      "Neuroticismo": 
+        "El neuroticismo hace referencia a la sensibilidad emocional y a cómo se experimentan y gestionan situaciones estresantes o demandantes.",
+      "Maquiavelismo": 
+        "El maquiavelismo describe un estilo más estratégico y orientado a la planificación personal en las relaciones y decisiones.",
+      "Narcisismo": 
+        "El narcisismo se relaciona con la autovaloración, la búsqueda de reconocimiento y la importancia dada a la propia imagen.",
+      "Psicopatía": 
+        "La psicopatía señala una preferencia por la toma rápida de decisiones, la acción directa y la búsqueda de estímulos intensos."
     };
+
+
+    this.DescriptionsScore = {
+      "bigfive": {
+        "openness": {
+          "high": "Nivel de apertura a la experiencia <strong>alto</strong>.</br> Este nivel refleja una marcada inclinación hacia la imaginación, la curiosidad y la apertura a nuevas ideas, emociones y experiencias. También suele asociarse con interés por explorar lo creativo y lo novedoso.",
+          "medium": "Nivel de apertura a la experiencia <strong>medio</strong>.</br> Este nivel indica un equilibrio entre la curiosidad y la preferencia por lo familiar. Se combinan la disposición a explorar nuevas ideas con la valoración de la estabilidad.",
+          "low": "Nivel de apertura a la experiencia <strong>bajo</strong>.</br> Este nivel refleja una preferencia por lo práctico, lo conocido y lo estructurado. Suelen priorizarse la rutina y la estabilidad por encima de la novedad."
+        },
+        "conscientiousness": {
+          "high": "Nivel de responsabilidad <strong>alto</strong>.</br> Este nivel se caracteriza por organización, disciplina y constancia. Se suele planificar con anticipación y perseverar en el logro de metas.",
+          "medium": "Nivel de responsabilidad <strong>medio</strong>.</br> Este nivel muestra un balance entre estructura y flexibilidad. Puede adaptarse según las demandas, manteniendo capacidad de organización cuando es necesario.",
+          "low": "Nivel de responsabilidad <strong>bajo</strong>.</br> Este nivel indica mayor espontaneidad y flexibilidad. Puede observarse menor estructura o planificación, priorizando la libertad de acción."
+        },
+        "extraversion": {
+          "high": "Nivel de extraversión <strong>alto</strong>.</br> Este nivel refleja una alta energía social, expresividad interpersonal y preferencia por entornos estimulantes o interactivos.",
+          "medium": "Nivel de extraversión <strong>medio</strong>.</br> Este nivel combina comodidad en entornos sociales con la valoración de espacios de calma. Se adapta bien tanto a actividades grupales como individuales.",
+          "low": "Nivel de extraversión <strong>bajo</strong>.</br> Este nivel indica una preferencia por la introspección y ambientes tranquilos. Suelen favorecerse interacciones más reservadas o en grupos pequeños."
+        },
+        "agreeableness": {
+          "high": "Nivel de amabilidad <strong>alto</strong>.</br> Este nivel se asocia con cooperación, empatía y disposición para mantener relaciones armoniosas.",
+          "medium": "Nivel de amabilidad <strong>medio</strong>.</br> Este nivel combina una actitud colaborativa con la capacidad de establecer límites cuando es necesario.",
+          "low": "Nivel de amabilidad <strong>bajo</strong>.</br> Este nivel se caracteriza por una comunicación más directa y orientada a objetivos, priorizando la claridad y la afirmación personal."
+        },
+        "neuroticism": {
+          "high": "Nivel de neuroticismo <strong>alto</strong>.</br> Este nivel refleja mayor sensibilidad emocional y respuestas más intensas ante situaciones de presión. Esto describe estilo emocional, no implica patología.",
+          "medium": "Nivel de neuroticismo <strong>medio</strong>.</br> Se observan variaciones emocionales ocasionales, combinadas con periodos de estabilidad y regulación adecuada.",
+          "low": "Nivel de neuroticismo <strong>bajo</strong>.</br> Este nivel se asocia con estabilidad emocional, respuesta calmada y adaptación efectiva ante situaciones demandantes."
+        }
+      },
+
+      "darktriad": {
+        "machiavellianism": {
+          "high": "Nivel de maquiavelismo <strong>alto</strong>.</br> Este nivel refleja una orientación estratégica en la toma de decisiones y un enfoque pragmático para alcanzar objetivos personales.",
+          "medium": "Nivel de maquiavelismo <strong>medio</strong>.</br> Este nivel combina la capacidad de planear estratégicamente con la consideración de límites personales y criterios éticos.",
+          "low": "Nivel de maquiavelismo <strong>bajo</strong>.</br> Este nivel se asocia con una preferencia por la comunicación directa, la claridad en las intenciones y la transparencia en las relaciones."
+        },
+        "narcissism": {
+          "high": "Nivel de narcisismo <strong>alto</strong>.</br> Este nivel refleja una orientación elevada hacia la autovaloración, el reconocimiento y la importancia personal en contextos sociales.",
+          "medium": "Nivel de narcisismo <strong>medio</strong>.</br> Este nivel se vincula con una autoestima estable y la valoración del reconocimiento sin que sea un aspecto dominante.",
+          "low": "Nivel de narcisismo <strong>bajo</strong>.</br> Este nivel indica una preferencia por la colaboración, la igualdad en las relaciones y una menor necesidad de atención externa."
+        },
+        "psychopathy": {
+          "high": "Nivel de psicopatía <strong>alto</strong>.</br> Este nivel refleja una orientación hacia la acción rápida, la toma de decisiones impulsiva y la búsqueda de situaciones estimulantes o intensas.",
+          "medium": "Nivel de psicopatía <strong>medio</strong>.</br> Este nivel combina firmeza y determinación con consideración moderada por las consecuencias.",
+          "low": "Nivel de psicopatía <strong>bajo</strong>.</br> Este nivel se asocia con empatía, prudencia y reflexión antes de actuar."
+        }
+      }
+    }
+
+
 
     // --- 2. INICIALIZA LOS DATOS COMO VACÍOS ---
     this.usuario = []; // (BORRA LOS DATOS DE PRUEBA)
@@ -94,20 +153,27 @@ export class ResultadosView {
     
   }
 
-   calcularLLMMasSimilar() {
-    let menorDistancia = Infinity;
-    let masSimilar = null;
+  determinarNivel(valor) {
+    if (valor <= 2.6) return "low";
+    if (valor <= 3.3) return "medium";
+    return "high";
+  }
 
-    for (const [nombre, valores] of Object.entries(this.llms)) {
-      const distancia = Math.sqrt(
-        valores.reduce((acc, val, i) => acc + Math.pow(val - this.usuario[i], 2), 0)
-      );
-      if (distancia < menorDistancia) {
-        menorDistancia = distancia;
-        masSimilar = nombre;
-      }
+
+  calcularLLMMasSimilar() {
+  let menorDistancia = Infinity;
+  let masSimilar = null;
+
+  for (const [nombre, valores] of Object.entries(this.llms)) {
+    const distancia = Math.sqrt(
+      valores.reduce((acc, val, i) => acc + Math.pow(val - this.usuario[i], 2), 0)
+    );
+    if (distancia < menorDistancia) {
+      menorDistancia = distancia;
+      masSimilar = nombre;
     }
-    return masSimilar;
+  }
+  return masSimilar;
   }
 
   generarLLMCards() {
@@ -141,6 +207,9 @@ export class ResultadosView {
         <h3>${r}</h3>
         <p>Usuario: ${this.usuario[i]}</p>
         <p>${masSimilar}: ${valoresLLM[i]}</p>
+        <p class="descripcion-rasgo">
+          ${this.descripciones[r]}
+        </p>
       </div>
     `).join('');
   }
@@ -430,7 +499,30 @@ export class ResultadosView {
         document.getElementById("modalRasgoTitulo").textContent = rasgo;
         document.getElementById("modalUsuarioScore").textContent = this.usuario[index];
         document.getElementById("modalLLMScore").textContent = this.llms[masSimilar][index];
-        document.getElementById("modalDescripcion").textContent = descripcion;
+        const valorUsuario = this.usuario[index];
+        const nivel = this.determinarNivel(valorUsuario);
+
+        // Mapa entre los nombres visibles y los del JSON
+        const mapKeys = {
+          "Apertura": "openness",
+          "Responsabilidad": "conscientiousness",
+          "Extraversión": "extraversion",
+          "Amabilidad": "agreeableness",
+          "Neuroticismo": "neuroticism",
+          "Maquiavelismo": "machiavellianism",
+          "Narcisismo": "narcissism",
+          "Psicopatía": "psychopathy"
+        };
+
+        const clave = mapKeys[rasgo];
+        const source = clave in this.DescriptionsScore.bigfive
+          ? this.DescriptionsScore.bigfive
+          : this.DescriptionsScore.darktriad;
+
+        const descripcionFinal = source[clave][nivel];
+
+        document.getElementById("modalDescripcion").innerHTML = descripcionFinal;
+
 
         modal.classList.add("show");
       });
