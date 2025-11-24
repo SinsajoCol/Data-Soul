@@ -207,4 +207,103 @@ export class PdfService {
             y += rowHeight;
         });
     }
+
+    /**
+     * Dibuja la tabla comparativa detallada para GRUPOS (LLM vs Rasgos con porcentajes).
+     * Maneja paginación automática cuando la tabla es muy grande.
+     * @param {jsPDF} doc 
+     * @param {number} startY 
+     * @param {Object} comparacion - Devuelto por ProcesadorComparacion.compararGrupo
+     * @param {Array<string>} plantilla - Array con nombres de rasgos en orden
+     * @param {string} pageHeaderTitle - Título del reporte (para redibujar en nuevas páginas)
+     * @param {string} pageHeaderSubtitle - Subtítulo del reporte
+     */
+    drawGroupComparisonTable(doc, startY, comparacion, plantilla, pageHeaderTitle, pageHeaderSubtitle) {
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const margin = 14;
+        const tableWidth = pageWidth - (margin * 2);
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const headerHeight = 12;
+        const rowHeight = 18;
+        const colCount = 1 + plantilla.length;
+        const colWidth = tableWidth / colCount;
+
+        let y = startY;
+
+        const drawHeaderRow = (yPos) => {
+            doc.setFillColor(this.colors.primary);
+            doc.rect(margin, yPos, tableWidth, headerHeight, 'F');
+            doc.setTextColor(this.colors.white);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+
+            doc.text('LLM', margin + 4, yPos + 8);
+            plantilla.forEach((r, i) => {
+                const x = margin + ((i + 1) * colWidth) + 2;
+                doc.text(r, x, yPos + 8);
+            });
+        };
+
+        // Dibujar primera cabecera
+        drawHeaderRow(y);
+        y += headerHeight;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7);
+        doc.setTextColor(this.colors.text);
+
+        const resultados = comparacion.resultadosPorModelo || {};
+
+        Object.keys(resultados).forEach((llmName, rowIndex) => {
+            // Si no hay espacio suficiente, crear nueva página
+            if (y + rowHeight + margin > pageHeight) {
+                doc.addPage();
+                if (pageHeaderTitle) {
+                    this.drawHeader(doc, pageHeaderTitle, pageHeaderSubtitle || "");
+                    y = 60;
+                } else {
+                    y = margin;
+                }
+                drawHeaderRow(y);
+                y += headerHeight;
+            }
+
+            // Alternar color de fondo
+            if (rowIndex % 2 === 0) {
+                doc.setFillColor(245, 247, 250);
+                doc.rect(margin, y, tableWidth, rowHeight, 'F');
+            }
+
+            // Columna LLM
+            doc.setTextColor(this.colors.text);
+            doc.setFont('helvetica', 'bold');
+            doc.text(String(llmName), margin + 4, y + 7);
+
+            const stats = resultados[llmName];
+            doc.setFont('helvetica', 'normal');
+
+            // Para cada rasgo imprimimos los tres valores en vertical
+            plantilla.forEach((rasgo, i) => {
+                const x = margin + ((i + 1) * colWidth) + 2;
+                const stat = stats.find(s => s.rasgo === rasgo) || null;
+
+                if (stat && stat.porcentaje) {
+                    const porDebajo = parseFloat(stat.porcentaje.porDebajo).toFixed(1) + '%';
+                    const dentro = parseFloat(stat.porcentaje.dentro).toFixed(1) + '%';
+                    const porArriba = parseFloat(stat.porcentaje.porArriba).toFixed(1) + '%';
+
+                    doc.text(porDebajo, x, y + 4);
+                    doc.setTextColor(this.colors.secondary);
+                    doc.text(dentro, x, y + 9);
+                    doc.setTextColor(this.colors.text);
+                    doc.text(porArriba, x, y + 14);
+                } else {
+                    doc.text('N/A', x, y + 9);
+                }
+                doc.setTextColor(this.colors.text);
+            });
+
+            y += rowHeight;
+        });
+    }
 }

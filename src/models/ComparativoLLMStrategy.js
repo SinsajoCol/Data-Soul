@@ -225,7 +225,34 @@ export class ComparativoLLMStrategy {
             "Tabla Comparativa (Promedios)"
         );
 
-        // --- PÁGINA 3: Gráficas Globales ---
+        // --- PÁGINA 3: Tabla Comparativa Detallada (LLM vs Rasgos con porcentajes) ---
+        try {
+            const comparacion = context.procesador
+                ? context.procesador.compararGrupo(datosGrupo, datosModelos)
+                : null;
+
+            if (comparacion) {
+                doc.addPage();
+                this.pdfService.drawHeader(doc, "Reporte Psicométrico Comparativo", "Tabla Detallada por LLM");
+                
+                doc.setFontSize(14);
+                doc.setTextColor(this.pdfService.colors.primary);
+                doc.text("Tabla Comparativa (Detallada por LLM)", pageWidth / 2, 60, { align: "center" });
+
+                this.pdfService.drawGroupComparisonTable(
+                    doc,
+                    65,
+                    comparacion,
+                    plantilla,
+                    "Reporte Psicométrico Comparativo",
+                    "Tabla Detallada por LLM"
+                );
+            }
+        } catch (e) {
+            console.warn('No se pudo generar la tabla detallada por LLM en el PDF:', e);
+        }
+
+        // --- PÁGINA 4: Gráficas Globales ---
         doc.addPage();
         this.pdfService.drawHeader(doc, "Reporte Psicométrico", "Comparación Global (Grupo vs LLMs)");
 
