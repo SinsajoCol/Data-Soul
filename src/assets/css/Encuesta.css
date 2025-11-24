@@ -1,0 +1,75 @@
+:root {
+  --accent-color: #ffa64d;
+  --black: #010101;
+  --white: #f7f7f7;
+  --brand-primary: #11296e;
+  --brand-secondary: #cbb2fe;
+  --peppercorn-typography-scale-h2-font-family: Poppins, sans-serif;
+  --peppercorn-typography-scale-h2-font-size: 39px;
+  --peppercorn-typography-scale-h2-font-line-height: 59px;
+  --peppercorn-typography-scale-h2-font-weight: 700;
+}
+
+.encuesta-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 20px 40px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.encuesta-titulo {
+    margin-bottom: 20px;
+    font-family: var(--peppercorn-typography-scale-h2-font-family);
+    font-size: var(--peppercorn-typography-scale-h2-font-size);
+    font-weight: 700;
+    color: var(--brand-primary);
+}
+
+.iframe-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px #cbb2fecb;
+}
+
+.encuesta-container iframe {
+    width: 100%;
+    height: calc(100vh - 180px);
+    border: none;
+    display: block;
+}
+
+@media (max-width: 900px) {
+    .encuesta-titulo {
+        font-size: 30px;
+    }
+
+    .iframe-wrapper {
+        max-width: 100%;
+        border-radius: 10px;
+    }
+
+    .encuesta-container iframe {
+        height: calc(100vh - 160px);
+    }
+}
+
+@media (max-width: 780px) {
+    .encuesta-container {
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 600px) {
+    .encuesta-titulo {
+        font-size: 25px;
+    }
+
+    .encuesta-container iframe {
+        height: calc(100vh - 150px);
+    }
+}

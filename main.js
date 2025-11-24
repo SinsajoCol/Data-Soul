@@ -3,6 +3,7 @@ import { PaginaInicio } from "./src/assets/js/PaginaInicio.js";
 import { PaginaCuestionario } from "./src/assets/js/PaginaCuestionario.js";
 import { PaginaPruebaGrupal } from "../src/assets/js/PaginaPruebaGrupal.js";
 import { PaginaResultados } from "/src/assets/js/PaginaResultados.js";
+import { PaginaEncuesta } from "./src/assets/js/PaginaEncuesta.js";
 import { PaginaTerminos } from "../src/assets/js/PaginaTerminos.js";
 import { PaginaPrivacidad } from "./src/assets/js/PaginaPrivacidad.js";
 import { PaginaLLM } from "./src/assets/js/PaginaLLM.js";
@@ -41,6 +42,10 @@ async function cargarPagina(nombre, parametro) {
     case "llm":
       pagina = new PaginaLLM();
       console.log("Página de LLM cargada");
+      break;
+    case "encuesta":
+      pagina = new PaginaEncuesta();
+      console.log("Página de encuesta cargada");
       break;
     default:
       pagina = new PaginaInicio(); 
