@@ -33,6 +33,7 @@ export class ComparativoLLMStrategy {
         // --- 1. Preparar Datos ---
         const plantilla = metadata.rasgosOrdenados;
         const descripciones = metadata.descripciones;
+        const descriptionsScore = metadata.descriptionsScore;
 
         // Datos Usuario
         const userData = plantilla.map(nombreRasgo => {
@@ -57,11 +58,36 @@ export class ComparativoLLMStrategy {
             const xPos = margin + (col * (cardWidth + margin));
             const yPos = y + (row * (cardHeight + 5));
 
+            // Obtener la descripción del puntaje
+            const scoreValue = userData[index];
+            const nivel = scoreValue <= 2.6 ? "low" : scoreValue <= 3.3 ? "medium" : "high";
+            
+            // Mapa entre los nombres visibles y los del JSON
+            const mapKeys = {
+                "Apertura": "openness",
+                "Responsabilidad": "conscientiousness",
+                "Extraversión": "extraversion",
+                "Amabilidad": "agreeableness",
+                "Neuroticismo": "neuroticism",
+                "Maquiavelismo": "machiavellianism",
+                "Narcisismo": "narcissism",
+                "Psicopatía": "psychopathy"
+            };
+
+            const clave = mapKeys[rasgo];
+            const source = clave in descriptionsScore.bigfive
+                ? descriptionsScore.bigfive
+                : descriptionsScore.darktriad;
+
+            const descripcionFinal = source[clave] && source[clave][nivel] 
+                ? source[clave][nivel] 
+                : descripciones[rasgo];
+
             this.pdfService.drawTraitCard(doc, xPos, yPos, cardWidth, cardHeight, {
                 nombre: rasgo,
                 scoreUser: userData[index],
                 scoreLLM: bestMatchData[index],
-                descripcion: descripciones[rasgo]
+                descripcion: descripcionFinal
             });
         });
 
@@ -112,6 +138,7 @@ export class ComparativoLLMStrategy {
 
         const plantilla = metadata.rasgosOrdenados;
         const descripciones = metadata.descripciones;
+        const descriptionsScore = metadata.descriptionsScore;
 
         // Promedios Grupo
         const statsGrupales = datosGrupo.obtenerEstadisticasGrupales();
@@ -136,11 +163,36 @@ export class ComparativoLLMStrategy {
             const xPos = margin + (col * (cardWidth + margin));
             const yPos = y + (row * (cardHeight + 5));
 
+            // Obtener la descripción del puntaje
+            const scoreValue = groupData[index];
+            const nivel = scoreValue <= 2.6 ? "low" : scoreValue <= 3.3 ? "medium" : "high";
+            
+            // Mapa entre los nombres visibles y los del JSON
+            const mapKeys = {
+                "Apertura": "openness",
+                "Responsabilidad": "conscientiousness",
+                "Extraversión": "extraversion",
+                "Amabilidad": "agreeableness",
+                "Neuroticismo": "neuroticism",
+                "Maquiavelismo": "machiavellianism",
+                "Narcisismo": "narcissism",
+                "Psicopatía": "psychopathy"
+            };
+
+            const clave = mapKeys[rasgo];
+            const source = clave in descriptionsScore.bigfive
+                ? descriptionsScore.bigfive
+                : descriptionsScore.darktriad;
+
+            const descripcionFinal = source[clave] && source[clave][nivel] 
+                ? source[clave][nivel] 
+                : descripciones[rasgo];
+
             this.pdfService.drawTraitCard(doc, xPos, yPos, cardWidth, cardHeight, {
                 nombre: rasgo,
                 scoreUser: groupData[index], // "Usuario" label will be used, maybe change logic in PdfService if needed, but "Usuario" (as Group) is acceptable or I can change PdfService to accept label.
                 scoreLLM: bestMatchData[index],
-                descripcion: descripciones[rasgo]
+                descripcion: descripcionFinal
             });
         });
 

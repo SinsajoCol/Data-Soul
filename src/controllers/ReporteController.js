@@ -86,7 +86,8 @@ export class ReporteController {
                 {
                     usuarioId: id,
                     rasgosOrdenados: this.view.rasgos,
-                    descripciones: this.view.descripciones
+                    descripciones: this.view.descripciones,
+                    descriptionsScore: this.view.DescriptionsScore
                 },
                 this.procesador // Pasamos el procesador para que las estrategias lo usen
             );

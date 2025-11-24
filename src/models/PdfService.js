@@ -20,6 +20,24 @@ export class PdfService {
     }
 
     /**
+     * Limpia el HTML de la descripción para que se muestre como texto plano en el PDF.
+     * @param {string} html 
+     * @returns {string} Texto limpio sin etiquetas HTML
+     */
+    cleanHTML(html) {
+        if (!html) return '';
+        // Reemplazar <strong> con nada (solo sacamos la etiqueta)
+        let texto = html.replace(/<strong>/g, '').replace(/<\/strong>/g, '');
+        // Reemplazar </br> y <br> con saltos de línea
+        texto = texto.replace(/<\/?br\s*\/?>/g, '\n');
+        // Eliminar cualquier otra etiqueta HTML
+        texto = texto.replace(/<[^>]*>/g, '');
+        // Limpiar espacios excesivos
+        texto = texto.replace(/\s+/g, ' ').trim();
+        return texto;
+    }
+
+    /**
      * Carga el logo desde la URL para usarlo en el PDF.
      * @param {string} url 
      */
@@ -110,9 +128,12 @@ export class PdfService {
             doc.setFontSize(8);
             doc.setTextColor(this.colors.lightText);
 
+            // Limpiar HTML de la descripción
+            const descripcionLimpia = this.cleanHTML(data.descripcion);
+
             // Ajuste de texto multilinea
             const textWidth = width - 10;
-            const splitText = doc.splitTextToSize(data.descripcion, textWidth);
+            const splitText = doc.splitTextToSize(descripcionLimpia, textWidth);
             doc.text(splitText, x + 5, y + 26);
         }
     }
