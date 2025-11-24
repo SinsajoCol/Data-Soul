@@ -99,6 +99,7 @@ export class PaginaResultados extends PaginaTemplate {
             
             // 3. Conectamos los botones de PDF
             this.conectarBotonesPDF();
+            this.conectarBotonEncuesta();
 
         } catch (error) {
             console.error("Error fatal en despuesDeCargar:", error);
@@ -139,6 +140,15 @@ export class PaginaResultados extends PaginaTemplate {
              btnComparativo.addEventListener("click", () => {
                 feedbackHandler(btnComparativo, 'comparativo');
              });
+        }
+    }
+
+    conectarBotonEncuesta() {
+        const btnEncuesta = document.getElementById("encuestaFinal");
+        if (btnEncuesta) {
+            btnEncuesta.addEventListener("click", () => {
+                window.location.hash = "encuesta";
+            });
         }
     }
 }
