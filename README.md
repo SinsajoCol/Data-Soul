@@ -7,7 +7,8 @@ icon: hand-wave
 1.  📖 Descripción del Proyecto
 
     Este [repositorio ](https://github.com/SinsajoCol/Data-Soul)contiene el desarrollo del **aplicativo web para la evaluación de rasgos no cognitivos** mediante pruebas psicométricas y su comparación con modelos de lenguaje (LLM).
-2. 👥 Equipo de Desarrollo
+    [![App](https://img.shields.io/badge/Demo-Ver%20Sitio%20Online-success?style=for-the-badge&logo=microsoftedge&logoColor=white)](https://datasoulcol.netlify.app/)
+3. 👥 Equipo de Desarrollo
 - `Jair Sanclemente`  – **Product Owner**
 - `Catalina Estrada` – **Lider / Frontend /Planificación**
 - `Juan Sebastian Obando` – **Encargado Control de versiones / Ejecución / Full Stack** 
