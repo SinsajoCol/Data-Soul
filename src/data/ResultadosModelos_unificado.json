@@ -1,13 +1,33 @@
 {
+    "Deepseek": {
+        "Openness": 54.1,
+        "Conscientiousness": 79.5,
+        "Extraversion": 34.3,
+        "Agreeableness": 75.7,
+        "Neuroticism": 32.8,
+        "Machiavellianism": 22.2,
+        "Narcissism": 13.5,
+        "Psychopathy": 1.5
+    },
     "Gemma 3.4B": {
         "Openness": 51.9,
-        "Conscientiousness": 86.0,
+        "Conscientiousness": 86,
         "Extraversion": 24.8,
         "Agreeableness": 78.4,
-        "Neuroticism": 28.9,
+        "Neuroticism": 38.1,
         "Machiavellianism": 22.7,
         "Narcissism": 10.3,
         "Psychopathy": 2.1
+    },
+    "ChatGPT": {
+        "Openness": 51.8,
+        "Conscientiousness": 85.4,
+        "Extraversion": 28.66,
+        "Agreeableness": 82.49,
+        "Neuroticism": 30.44,
+        "Machiavellianism": 16.05,
+        "Narcissism": 13.2,
+        "Psychopathy": 0.43
     },
     "Llama3.1": {
         "Openness": 56.3,
@@ -16,37 +36,16 @@
         "Agreeableness": 70.5,
         "Neuroticism": 30.4,
         "Machiavellianism": 15.4,
-        "Narcissism": 9.14,
-        "Psychopathy": 1.01
+        "Narcissism": 9.11,
+        "Psychopathy": 1
     },
     "Mistral7B": {
         "Openness": 55.4,
         "Conscientiousness": 77.1,
-        "Extraversion": 36.0,
+        "Extraversion": 36,
         "Agreeableness": 73.2,
-        "Neuroticism": 42.0,
-        "Machiavellianism": 18.0,
-        "Narcissism": 11.1,
-        "Psychopathy": 3.2
-    },
-
-    "Deepseek": {
-        "Openness": 55.4,
-        "Conscientiousness": 77.1,
-        "Extraversion": 36.0,
-        "Agreeableness": 73.2,
-        "Neuroticism": 42.0,
-        "Machiavellianism": 18.0,
-        "Narcissism": 11.1,
-        "Psychopathy": 3.2
-    },
-    "Gemini": {
-        "Openness": 55.4,
-        "Conscientiousness": 77.1,
-        "Extraversion": 36.0,
-        "Agreeableness": 73.2,
-        "Neuroticism": 42.0,
-        "Machiavellianism": 0.80,
+        "Neuroticism": 42,
+        "Machiavellianism": 18,
         "Narcissism": 11.1,
         "Psychopathy": 3.2
     }
