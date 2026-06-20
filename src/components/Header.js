@@ -4,7 +4,7 @@ export class Header {
       <input type="checkbox" id="menuLat" hidden>
       <nav class="navbar">
         <label for="menuLat" class="burger">☰</label>
-          <div class="marca">
+          <a href="#" class="marca" data-page="inicio" style="text-decoration: none;">
             <div class="logo">
               <img src="/src/assets/img/LogoBrand.png" alt="Logo Data Soul">
             </div>
@@ -12,7 +12,7 @@ export class Header {
             <div class="nameBrand">
               <h1>Data Soul</h1>
             </div>
-          </div>
+          </a>
           
           <div class="menu">
             <a href="#" data-page="inicio">Inicio</a>

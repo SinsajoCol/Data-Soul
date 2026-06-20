@@ -99,7 +99,7 @@ export class RasgosLLM {
 
     for (const card of cards) {
       // Intenta varias fuentes dentro de la tarjeta: título visible, alt de la imagen, id del canvas
-      const tituloElem = card.querySelector('.text-cont div');
+      const tituloElem = card.querySelector('.text-cont');
       const img = card.querySelector('img');
       const canvas = card.querySelector('canvas');
 
@@ -210,9 +210,3 @@ export class RasgosLLM {
     });
   }
 }
-
-// Instanciación automática al cargar la página
-document.addEventListener('DOMContentLoaded', async () => {
-  const vista = new RasgosLLM();
-  await vista.inicializar();
-});
