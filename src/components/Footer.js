@@ -4,10 +4,10 @@ export class Footer {
       <footer class="footer">
         <div class="footer-container">
           <div class="footer-left">
-            <div class="footer-logo">
+            <a href="#" class="footer-logo" data-page="inicio" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center;">
               <img src="/src/assets/img/LogoBrand.png" alt="Logo Data Soul">
               <h2>Data Soul</h2>
-            </div>
+            </a>
           </div>
 
           <div class="footer-right">
