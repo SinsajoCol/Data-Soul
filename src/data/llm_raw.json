@@ -17,7 +17,7 @@
     "Neuroticismo": {"alto": 297, "bajo": 703},
     "Maquiavelismo": {"alto": 171, "bajo": 829},
     "Narcisismo": {"alto": 132, "bajo": 868},
-    "Psicopatía": {"alto": 3, "bajo": 696}
+    "Psicopatía": {"alto": 3, "bajo": 997}
   },
   "Llama-3.1": {
     "Apertura": {"alto": 563, "bajo": 437},
